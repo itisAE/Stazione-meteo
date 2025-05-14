@@ -122,22 +122,6 @@ La nostra pipeline di ML include quattro fasi principali:
 
 ---
 
-## **📊 Esempio di Dati nel Database**  
-```json
-{
-  "timestamp": "2023-11-15T14:30:00",
-  "temperature": 18.7,
-  "humidity": 64,
-  "wind_speed": 12.3,
-  "rainfall": 0.0,
-  "pressure": 1012.4,
-  "prediction": {
-    "next_day_temp": 19.2,
-    "rain_probability": 0.15
-  }
-}
-```
-
 ## **🖼️ Screenshot dell'Interfaccia**
 
 ### Dashboard in Tempo Reale
