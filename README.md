@@ -147,9 +147,9 @@ La nostra pipeline di ML include quattro fasi principali:
 
 ## **👨‍🏫 Team di Sviluppo**  
 *Studenti ITIS Mario Delpozzo*:  
-- [Eugenio Armando](https://github.com/itisAE)  
+- [Eugenio Armando](https://github.com/itisAE)
+- [Simone Giannasi](https://github.com/simoneGiannasi)   
 - [Nicolò Dutto](https://github.com/niconico11)  
-- [Simone Giannasi](https://github.com/simoneGiannasi)  
 - [Rebecca Simondi](https://github.com/sbeb4)  
 
 *Supervisione*:  
