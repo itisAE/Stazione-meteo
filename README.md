@@ -1,4 +1,4 @@
-# **🌦️ Stazione Meteo Avanzata - ITIS Mario Delpozzo**  
+# **🌦️ Stazione Meteo - ITIS Mario Delpozzo**  
 *(Progetto didattico-pratico di meteorologia computazionale)*  
 
 ![Dashboard Stazione Meteo](https://via.placeholder.com/800x400?text=Dashboard+Stazione+Meteo)
