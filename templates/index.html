@@ -115,8 +115,21 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-4 text-center border-end">
-                        <div class="weather-icon mb-2">☀️</div>
-                        <div class="h4">Soleggiato</div>
+                        {% set weather_icon = '☀️' %}
+                        {% set weather_condition = 'Soleggiato' %}
+                        
+                        {% if data[1]["rain_rate"] and data[1]["rain_rate"] > 0 %}
+                            {% set weather_icon = '🌧️' %}
+                            {% set weather_condition = 'Pioggia' %}
+                        {% elif data[1]["outside_humidity"] and data[1]["outside_humidity"] > 90 %}
+                            {% set weather_icon = '☁️' %}
+                            {% set weather_condition = 'Nuvoloso' %}
+                        {% elif data[1]["outside_humidity"] and data[1]["outside_humidity"] > 70 %}
+                            {% set weather_icon = '⛅' %}
+                            {% set weather_condition = 'Parzialmente nuvoloso' %}
+                        {% endif %}
+                        <div class="weather-icon mb-2">{{ weather_icon }}</div>
+                        <div class="h4">{{ weather_condition }}</div>
                         <div class="temp-display">{{data[1]["outside_temp"]}}°C</div>
                         <div id="temp">Temperatura percepita: {{data[1]["temp_perc"]}}°C</div>
 
