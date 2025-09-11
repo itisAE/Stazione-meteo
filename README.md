@@ -56,12 +56,12 @@ graph TD
 Abbiamo utilizzato le conoscenze che abbiamo appreso durante gli anni scolastici per creare un prodotto originale e funzionale.
 Inoltre abbiamo dovuto apprendere come utilizzare la stazione meteo Davis Vantage Pro2 (incontrando difficoltà per quando riguarda la decodifica del pacchetto LOOP), e abbiamo utilizzato un database non relazionale per espandere le nostre conoscenze in ambito informatico.
 
-![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python) -> imparato in molteplici materie scolastiche
-![Flask](https://img.shields.io/badge/Flask-Backend-black?logo=flask) -> imparato a TPSIT
-![MongoDB](https://img.shields.io/badge/Database-MongoDB-green?logo=mongodb) -> autodidatti
-![Bootstrap](https://img.shields.io/badge/Frontend-Bootstrap-purple?logo=bootstrap) -> imparato a informatica
-![Chart.js](https://img.shields.io/badge/Charts-Chart.js-orange?logo=chartdotjs) -> autodidatti
-![Scikit-learn](https://img.shields.io/badge/ML-ScikitLearn-yellow?logo=scikitlearn) -> imparato a microrobotica
+![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python) -> imparato in molteplici materie scolastiche  
+![Flask](https://img.shields.io/badge/Flask-Backend-black?logo=flask) -> imparato a TPSIT  
+![MongoDB](https://img.shields.io/badge/Database-MongoDB-green?logo=mongodb) -> autodidatti  
+![Bootstrap](https://img.shields.io/badge/Frontend-Bootstrap-purple?logo=bootstrap) -> imparato a informatica  
+![Chart.js](https://img.shields.io/badge/Charts-Chart.js-orange?logo=chartdotjs) -> autodidatti  
+![Scikit-learn](https://img.shields.io/badge/ML-ScikitLearn-yellow?logo=scikitlearn) -> imparato a microrobotica  
 davisvantagepro2 -> autodidatti
 
 ---
