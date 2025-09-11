@@ -250,7 +250,7 @@ python app.py  # Avvia server Flask su http://localhost
 ## 🖼️ Screenshot dell'Interfaccia
 
 ### Dashboard in Tempo Reale
-![Dashboard della Stazione Meteo]([https://www.dropbox.com/scl/fi/ga5zi9q0tn4320l2ka261/dashboard.png?rlkey=pptrp71da44pswpdq0dm4exyt&st=a60pmpv8&dl=0](https://previews.dropbox.com/p/thumb/ACztt80s2vKyP8bDGmZj19MaN64y2J7mPadSMiDwmuu-c3rCIKgAtaLNTGnnFSwho1NykH9dqPelnK6T1x7o1NQUjVXj6WjFeS_2REJlEZI4SPAKml4nGTy6YuaE_-Z_Cekqv0kbc8WQpW5KL0ys44lgteMUPbUG56MYkqYbhQkt3_yKfq8uShYyyt4QJBIMvcejjb35mnwrrcVQK-8-pX7I-ZiC5faJkDgpRq_aB4um9KXqyvZWJs4YI7PFIEZ8v7jjHxqzoPaAHlatz5NYZ0RO7L6DFDHpZfPsblwOlTPGWUJV6tLxzsxIzEiAu2Gz3sEw2BMcpBS-C07sBHPXKEfS/p.png?is_prewarmed=true))
+![Dashboard della Stazione Meteo](https://dl.dropboxusercontent.com/scl/fi/ga5zi9q0tn4320l2ka261/dashboard.png)
 *La dashboard mostra condizioni meteo attuali con temperatura, umidità, vento, pressione e precipitazioni*
 
 ### Sistema di Previsione con Machine Learning
