@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- 
-Per ridurre i tempi di sviluppo del codice ci siamo affidati a Claude 3.0 per la generazione della struttura di base del sito e del CSS (utilizzando Bootstrap 5.3).
+Per ridurre i tempi di sviluppo del codice ci siamo affidati a Claude AI per la generazione della struttura di base del sito e del CSS (utilizzando Bootstrap).
 Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
 -->
 <html lang="it">
@@ -13,6 +13,27 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        /* LAYOUT FISSO CON FOOTER IN FONDO */
+        html, body {
+            height: 100%;
+        }
+        
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .content-wrapper {
+            flex: 1;
+        }
+        
+        /* STILI ESISTENTI */
         .weather-icon {
             font-size: 3.5rem;
         }
@@ -66,146 +87,148 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
     </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-school">
-        <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="#">
-                <i class="fas fa-cloud-sun me-2"></i>
-                <span>Stazione Meteo ITIS Mario Delpozzo</span>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="./">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="./archivio-dati">Archivio Dati</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href = "../dati_live">Dati Live</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="./progetto">Il Progetto</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="https://www.itiscuneo.edu.it/">La Scuola</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Header con info stazione -->
-    <div class="bg-light py-4">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-8">
-                    <h1 class="mb-2">
-                        <span class="live-indicator"></span>
-                        Monitoraggio Live - Stazione Meteo ITIS
-                    </h1>
-                    <p class="lead mb-0">Dati meteorologici in tempo reale</p>
-                    <p>Cuneo, Piemonte - Altitudine: 534 m s.l.m.</p>
+    <div class="main-content">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-school">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center" href="#">
+                    <i class="fas fa-cloud-sun me-2"></i>
+                    <span>Stazione Meteo ITIS Mario Delpozzo</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="./">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./archivio-dati">Archivio Dati</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href = "../dati_live">Dati Live</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./progetto">Il Progetto</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://www.itiscuneo.edu.it/">La Scuola</a>
+                        </li>
+                    </ul>
                 </div>
-                <div class="col-md-4 text-md-end">
-                    <div class="d-flex flex-column align-items-md-end">
-                        <div class="mb-1">Aggiornato: <span id="current-date" class="fw-bold">Caricamento...</span></div>
-                        <div class="data-refresh">Prossimo aggiornamento: <span id="next-update">30</span> secondi</div>
-                        <div class="mt-2">
-                            <span id="station-status" class="badge bg-success">Stazione ONLINE</span>
-                            <a href="./" class="btn btn-sm btn-outline-primary ms-2">Torna alla Home</a>
+            </div>
+        </nav>
+
+        <div class="content-wrapper">
+            <!-- Header con info stazione -->
+            <div class="bg-light py-4">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h1 class="mb-2">
+                                <span class="live-indicator"></span>
+                                Monitoraggio Live - Stazione Meteo ITIS
+                            </h1>
+                            <p class="lead mb-0">Dati meteorologici in tempo reale</p>
+                            <p>Cuneo, Piemonte - Altitudine: 534 m s.l.m.</p>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Dati attuali -->
-    <div class="container my-4">
-        <div class="card mb-4 shadow-sm">
-            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                <h2 class="h5 mb-0"><i class="fas fa-satellite-dish me-2"></i>Condizioni Meteo Live</h2>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-4 text-center border-end">
-                        <div class="weather-icon mb-2" id="weather-icon">☀️</div>
-                        <div class="h4" id="weather-condition">Caricamento...</div>
-                        <div class="temp-display" id="current-temp">--°C</div>
-                        <div>Temperatura percepita: <span id="feels-like">--°C</span></div>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="row row-cols-2 row-cols-lg-5 g-3 text-center">
-                            <div class="col">
-                                <div class="card h-100 border-0">
-                                    <div class="card-body">
-                                        <i class="fas fa-temperature-high text-danger mb-2" style="font-size: 1.5rem;"></i>
-                                        <h5 class="card-title">Temperatura</h5>
-                                        <p class="card-text mb-0">Attuale: <span id="live-temp">--°C</span></p>
-                                        <p class="card-text mb-0">Min: <span id="min-temp">--°C</span></p>
-                                        <p class="card-text">Max: <span id="max-temp">--°C</span></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="card h-100 border-0">
-                                    <div class="card-body">
-                                        <i class="fas fa-wind text-primary mb-2" style="font-size: 1.5rem;"></i>
-                                        <h5 class="card-title">Vento</h5>
-                                        <p class="card-text mb-0"><span id="wind-speed">-- Km/h</span></p>
-                                        <p class="card-text mb-0">Direzione: <span id="wind-dir">--</span></p>
-                                        <p class="card-text">Raffica: <span id="wind-gust">-- Km/h</span></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="card h-100 border-0">
-                                    <div class="card-body">
-                                        <i class="fas fa-tint text-info mb-2" style="font-size: 1.5rem;"></i>
-                                        <h5 class="card-title">Umidità</h5>
-                                        <p class="card-text mb-0"><span id="humidity">--%</span></p>
-                                        <p class="card-text mb-0">Punto di rugiada:</p>
-                                        <p class="card-text"><span id="dew-point">--°C</span></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="card h-100 border-0">
-                                    <div class="card-body">
-                                        <i class="fas fa-tachometer-alt text-success mb-2" style="font-size: 1.5rem;"></i>
-                                        <h5 class="card-title">Pressione</h5>
-                                        <p class="card-text mb-0"><span id="pressure">-- hPa</span></p>
-                                        <p class="card-text mb-0">Tendenza:</p>
-                                        <p class="card-text"><span id="pressure-trend">--</span></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="card h-100 border-0">
-                                    <div class="card-body">
-                                        <i class="fas fa-cloud-showers-heavy text-primary mb-2" style="font-size: 1.5rem;"></i>
-                                        <h5 class="card-title no-wrap">Precipitazioni</h5>
-                                        <p class="card-text mb-0"><span id="rain-rate">-- mm/h</span></p>
-                                        <p class="card-text mb-0">Oggi: <span id="day-rain">-- mm</span></p>
-                                        <p class="card-text">Ultimi 30gg: <span id="month-rain">-- mm</span></p>
-                                    </div>
+                        <div class="col-md-4 text-md-end">
+                            <div class="d-flex flex-column align-items-md-end">
+                                <div class="mb-1">Aggiornato: <span id="current-date" class="fw-bold">Caricamento...</span></div>
+                                <div class="data-refresh">Prossimo aggiornamento: <span id="next-update">30</span> secondi</div>
+                                <div class="mt-2">
+                                    <span id="station-status" class="badge bg-success">Stazione ONLINE</span>
+                                    <a href="./" class="btn btn-sm btn-outline-primary ms-2">Torna alla Home</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Dati attuali -->
+            <div class="container my-5">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <h2 class="h5 mb-0"><i class="fas fa-satellite-dish me-2"></i>Condizioni Meteo Live</h2>
+                    </div>
+                    <div class="card-body py-5">
+                        <div class="row">
+                            <div class="col-md-4 text-center border-end">
+                                <div class="weather-icon mb-3" id="weather-icon">☀️</div>
+                                <div class="h4 mb-3" id="weather-condition">Caricamento...</div>
+                                <div class="temp-display mb-3" id="current-temp">--°C</div>
+                                <div>Temperatura percepita: <span id="feels-like">--°C</span></div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="row row-cols-2 row-cols-lg-5 g-4 text-center">
+                                    <div class="col">
+                                        <div class="card h-100 border-0">
+                                            <div class="card-body py-4">
+                                                <i class="fas fa-temperature-high text-danger mb-3" style="font-size: 1.5rem;"></i>
+                                                <h5 class="card-title">Temperatura</h5>
+                                                <p class="card-text mb-1">Attuale: <span id="live-temp">--°C</span></p>
+                                                <p class="card-text mb-1">Min: <span id="min-temp">--°C</span></p>
+                                                <p class="card-text">Max: <span id="max-temp">--°C</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card h-100 border-0">
+                                            <div class="card-body py-4">
+                                                <i class="fas fa-wind text-primary mb-3" style="font-size: 1.5rem;"></i>
+                                                <h5 class="card-title">Vento</h5>
+                                                <p class="card-text mb-1"><span id="wind-speed">-- Km/h</span></p>
+                                                <p class="card-text mb-1">Direzione: <span id="wind-dir">--</span></p>
+                                                <p class="card-text">Raffica: <span id="wind-gust">-- Km/h</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card h-100 border-0">
+                                            <div class="card-body py-4">
+                                                <i class="fas fa-tint text-info mb-3" style="font-size: 1.5rem;"></i>
+                                                <h5 class="card-title">Umidità</h5>
+                                                <p class="card-text mb-1"><span id="humidity">--%</span></p>
+                                                <p class="card-text mb-1">Punto di rugiada:</p>
+                                                <p class="card-text"><span id="dew-point">--°C</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card h-100 border-0">
+                                            <div class="card-body py-4">
+                                                <i class="fas fa-tachometer-alt text-success mb-3" style="font-size: 1.5rem;"></i>
+                                                <h5 class="card-title">Pressione</h5>
+                                                <p class="card-text mb-1"><span id="pressure">-- hPa</span></p>
+                                                <p class="card-text mb-1">Tendenza:</p>
+                                                <p class="card-text"><span id="pressure-trend">--</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card h-100 border-0">
+                                            <div class="card-body py-4">
+                                                <i class="fas fa-cloud-showers-heavy text-primary mb-3" style="font-size: 1.5rem;"></i>
+                                                <h5 class="card-title no-wrap">Precipitazioni</h5>
+                                                <p class="card-text mb-1"><span id="rain-rate">-- mm/h</span></p>
+                                                <p class="card-text mb-1">Oggi: <span id="day-rain">-- mm</span></p>
+                                                <p class="card-text">Ultimi 30gg: <span id="month-rain">-- mm</span></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
-    
 
     <!-- Footer -->
-    <footer class="bg-dark text-white py-4 mt-5">
+    <footer class="bg-dark text-white py-4">
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
@@ -362,3 +385,4 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
 });
 </script>
 </body>
+</html>
