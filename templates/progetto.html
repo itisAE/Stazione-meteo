@@ -16,11 +16,27 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         .hero-section {
-            background: linear-gradient(rgba(13, 110, 253, 0.8), rgba(13, 110, 253, 0.9)), 
-                        url('/api/placeholder/1200/400') center/cover no-repeat;
-            color: white;
-            padding: 6rem 0;
-            margin-bottom: 2rem;
+            position: relative;
+            background: #e8f4fe8b;
+            min-height: 350px;
+        }
+        .hero-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 600px;
+            height: 600px;
+            background: url('{{ url_for('static', filename='images/logo.png') }}') no-repeat center center;
+            background-size: contain;
+            opacity: 0.08;
+            filter: blur(2px);
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            pointer-events: none;
+        }
+        .hero-section .container {
+            position: relative;
+            z-index: 2;
         }
         
         .timeline {
@@ -205,7 +221,7 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
     <nav class="navbar navbar-expand-lg navbar-dark bg-school">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="#">
-                <i class="fas fa-cloud-sun me-2"></i>
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" style="height: 40px;" class="me-2">
                 <span>Stazione Meteo ITIS Mario Delpozzo</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -234,8 +250,9 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero-section">
-        <div class="container text-center">
+    <section class="hero-section text-center position-relative" style="padding: 6rem 0 3rem 0; overflow: hidden;">
+        <div class="hero-bg"></div>
+        <div class="container position-relative" style="z-index:2;">
             <h1 class="display-4">Stazione Meteo ITIS Mario Delpozzo</h1>
             <p class="lead">Un progetto didattico con intelligenza artificiale per previsioni meteorologiche</p>
             <p>Monitoraggio e previsione meteorologica in tempo reale per la città di Cuneo</p>
@@ -340,7 +357,7 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
         <div class="row">
             <div class="col-lg-3 col-md-6 mb-4">
                 <div class="team-member">
-                    <img src="/api/placeholder/150/150" alt="Eugenio Armando" class="mb-3">
+                    <img src="{{ url_for('static', filename='images/man.png') }}" alt="Eugenio Armando" class="mb-3">
                     <h5>Eugenio Armando</h5>
                     <p class="text-muted">Hardware Specialist</p>
                     <p class="small">Responsabile dell'assemblaggio e della manutenzione dell'hardware della stazione meteo.</p>
@@ -353,7 +370,7 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
             
             <div class="col-lg-3 col-md-6 mb-4">
                 <div class="team-member">
-                    <img src="/api/placeholder/150/150" alt="Simone Giannasi" class="mb-3">
+                    <img src="{{ url_for('static', filename='images/man.png') }}" alt="Simone Giannasi" class="mb-3">
                     <h5>Simone Giannasi</h5>
                     <p class="text-muted">Frontend Developer</p>
                     <p class="small">Esperto nello sviluppo dell'interfaccia web e nella visualizzazione dei dati.</p>
@@ -366,7 +383,7 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
             
             <div class="col-lg-3 col-md-6 mb-4">
                 <div class="team-member">
-                    <img src="/api/placeholder/150/150" alt="Nicolò Dutto" class="mb-3">
+                    <img src="{{ url_for('static', filename='images/man.png') }}" alt="Nicolò Dutto" class="mb-3">
                     <h5>Nicolò Dutto</h5>
                     <p class="text-muted">Backend Developer</p>
                     <p class="small">Responsabile del sistema di database e dell'architettura software.</p>
@@ -379,7 +396,7 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
             
             <div class="col-lg-3 col-md-6 mb-4">
                 <div class="team-member">
-                    <img src="/api/placeholder/150/150" alt="Rebecca Simondi" class="mb-3">
+                    <img src="{{ url_for('static', filename='images/woman.png') }}" alt="Rebecca Simondi" class="mb-3">
                     <h5>Rebecca Simondi</h5>
                     <p class="text-muted">Data Scientist</p>
                     <p class="small">Esperta nell'elaborazione dei dati e nell'ottimizzazione degli algoritmi predittivi.</p>
@@ -425,5 +442,6 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
                 <small>© 2025 ITIS Mario Delpozzo - Stazione Meteo di Cuneo. Sviluppato dagli studenti dell'indirizzo Robotica.</small>
             </div>
         </div>
-    </footer>    
-        
+    </footer>
+</body>
+</html>
