@@ -79,7 +79,16 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
                 </div>
                 <div class="col-md-4 text-md-end">
                     <div class="d-flex flex-column align-items-md-end">
-                        <div class="mb-1">Aggiornato: <span id="current-date" class="fw-bold">{{data[0][0]}} {{data[0][1]}}</data></span></div>
+                        
+                        <div class="mb-1">Aggiornato: 
+                        <span id="current-date" class="fw-bold">
+                            {% if data and data|length > 0 and data[0]|length >= 2 and data[0][0] and data[0][1] %}
+                                {{data[0][0]}} {{data[0][1]}}
+                            {% else %}
+                                <span class="text-muted">Ora non disponibile</span>
+                            {% endif %}
+                        </span>
+                        </div>
                         <div>
                             <span class="badge bg-{{data[2][0]}}">Stazione {{data[2][1]}}</span>
                             <a href="/dati_live" class="btn btn-sm btn-outline-primary ms-2">Dati Live</a>
@@ -94,7 +103,14 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
     <div class="container my-4">
         <div class="card mb-4 shadow-sm">
             <div class="card-header bg-primary text-white">
-                <h2 class="h5 mb-0"><i class="fas fa-calendar-day me-2"></i>Condizioni Meteo Attuali</h2>
+                <h2 class="h5 mb-0"><i class="fas fa-calendar-day me-2"></i>Ultimi dati raccolti</h2>
+                <h2 class="h6 mb-0">Rilevati il: 
+                    {% if data[0][0] and data[0][1] %}
+                      {{data[0][0]}} {{data[0][1]}}   
+                    {% else %}
+                        <span class="text-muted">Ora non disponibile</span>
+                    {% endif %}
+                </h2>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -307,10 +323,10 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
     <div class="container my-4">
         <div class="card shadow-sm">
             <div class="card-header bg-primary text-white">
-                <h2 class="h5 mb-0"><i class="fas fa-chart-line me-2"></i>Dati Recenti</h2>
+                <h2 class="h5 mb-0"><i class="fas fa-chart-line me-2"></i>Grafici</h2>
             </div>
             <div class="card-body">
-                <p class="card-text text-center">Il grafico mostra l'andamento delle temperature nelle ultime ore</p>
+                <p class="card-text text-center">I grafici mostrano l'andamento delle condizioni metereologiche nel tempo</p>
                 <div class="bg-light p-3 rounded text-center mb-3">
                     <!-- Placeholder per un grafico -->
                     <img src="/api/placeholder/800/300" alt="Grafico delle temperature" class="img-fluid rounded">
@@ -324,7 +340,7 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
                 </div>
             </div>
             <div class="card-footer">
-                <a href="#" class="text-decoration-none">Visualizza tutti i dati storici <i class="fas fa-arrow-right ms-1"></i></a>
+                <a href="./archivio-dati" class="text-decoration-none">Visualizza tutti i dati storici <i class="fas fa-arrow-right ms-1"></i></a>
             </div>
         </div>
     </div>
