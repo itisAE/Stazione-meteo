@@ -1,7 +1,8 @@
 # 🌦️ Stazione Meteo - ITIS Mario Delpozzo
 *Progetto didattico-pratico di meteorologia computazionale*
 
-![Dashboard Stazione Meteo](https://www.dropbox.com/scl/fi/uqdegy1btd5p2fl76bt1e/principale.HEIC?rlkey=5f9syaqawmp1hr4ffu3rt48lm&st=d9ajuf3t&dl=0)
+![principale](https://github.com/user-attachments/assets/7273fb1b-cc41-4594-9256-5e98cf8153ca)
+
 
 **Localizzazione:** Cuneo, Piemonte - Altitudine: 534 m s.l.m.
 
