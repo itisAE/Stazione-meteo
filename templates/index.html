@@ -338,7 +338,7 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
                 </div>
                 <div class="text-center">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-outline-primary">Temperatura</button>
+                        <button type="button" class="btn btn-outline-primary active">Temperatura</button>
                         <button type="button" class="btn btn-outline-primary">Umidità</button>
                         <button type="button" class="btn btn-outline-primary">Pressione</button>
                     </div>
@@ -616,6 +616,8 @@ document.addEventListener('DOMContentLoaded', function() {
             <canvas id="humidity-chart" class="img-fluid rounded"></canvas>
         </div>
     `;
+    document.getElementById('pressure-chart').style.display = 'none';
+    document.getElementById('humidity-chart').style.display = 'none';
     
     // Update button functionality
     const buttons = document.querySelectorAll('.btn-group .btn');
