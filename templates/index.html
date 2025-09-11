@@ -142,7 +142,10 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
                                         <h5 class="card-title">Vento</h5>
                                         <p class="card-text mb-0">{{data[1]["wind_speed"]}} Km/h</p>
                                         <p class="card-text mb-0">Direzione: {{data[1]["wind_direction"]}}</p>
-                                        <p class="card-text">Raffica: {{data[1]["raffica"]}} Km/h alle ore: {{data[1]["orario_raffica"]}}</p>
+                                        
+                                        {%if data[1]["raffica"] != None %}    <!-- Se la raffica non viene trovata non la visualizziamo -->
+                                            <p class="card-text">Raffica: {{data[1]["raffica"]}} Km/h alle ore: {{data[1]["orario_raffica"]}}</p>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -163,8 +166,10 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
                                         <i class="fas fa-tachometer-alt text-success mb-2" style="font-size: 1.5rem;"></i>
                                         <h5 class="card-title">Pressione</h5>
                                         <p class="card-text mb-0">{{data[1]["barometer"]}} hPa</p>
-                                        <p class="card-text mb-0">Tendenza:</p>
-                                        <p class="card-text">{{data[1]["bar_trend"]}}</p>
+                                        {%if data[1]["bar_trend"] != "Unknown (255)" %} <!-- Se la tendenza non viene rilevata nell'ultima rilevazione della stazione allora non la visualizziamo-->
+                                            <p class="card-text mb-0">Tendenza:</p>
+                                            <p class="card-text">{{data[1]["bar_trend"]}}</p>
+                                        {% endif%}
                                     </div>
                                 </div>
                             </div>
