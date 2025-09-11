@@ -10,6 +10,7 @@ import math
 import time
 from datetime import datetime
 from machine_learning.gestione_ml_v1 import *
+from machine_learning.prova_emoji import get_weather_emoji_and_description
 
 
 app = Flask(__name__)
@@ -213,7 +214,7 @@ def index():
     #print(f"Domani: {dom}, Dopodomani: {dopodomani}, Tra tre giorni: {tregiorni}")
 
 # Da fare gestione giorni (data) e emojy da implementare
-    return render_template('index.html', data=data, domani = dom, dopodomani = dopodomani, tregiorni = tregiorni)
+    return render_template('index.html', data=data, domani = dom, dopodomani = dopodomani, tregiorni = tregiorni, get_weather_emoji_and_description=get_weather_emoji_and_description)
 
 @app.route('/archivio-dati')
 def archivio_dati():
