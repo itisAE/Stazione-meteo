@@ -188,7 +188,7 @@ def index():
                 except:
                     dom[i] = round(dom[i], 2)
         else:
-            dom = {"standard"}
+            dom = {}
     
     with lock_prev_ddDom:
         if len(data_prev_ddDom) > 0:
@@ -201,7 +201,7 @@ def index():
                 except:
                     dopodomani[i] = round(dopodomani[i], 2)
         else:
-            dopodomani = {"standard"}
+            dopodomani = {}
     with lock_prev_dDom:
         if len(data_prev_dDom) > 0:
             tregiorni = data_prev_dDom[0]
@@ -211,7 +211,7 @@ def index():
                 except:
                     tregiorni[i] = round(tregiorni[i], 2)
         else:
-            tregiorni = {"standard"}
+            tregiorni = {}
     #print(f"Domani: {dom}, Dopodomani: {dopodomani}, Tra tre giorni: {tregiorni}")
 
 # Da fare gestione giorni (data) e emojy da implementare
@@ -339,7 +339,7 @@ def live_data_api():
             return jsonify({"status": "error", "message": "No data available"})
         
 
-        
+
 
 def calcolaStagione():
     oggi = datetime.now()

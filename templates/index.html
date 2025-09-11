@@ -204,136 +204,236 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
 </div>
 
     <!-- Previsioni 3 giorni -->
-    <div class="container my-4">
-        <h2 class="h4 mb-3"><i class="fas fa-calendar-week me-2"></i>Previsioni Meteo - Prossimi Giorni</h2>
-        <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
+<div class="container my-4">
+    <h2 class="h4 mb-3"><i class="fas fa-calendar-week me-2"></i>Previsioni Meteo - Prossimi Giorni</h2>
+    <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
 
-            {%if domani %}
-            <!-- Giorno 1 -->
-            <div class="col">
-                <div class="card h-100 shadow-sm custom-card">
-                    <div class="card-header text-center bg-primary text-white">
-                        <h3 class="h5 mb-0">Domani</h3>
-                    </div>
-                    <div class="card-body text-center">
-                        <div class="weather-icon">☀️</div>
-                        <!--<div class="h4">Soleggiato</div>-->
-                        <div class="temp-display mb-2"> {{domani["temperatura"]}} °C</div>
-                        <!--<div class="mb-3">
-                            <span class="badge bg-primary me-2">Min: 7.2°C</span>
-                            <span class="badge bg-danger">Max: 15.8°C</span>
-                        </div>-->
-                        <div class="row row-cols-2 g-2 text-center mb-2">
-                            <div class="col">
-                                <div class="p-2 bg-light rounded">
-                                    <i class="fas fa-tint text-info"></i> {{domani["umidità"]}} %
-                                </div>
+        <!-- Giorno 1 -->
+        <div class="col">
+            <div class="card h-100 shadow-sm custom-card">
+                <div class="card-header text-center bg-primary text-white">
+                    <h3 class="h5 mb-0">Domani</h3>
+                </div>
+                <div class="card-body text-center">
+                    {% if domani %}
+                    {% set domani_weather = {
+                        "temperatura": domani["temperatura"]|float,
+                        "precipitazione": domani["precipitazione"]|float,
+                        "velocità media": domani["velocità media"]|float,
+                        "velocità raffica": domani.get("velocità raffica", 0)|float,
+                        "umidità": domani["umidità"]|float,
+                        "pressione": domani["pressione"]|float
+                    } %}
+                    
+                    {% set domani_emoji, domani_desc = get_weather_emoji_and_description(domani_weather) %}
+                    
+                    <div class="weather-icon mb-2">{{ domani_emoji }}</div>
+                    <div class="h4">{{ domani_desc }}</div>
+                    <div class="temp-display mb-2">{{ domani["temperatura"] }}°C</div>
+                    <div class="row row-cols-2 g-2 text-center mb-2">
+                        <div class="col">
+                            <div class="p-2 bg-light rounded">
+                                <i class="fas fa-tint text-info"></i> {{ domani["umidità"] }} %
                             </div>
-                            <div class="col">
-                                <div class="p-2 bg-light rounded">
-                                    <i class="fas fa-wind text-primary"></i> {{domani["velocità media"]}} Km/h
-                                </div>
+                        </div>
+                        <div class="col">
+                            <div class="p-2 bg-light rounded">
+                                <i class="fas fa-wind text-primary"></i> {{ domani["velocità media"] }} Km/h
                             </div>
-                            <div class="col">
-                                <div class="p-2 bg-light rounded">
-                                    <i class="fas fa-tachometer-alt text-success"></i> {{domani["pressione"]}} hPa
-                                </div>
+                        </div>
+                        <div class="col">
+                            <div class="p-2 bg-light rounded">
+                                <i class="fas fa-tachometer-alt text-success"></i> {{ domani["pressione"] }} hPa
                             </div>
-                            <div class="col">
-                                <div class="p-2 bg-light rounded">
-                                    <i class="fas fa-cloud-rain text-secondary"></i> {{domani["precipitazione"]}} mm
-                                </div>
+                        </div>
+                        <div class="col">
+                            <div class="p-2 bg-light rounded">
+                                <i class="fas fa-cloud-rain text-secondary"></i> {{ domani["precipitazione"] }} mm
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            {%endif%}
-            {%if dopodomani %}
-            <!-- Giorno 2 -->
-            <div class="col">
-                <div class="card h-100 shadow-sm custom-card">
-                    <div class="card-header text-center bg-primary text-white">
-                        <h3 class="h5 mb-0">Dopodomani</h3>
-                    </div>
-                    <div class="card-body text-center">
-                        <div class="weather-icon">⛅</div>
-                        <!--<div class="h4">Parzialmente nuvoloso</div>-->
-                        <div class="temp-display mb-2"> {{dopodomani["temperatura"]}} °C</div>
-                        <!--<div class="mb-3">
-                            <span class="badge bg-primary me-2">Min: 6.5°C</span>
-                            <span class="badge bg-danger">Max: 14.0°C</span>
-                        </div>-->
-                        <div class="row row-cols-2 g-2 text-center mb-2">
-                            <div class="col">
-                                <div class="p-2 bg-light rounded">
-                                    <i class="fas fa-tint text-info"></i> {{dopodomani["umidità"]}}%
-                                </div>
+                    {% else %}
+                    <div class="weather-icon mb-2">-</div>
+                    <div class="h4">Dati non disponibili</div>
+                    <div class="temp-display mb-2">- °C</div>
+                    <div class="row row-cols-2 g-2 text-center mb-2">
+                        <div class="col">
+                            <div class="p-2 bg-light rounded">
+                                <i class="fas fa-tint text-info"></i> - %
                             </div>
-                            <div class="col">
-                                <div class="p-2 bg-light rounded">
-                                    <i class="fas fa-wind text-primary"></i> {{dopodomani["velocità media"]}} Km/h
-                                </div>
+                        </div>
+                        <div class="col">
+                            <div class="p-2 bg-light rounded">
+                                <i class="fas fa-wind text-primary"></i> - Km/h
                             </div>
-                            <div class="col">
-                                <div class="p-2 bg-light rounded">
-                                    <i class="fas fa-tachometer-alt text-success"></i> {{dopodomani["pressione"]}} hPa
-                                </div>
+                        </div>
+                        <div class="col">
+                            <div class="p-2 bg-light rounded">
+                                <i class="fas fa-tachometer-alt text-success"></i> - hPa
                             </div>
-                            <div class="col">
-                                <div class="p-2 bg-light rounded">
-                                    <i class="fas fa-cloud-rain text-secondary"></i> {{dopodomani["precipitazione"]}} mm
-                                </div>
+                        </div>
+                        <div class="col">
+                            <div class="p-2 bg-light rounded">
+                                <i class="fas fa-cloud-rain text-secondary"></i> - mm
                             </div>
                         </div>
                     </div>
+                    {% endif %}
                 </div>
             </div>
-            {%endif%}
-            {%if tregiorni %}
-            <!-- Giorno 3 -->
-            <div class="col">
-                <div class="card h-100 shadow-sm custom-card">
-                    <div class="card-header text-center bg-primary text-white">
-                        <h3 class="h5 mb-0">Tra tre giorni</h3>
-                    </div>
-                    <div class="card-body text-center">
-                        <div class="weather-icon">🌧️</div>
-                        <!--<div class="h4">Pioggia leggera</div>-->
-                        <div class="temp-display mb-2"> {{tregiorni["temperatura"]}}°C</div>
-                        <!--<div class="mb-3">
-                            <span class="badge bg-primary me-2">Min: 5.8°C</span>
-                            <span class="badge bg-danger">Max: 12.2°C</span>
-                        </div>-->
-                        <div class="row row-cols-2 g-2 text-center mb-2">
-                            <div class="col">
-                                <div class="p-2 bg-light rounded">
-                                    <i class="fas fa-tint text-info"></i> {{tregiorni["umidità"]}}%
-                                </div>
+        </div>
+
+        <!-- Giorno 2 -->
+        <div class="col">
+            <div class="card h-100 shadow-sm custom-card">
+                <div class="card-header text-center bg-primary text-white">
+                    <h3 class="h5 mb-0">Dopodomani</h3>
+                </div>
+                <div class="card-body text-center">
+                    {% if dopodomani %}
+                    {% set dopodomani_weather = {
+                        "temperatura": dopodomani["temperatura"]|float,
+                        "precipitazione": dopodomani["precipitazione"]|float,
+                        "velocità media": dopodomani["velocità media"]|float,
+                        "velocità raffica": dopodomani.get("velocità raffica", 0)|float,
+                        "umidità": dopodomani["umidità"]|float,
+                        "pressione": dopodomani["pressione"]|float
+                    } %}
+                    
+                    {% set dopodomani_emoji, dopodomani_desc = get_weather_emoji_and_description(dopodomani_weather) %}
+                    
+                    <div class="weather-icon mb-2">{{ dopodomani_emoji }}</div>
+                    <div class="h4">{{ dopodomani_desc }}</div>
+                    <div class="temp-display mb-2">{{ dopodomani["temperatura"] }}°C</div>
+                    <div class="row row-cols-2 g-2 text-center mb-2">
+                        <div class="col">
+                            <div class="p-2 bg-light rounded">
+                                <i class="fas fa-tint text-info"></i> {{ dopodomani["umidità"] }}%
                             </div>
-                            <div class="col">
-                                <div class="p-2 bg-light rounded">
-                                    <i class="fas fa-wind text-primary"></i> {{tregiorni["velocità media"]}} km/h
-                                </div>
+                        </div>
+                        <div class="col">
+                            <div class="p-2 bg-light rounded">
+                                <i class="fas fa-wind text-primary"></i> {{ dopodomani["velocità media"] }} Km/h
                             </div>
-                            <div class="col">
-                                <div class="p-2 bg-light rounded">
-                                    <i class="fas fa-tachometer-alt text-success"></i> {{tregiorni["pressione"]}} hPa
-                                </div>
+                        </div>
+                        <div class="col">
+                            <div class="p-2 bg-light rounded">
+                                <i class="fas fa-tachometer-alt text-success"></i> {{ dopodomani["pressione"] }} hPa
                             </div>
-                            <div class="col">
-                                <div class="p-2 bg-light rounded">
-                                    <i class="fas fa-cloud-rain text-secondary"></i> {{tregiorni["precipitazione"]}} mm
-                                </div>
+                        </div>
+                        <div class="col">
+                            <div class="p-2 bg-light rounded">
+                                <i class="fas fa-cloud-rain text-secondary"></i> {{ dopodomani["precipitazione"] }} mm
                             </div>
                         </div>
                     </div>
+                    {% else %}
+                    <div class="weather-icon mb-2">-</div>
+                    <div class="h4">Dati non disponibili</div>
+                    <div class="temp-display mb-2">- °C</div>
+                    <div class="row row-cols-2 g-2 text-center mb-2">
+                        <div class="col">
+                            <div class="p-2 bg-light rounded">
+                                <i class="fas fa-tint text-info"></i> - %
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="p-2 bg-light rounded">
+                                <i class="fas fa-wind text-primary"></i> - Km/h
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="p-2 bg-light rounded">
+                                <i class="fas fa-tachometer-alt text-success"></i> - hPa
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="p-2 bg-light rounded">
+                                <i class="fas fa-cloud-rain text-secondary"></i> - mm
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
-            {%endif%}
+        </div>
+
+        <!-- Giorno 3 -->
+        <div class="col">
+            <div class="card h-100 shadow-sm custom-card">
+                <div class="card-header text-center bg-primary text-white">
+                    <h3 class="h5 mb-0">Tra tre giorni</h3>
+                </div>
+                <div class="card-body text-center">
+                    {% if tregiorni %}
+                    {% set tregiorni_weather = {
+                        "temperatura": tregiorni["temperatura"]|float,
+                        "precipitazione": tregiorni["precipitazione"]|float,
+                        "velocità media": tregiorni["velocità media"]|float,
+                        "velocità raffica": tregiorni.get("velocità raffica", 0)|float,
+                        "umidità": tregiorni["umidità"]|float,
+                        "pressione": tregiorni["pressione"]|float
+                    } %}
+                    
+                    {% set tregiorni_emoji, tregiorni_desc = get_weather_emoji_and_description(tregiorni_weather) %}
+                    
+                    <div class="weather-icon mb-2">{{ tregiorni_emoji }}</div>
+                    <div class="h4">{{ tregiorni_desc }}</div>
+                    <div class="temp-display mb-2">{{ tregiorni["temperatura"] }}°C</div>
+                    <div class="row row-cols-2 g-2 text-center mb-2">
+                        <div class="col">
+                            <div class="p-2 bg-light rounded">
+                                <i class="fas fa-tint text-info"></i> {{ tregiorni["umidità"] }}%
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="p-2 bg-light rounded">
+                                <i class="fas fa-wind text-primary"></i> {{ tregiorni["velocità media"] }} km/h
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="p-2 bg-light rounded">
+                                <i class="fas fa-tachometer-alt text-success"></i> {{ tregiorni["pressione"] }} hPa
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="p-2 bg-light rounded">
+                                <i class="fas fa-cloud-rain text-secondary"></i> {{ tregiorni["precipitazione"] }} mm
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="weather-icon mb-2">-</div>
+                    <div class="h4">Dati non disponibili</div>
+                    <div class="temp-display mb-2">- °C</div>
+                    <div class="row row-cols-2 g-2 text-center mb-2">
+                        <div class="col">
+                            <div class="p-2 bg-light rounded">
+                                <i class="fas fa-tint text-info"></i> - %
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="p-2 bg-light rounded">
+                                <i class="fas fa-wind text-primary"></i> - Km/h
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="p-2 bg-light rounded">
+                                <i class="fas fa-tachometer-alt text-success"></i> - hPa
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="p-2 bg-light rounded">
+                                <i class="fas fa-cloud-rain text-secondary"></i> - mm
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </div>
-
+</div>
 
     <!-- Grafici e dati storici -->
     <div class="container my-4">
