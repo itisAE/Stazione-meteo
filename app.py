@@ -195,6 +195,7 @@ def index():
             dopodomani = data_prev_ddDom[0]
             print(f"Dopodomani: {dopodomani}")
             for i in dopodomani.keys():
+                # DA SISTEMARE
                 try:
                     dopodomani[i] = round(dopodomani[i][0], 2)
                 except:
