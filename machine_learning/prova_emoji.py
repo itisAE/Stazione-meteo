@@ -174,7 +174,7 @@ def get_weather_emoji_and_description(weather_data):
         return "☀️", "Soleggiato"
     
     if mite:
-        return "🌤️", "Tempo gradevole"
+        return "🌤️", "Tempo mite"
     
     if fresco:
         return "🌥️", "Fresco"

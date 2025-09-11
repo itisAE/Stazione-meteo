@@ -100,89 +100,98 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
     </div>
 
     <!-- Dati attuali -->
-    <div class="container my-4">
-        <div class="card mb-4 shadow-sm">
-            <div class="card-header bg-primary text-white">
-                <h2 class="h5 mb-0"><i class="fas fa-calendar-day me-2"></i>Ultimi dati raccolti</h2>
-                <h2 class="h6 mb-0">Rilevati il: 
-                    {% if data[0][0] and data[0][1] %}
-                      {{data[0][0]}} {{data[0][1]}}   
-                    {% else %}
-                        <span class="text-muted">Ora non disponibile</span>
-                    {% endif %}
-                </h2>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-4 text-center border-end">
-                        <div class="weather-icon mb-2">☀️</div>
-                        <div class="h4">Soleggiato</div>
-                        <div class="temp-display">{{data[1]["outside_temp"]}}°C</div>
-                        <div id="temp">Temperatura percepita: {{data[1]["temp_perc"]}}°C</div>
-
-                          
-                    </div>
-                    <div class="col-md-8">
-                        <div class="row row-cols-2 row-cols-lg-5 g-3 text-center">
-                            <div class="col">
-                                <div class="card h-100 border-0">
-                                    <div class="card-body">
-                                        <i class="fas fa-temperature-high text-danger mb-2" style="font-size: 1.5rem;"></i>
-                                        <h5 class="card-title">Temperatura</h5>
-                                        <p class="card-text mb-0">Attuale: {{data[1]["outside_temp"]}}°C</p>
-                                        <p class="card-text mb-0">Min: {{data[1]["min_temp"]}}°C</p>
-                                        <p class="card-text">Max: {{data[1]["max_temp"]}}°C</p>
-                                    </div>
+<div class="container my-4">
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h2 class="h5 mb-0"><i class="fas fa-calendar-day me-2"></i>Ultimi dati raccolti</h2>
+            <h2 class="h6 mb-0">Rilevati il: 
+                {% if data[0][0] and data[0][1] %}
+                  {{data[0][0]}} {{data[0][1]}}   
+                {% else %}
+                    <span class="text-muted">Ora non disponibile</span>
+                {% endif %}
+            </h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 text-center border-end">
+                    {% set weather_data = {
+                        "temperatura": data[1]["outside_temp"]|float,
+                        "precipitazione": data[1]["rain_rate"]|float,
+                        "velocità media": data[1]["wind_speed"]|float,
+                        "velocità raffica": data[1]["raffica"]|float if data[1]["raffica"] else 0,
+                        "umidità": data[1]["outside_humidity"]|float,
+                        "pressione": data[1]["barometer"]|float
+                    } %}
+                    
+                    {% set emoji, description = get_weather_emoji_and_description(weather_data) %}
+                    
+                    <div class="weather-icon mb-2">{{ emoji }}</div>
+                    <div class="h4">{{ description }}</div>
+                    <div class="temp-display">{{data[1]["outside_temp"]}}°C</div>
+                    <div id="temp">Temperatura percepita: {{data[1]["temp_perc"]}}°C</div>
+                </div>
+                <div class="col-md-8">
+                    <!-- Il resto del codice rimane invariato -->
+                    <div class="row row-cols-2 row-cols-lg-5 g-3 text-center">
+                        <div class="col">
+                            <div class="card h-100 border-0">
+                                <div class="card-body">
+                                    <i class="fas fa-temperature-high text-danger mb-2" style="font-size: 1.5rem;"></i>
+                                    <h5 class="card-title">Temperatura</h5>
+                                    <p class="card-text mb-0">Attuale: {{data[1]["outside_temp"]}}°C</p>
+                                    <p class="card-text mb-0">Min: {{data[1]["min_temp"]}}°C</p>
+                                    <p class="card-text">Max: {{data[1]["max_temp"]}}°C</p>
                                 </div>
                             </div>
-                            <div class="col">
-                                <div class="card h-100 border-0">
-                                    <div class="card-body">
-                                        <i class="fas fa-wind text-primary mb-2" style="font-size: 1.5rem;"></i>
-                                        <h5 class="card-title">Vento</h5>
-                                        <p class="card-text mb-0">{{data[1]["wind_speed"]}} Km/h</p>
-                                        <p class="card-text mb-0">Direzione: {{data[1]["wind_direction"]}}</p>
-                                        
-                                        {%if data[1]["raffica"] != None %}    <!-- Se la raffica non viene trovata non la visualizziamo -->
-                                            <p class="card-text">Raffica: {{data[1]["raffica"]}} Km/h alle ore: {{data[1]["orario_raffica"]}}</p>
-                                        {% endif %}
-                                    </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100 border-0">
+                                <div class="card-body">
+                                    <i class="fas fa-wind text-primary mb-2" style="font-size: 1.5rem;"></i>
+                                    <h5 class="card-title">Vento</h5>
+                                    <p class="card-text mb-0">{{data[1]["wind_speed"]}} Km/h</p>
+                                    <p class="card-text mb-0">Direzione: {{data[1]["wind_direction"]}}</p>
+                                    
+                                    {%if data[1]["raffica"] != None %}    <!-- Se la raffica non viene trovata non la visualizziamo -->
+                                        <p class="card-text">Raffica: {{data[1]["raffica"]}} Km/h alle ore: {{data[1]["orario_raffica"]}}</p>
+                                    {% endif %}
                                 </div>
                             </div>
-                            <div class="col">
-                                <div class="card h-100 border-0">
-                                    <div class="card-body">
-                                        <i class="fas fa-tint text-info mb-2" style="font-size: 1.5rem;"></i>
-                                        <h5 class="card-title">Umidità</h5>
-                                        <p class="card-text mb-0">{{data[1]["outside_humidity"]}}%</p>
-                                        <p class="card-text mb-0">Punto di rugiada:</p>
-                                        <p class="card-text">{{data[1]["punto_di_rugiada"]}}°C</p>
-                                    </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100 border-0">
+                                <div class="card-body">
+                                    <i class="fas fa-tint text-info mb-2" style="font-size: 1.5rem;"></i>
+                                    <h5 class="card-title">Umidità</h5>
+                                    <p class="card-text mb-0">{{data[1]["outside_humidity"]}}%</p>
+                                    <p class="card-text mb-0">Punto di rugiada:</p>
+                                    <p class="card-text">{{data[1]["punto_di_rugiada"]}}°C</p>
                                 </div>
                             </div>
-                            <div class="col">
-                                <div class="card h-100 border-0">
-                                    <div class="card-body">
-                                        <i class="fas fa-tachometer-alt text-success mb-2" style="font-size: 1.5rem;"></i>
-                                        <h5 class="card-title">Pressione</h5>
-                                        <p class="card-text mb-0">{{data[1]["barometer"]}} hPa</p>
-                                        {%if data[1]["bar_trend"] != "Unknown (255)" %} <!-- Se la tendenza non viene rilevata nell'ultima rilevazione della stazione allora non la visualizziamo-->
-                                            <p class="card-text mb-0">Tendenza:</p>
-                                            <p class="card-text">{{data[1]["bar_trend"]}}</p>
-                                        {% endif%}
-                                    </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100 border-0">
+                                <div class="card-body">
+                                    <i class="fas fa-tachometer-alt text-success mb-2" style="font-size: 1.5rem;"></i>
+                                    <h5 class="card-title">Pressione</h5>
+                                    <p class="card-text mb-0">{{data[1]["barometer"]}} hPa</p>
+                                    {%if data[1]["bar_trend"] != "Unknown (255)" %} <!-- Se la tendenza non viene rilevata nell'ultima rilevazione della stazione allora non la visualizziamo-->
+                                        <p class="card-text mb-0">Tendenza:</p>
+                                        <p class="card-text">{{data[1]["bar_trend"]}}</p>
+                                    {% endif%}
                                 </div>
                             </div>
-                            <div class="col">
-                                <div class="card h-100 border-0">
-                                    <div class="card-body">
-                                        <i class="fas fa-cloud-showers-heavy text-primary mb-2" style="font-size: 1.5rem;"></i>
-                                        <!-- Soluzione 1: Aggiungere la classe no-wrap -->
-                                        <h5 class="card-title no-wrap">Precipitazioni</h5>
-                                        <p class="card-text mb-0">{{data[1]["rain_rate"]}} mm/h
-                                            </p>
-                                        <p class="card-text mb-0">Oggi: {{data[1]["day_rain"]}} mm</p>
-                                    </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100 border-0">
+                                <div class="card-body">
+                                    <i class="fas fa-cloud-showers-heavy text-primary mb-2" style="font-size: 1.5rem;"></i>
+                                    <!-- Soluzione 1: Aggiungere la classe no-wrap -->
+                                    <h5 class="card-title no-wrap">Precipitazioni</h5>
+                                    <p class="card-text mb-0">{{data[1]["rain_rate"]}} mm/h
+                                        </p>
+                                    <p class="card-text mb-0">Oggi: {{data[1]["day_rain"]}} mm</p>
                                 </div>
                             </div>
                         </div>
@@ -191,6 +200,7 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
             </div>
         </div>
     </div>
+</div>
 
     <!-- Previsioni 3 giorni -->
     <div class="container my-4">
