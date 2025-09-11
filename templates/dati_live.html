@@ -157,8 +157,8 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
                     <div class="card-body py-5">
                         <div class="row">
                             <div class="col-md-4 text-center border-end">
-                                <div class="weather-icon mb-3" id="weather-icon">☀️</div>
-                                <div class="h4 mb-3" id="weather-condition">Caricamento...</div>
+                                <div class="weather-icon mb-3" id="weather-icon">⏳</div>
+                                <div class="h4 mb-3" id="weather-description">Caricamento...</div>
                                 <div class="temp-display mb-3" id="current-temp">--°C</div>
                                 <div>Temperatura percepita: <span id="feels-like">--°C</span></div>
                             </div>
@@ -338,60 +338,45 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
     }
     
     // Function to update UI with weather data
-    function updateUI(data, isOnline) {
-        // Basic weather condition (simplified, can be expanded)
-        let weatherIcon = '☀️'; // Default sunny
-        let weatherCondition = 'Soleggiato';
-        
-        // Update station status
-        if (isOnline) {
-            document.getElementById('station-status').className = 'badge bg-success';
-            document.getElementById('station-status').textContent = 'Stazione ONLINE';
-        } else {
-            document.getElementById('station-status').className = 'badge bg-danger';
-            document.getElementById('station-status').textContent = 'Stazione OFFLINE';
-        }
-        
-        // Update temperature
-        document.getElementById('current-temp').textContent = data.outside_temp + '°C';
-        document.getElementById('live-temp').textContent = data.outside_temp + '°C';
-        document.getElementById('feels-like').textContent = data.temp_perc + '°C';
-        document.getElementById('min-temp').textContent = data.min_temp + '°C';
-        document.getElementById('max-temp').textContent = data.max_temp + '°C';
-        
-        // Update wind
-        document.getElementById('wind-speed').textContent = data.wind_speed + ' Km/h';
-        document.getElementById('wind-dir').textContent = data.wind_direction;
-        document.getElementById('wind-gust').textContent = data.raffica + ' Km/h';
-        
-        // Update humidity
-        document.getElementById('humidity').textContent = data.outside_humidity + '%';
-        document.getElementById('dew-point').textContent = data.punto_di_rugiada + '°C';
-        
-        // Update pressure
-        document.getElementById('pressure').textContent = data.barometer + ' hPa';
-        document.getElementById('pressure-trend').textContent = data.bar_trend;
-        
-        // Update rain
-        document.getElementById('rain-rate').textContent = data.rain_rate + ' mm/h';
-        document.getElementById('day-rain').textContent = data.day_rain + ' mm';
-        document.getElementById('month-rain').textContent = data.month_rain + ' mm';
-        
-        // Weather icon and condition logic based on data
-        if (data.rain_rate > 0) {
-            weatherIcon = '🌧️';
-            weatherCondition = 'Pioggia';
-        } else if (data.outside_humidity > 90) {
-            weatherIcon = '☁️';
-            weatherCondition = 'Nuvoloso';
-        } else if (data.outside_humidity > 70) {
-            weatherIcon = '⛅';
-            weatherCondition = 'Parzialmente nuvoloso';
-        }
-        
-        document.getElementById('weather-icon').textContent = weatherIcon;
-        document.getElementById('weather-condition').textContent = weatherCondition;
+function updateUI(data, isOnline) {
+    // Update station status
+    if (isOnline) {
+        document.getElementById('station-status').className = 'badge bg-success';
+        document.getElementById('station-status').textContent = 'Stazione ONLINE';
+    } else {
+        document.getElementById('station-status').className = 'badge bg-danger';
+        document.getElementById('station-status').textContent = 'Stazione OFFLINE';
     }
+    
+    // Update temperature
+    document.getElementById('current-temp').textContent = data.outside_temp + '°C';
+    document.getElementById('live-temp').textContent = data.outside_temp + '°C';
+    document.getElementById('feels-like').textContent = data.temp_perc + '°C';
+    document.getElementById('min-temp').textContent = data.min_temp + '°C';
+    document.getElementById('max-temp').textContent = data.max_temp + '°C';
+    
+    // Update wind
+    document.getElementById('wind-speed').textContent = data.wind_speed + ' Km/h';
+    document.getElementById('wind-dir').textContent = data.wind_direction;
+    document.getElementById('wind-gust').textContent = data.raffica + ' Km/h';
+    
+    // Update humidity
+    document.getElementById('humidity').textContent = data.outside_humidity + '%';
+    document.getElementById('dew-point').textContent = data.punto_di_rugiada + '°C';
+    
+    // Update pressure
+    document.getElementById('pressure').textContent = data.barometer + ' hPa';
+    document.getElementById('pressure-trend').textContent = data.bar_trend;
+    
+    // Update rain
+    document.getElementById('rain-rate').textContent = data.rain_rate + ' mm/h';
+    document.getElementById('day-rain').textContent = data.day_rain + ' mm';
+    document.getElementById('month-rain').textContent = data.month_rain + ' mm';
+    
+    // Use the emoji and description from the server (calculated by Python)
+    document.getElementById('weather-icon').textContent = data.weather_emoji || '⏳';
+    document.getElementById('weather-description').textContent = data.weather_description || 'Non disponibile';
+}
 });
 </script>
 </body>

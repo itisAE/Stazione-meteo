@@ -259,7 +259,7 @@ def live_data_api():
                 # Valid data from the station
                 result = latest_data[1].copy()  # Make a copy to avoid modifying the cached data
                 result['timestamp'] = latest_data[0].strftime('%Y-%m-%d %H:%M:%S')
-                print(type(result))
+                
                 # Calculate additional metrics
                 outside_temp = result["outside_temp"]
                 wind_speed = result["wind_speed"]
@@ -292,6 +292,20 @@ def live_data_api():
                     result["min_temp"], result["max_temp"] = (0, 0)
                     result["raffica"], result["orario_raffica"] = (0, "00:00")
                 
+                # Calculate weather emoji and description using Python function
+                weather_data = {
+                    "temperatura": result["outside_temp"],
+                    "precipitazione": result["rain_rate"],
+                    "velocità media": result["wind_speed"],
+                    "velocità raffica": result.get("raffica", 0),
+                    "umidità": result["outside_humidity"],
+                    "pressione": result["barometer"]
+                }
+                
+                emoji, description = get_weather_emoji_and_description(weather_data)
+                result["weather_emoji"] = emoji
+                result["weather_description"] = description
+                
                 return jsonify({"status": "online", "data": result})
             else:
                 # Station offline, use database data
@@ -300,6 +314,21 @@ def live_data_api():
                     dati_mongo_db = ottieni_ultimi_dati(db, "dati_meteo",1)[0]
                     dati_mongo_db["min_temp"], dati_mongo_db["max_temp"], _ = min_max_temp(db, "dati_meteo")
                     dati_mongo_db["raffica"], dati_mongo_db["orario_raffica"] = calcola_raffica_vento(db, "dati_meteo")
+                    
+                    # Calculate weather emoji and description for offline data
+                    weather_data = {
+                        "temperatura": dati_mongo_db["outside_temp"],
+                        "precipitazione": dati_mongo_db["rain_rate"],
+                        "velocità media": dati_mongo_db["wind_speed"],
+                        "velocità raffica": dati_mongo_db.get("raffica", 0),
+                        "umidità": dati_mongo_db["outside_humidity"],
+                        "pressione": dati_mongo_db["barometer"]
+                    }
+                    
+                    emoji, description = get_weather_emoji_and_description(weather_data)
+                    dati_mongo_db["weather_emoji"] = emoji
+                    dati_mongo_db["weather_description"] = description
+                    
                     client.close()
                     
                     return jsonify({"status": "offline", "data": dati_mongo_db})
@@ -308,6 +337,9 @@ def live_data_api():
                     return jsonify({"status": "error", "message": "Cannot retrieve data"})
         else:
             return jsonify({"status": "error", "message": "No data available"})
+        
+
+        
 
 def calcolaStagione():
     oggi = datetime.now()
