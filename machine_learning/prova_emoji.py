@@ -182,13 +182,15 @@ def get_weather_emoji_and_description(weather_data):
     if freddo:
         return "☁️", "Nuvoloso e fresco"
 
-weather_data = {
-    'pressione': 1013, 
-    'temperatura': 35, 
-    'umidità': 65, 
-    'precipitazione': 0, 
-    'velocità media': 30, 
-    'velocità raffica': 20
-}
-emoji, description = get_weather_emoji_and_description(weather_data)
-print(f"{emoji} - {description}")
+if  __name__ == "__main__":
+    # Esempio di utilizzo
+    weather_data = {
+        'pressione': 1013, 
+        'temperatura': 35, 
+        'umidità': 65, 
+        'precipitazione': 0, 
+        'velocità media': 30, 
+        'velocità raffica': 20
+    }
+    emoji, description = get_weather_emoji_and_description(weather_data)
+    print(f"{emoji} - {description}")

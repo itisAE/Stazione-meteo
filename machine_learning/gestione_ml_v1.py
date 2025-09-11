@@ -118,12 +118,10 @@ def prevDopoDopoDomani(umMax, umMed, umMin, prec, tempMed, tempMax, tempMin, vel
     #print(velocitaRafficaPredetta)
     return {'pressione' : pressionePredetta, "temperatura":temperaturaPredetta, "umidità":umiditaPredetta, "precipitazione":precipitazionePredetta, "velocità media":velocitaMediaPredetta, "velocità raffica":velocitaRafficaPredetta}  
 
-
-# with open("./Modelli/PressDom.pkl", "rb") as file:
-#         pressDom = pickle.load(file)
-
-# print(prevDomani(100, 92, 68, 2.4, 0.1, 2.3, -1.3, 0.9, 5.9, 942.6, 0))
-# print(prevDopoDomani(100, 92, 68, 2.4, 0.1, 2.3, -1.3, 0.9, 5.9, 942.6, 0))
-# print(prevDopoDopoDomani(100, 92, 68, 2.4, 0.1, 2.3, -1.3, 0.9, 5.9, 942.6, 0))
+if __name__ == "__main__":
+    #test
+    print(prevDomani(100, 92, 68, 2.4, 0.1, 2.3, -1.3, 0.9, 5.9, 942.6, 0))
+    print(prevDopoDomani(100, 92, 68, 2.4, 0.1, 2.3, -1.3, 0.9, 5.9, 942.6, 0))
+    print(prevDopoDopoDomani(100, 92, 68, 2.4, 0.1, 2.3, -1.3, 0.9, 5.9, 942.6, 0))
 
 
