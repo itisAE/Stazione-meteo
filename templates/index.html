@@ -62,7 +62,7 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
                         <a class="nav-link" href="./progetto">Il Progetto</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="https://www.itiscuneo.edu.it/">La Scuola</a>
+                        <a class="nav-link" href="https://www.itiscuneo.edu.it/" target="_blank">La Scuola</a>
                     </li>
                 </ul>
             </div>
@@ -476,7 +476,7 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
                             </div>
                             <p>L'ITIS Mario Delpozzo di Cuneo è un istituto tecnico all'avanguardia che promuove l'innovazione tecnologica e la formazione scientifica. La nostra stazione meteo è un progetto didattico che coinvolge gli studenti dell'indirizzo di elettronica ed informatica.</p>
                             <div class="mt-auto">
-                                <a href="https://www.itiscuneo.edu.it/" class="btn btn-outline-primary">Visita il sito della scuola</a>
+                                <a href="https://www.itiscuneo.edu.it/" class="btn btn-outline-primary" target="_blank">Visita il sito della scuola</a>
                             </div>
                         </div>
                     </div>
@@ -526,7 +526,7 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
                         <li class="list-inline-item"><a href="./archivio-dati" class="text-white">Archivio Dati</a></li>
                         <li class="list-inline-item"><a href="./dati_live" class="text-white">Dati-Live</a></li>
                         <li class="list-inline-item"><a href="./progetto" class="text-white">Il Progetto</a></li>
-                        <li class="list-inline-item"><a href="https://www.itiscuneo.edu.it/" class="text-white">La Scuola</a></li>
+                        <li class="list-inline-item"><a href="https://www.itiscuneo.edu.it/" class="text-white" target="_blank">La Scuola</a></li>
                     </ul>
                     <div class="mt-3">
                         <a href="https://www.facebook.com/ITISdelpozzo/" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
@@ -549,7 +549,7 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
         function fetchWeatherData() {
     fetch('/api/grafici')
         .then(response => response.json())
-        .then(data => {
+        .then data => {
             // Validate and process data before creating charts
             if (data && data.length > 0) {
                 console.log("Received data:", data);  // Debug log
