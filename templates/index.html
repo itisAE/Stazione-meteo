@@ -549,7 +549,7 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
         function fetchWeatherData() {
     fetch('/api/grafici')
         .then(response => response.json())
-        .then data => {
+        .then( data => {
             // Validate and process data before creating charts
             if (data && data.length > 0) {
                 console.log("Received data:", data);  // Debug log
