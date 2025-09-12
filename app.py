@@ -214,8 +214,47 @@ def index():
             tregiorni = {}
     #print(f"Domani: {dom}, Dopodomani: {dopodomani}, Tra tre giorni: {tregiorni}")
 
-# Da fare gestione giorni (data) e emojy da implementare
-    return render_template('index.html', data=data, domani = dom, dopodomani = dopodomani, tregiorni = tregiorni, get_weather_emoji_and_description=get_weather_emoji_and_description)
+    oggi = datetime.now()
+    domani_g = oggi + timedelta(days=1)
+    dopodomani_g = oggi + timedelta(days=2)
+    tra_tre_giorni_g = oggi + timedelta(days=3)
+
+    # Mapping giorni della settimana
+    giorni_settimana = {
+        'Monday': 'Lunedì',
+        'Tuesday': 'Martedì', 
+        'Wednesday': 'Mercoledì',
+        'Thursday': 'Giovedì',
+        'Friday': 'Venerdì',
+        'Saturday': 'Sabato',
+        'Sunday': 'Domenica'
+    }
+    # Mapping mesi 
+    mesi_italiani = {
+        'January': 'gennaio', 'February': 'febbraio', 'March': 'marzo',
+        'April': 'aprile', 'May': 'maggio', 'June': 'giugno',
+        'July': 'luglio', 'August': 'agosto', 'September': 'settembre',
+        'October': 'ottobre', 'November': 'novembre', 'December': 'dicembre'
+    }
+
+    def format_date_italian(date_obj):
+        day_eng = date_obj.strftime("%A")
+        month_eng = date_obj.strftime("%B")
+        day_num = date_obj.strftime("%d")
+        
+        day_ita = giorni_settimana.get(day_eng, day_eng)
+        month_ita = mesi_italiani.get(month_eng, month_eng)
+        
+        return f"{day_ita} {day_num} {month_ita}"
+
+    # Create a dictionary with properly formatted dates
+    giorni = {
+        "domani_g": format_date_italian(domani_g),
+        "dopodomani_g": format_date_italian(dopodomani_g),
+        "tra_tre_giorni_g": format_date_italian(tra_tre_giorni_g)
+    }
+
+    return render_template('index.html', data=data, domani = dom, dopodomani = dopodomani, tregiorni = tregiorni, get_weather_emoji_and_description=get_weather_emoji_and_description, giorni = giorni)
 
 @app.route('/archivio-dati')
 def archivio_dati():

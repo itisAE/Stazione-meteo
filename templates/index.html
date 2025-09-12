@@ -212,7 +212,7 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
         <div class="col">
             <div class="card h-100 shadow-sm custom-card">
                 <div class="card-header text-center bg-primary text-white">
-                    <h3 class="h5 mb-0">Domani</h3>
+                    <h3 class="h5 mb-0">{{ giorni["domani_g"] }}</h3>
                 </div>
                 <div class="card-body text-center">
                     {% if domani %}
@@ -287,7 +287,7 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
         <div class="col">
             <div class="card h-100 shadow-sm custom-card">
                 <div class="card-header text-center bg-primary text-white">
-                    <h3 class="h5 mb-0">Dopodomani</h3>
+                    <h3 class="h5 mb-0">{{ giorni["dopodomani_g"] }}</h3>
                 </div>
                 <div class="card-body text-center">
                     {% if dopodomani %}
@@ -362,7 +362,7 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
         <div class="col">
             <div class="card h-100 shadow-sm custom-card">
                 <div class="card-header text-center bg-primary text-white">
-                    <h3 class="h5 mb-0">Tra tre giorni</h3>
+                    <h3 class="h5 mb-0">{{ giorni["tra_tre_giorni_g"] }}</h3>
                 </div>
                 <div class="card-body text-center">
                     {% if tregiorni %}
