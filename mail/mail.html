@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Il tuo Token API - Weather Station ITIS</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 1.8em;
+            font-weight: 300;
+        }
+        
+        .header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .token-box {
+            background: #f8f9fa;
+            border: 2px dashed #667eea;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .token-box h3 {
+            color: #764ba2;
+            margin-top: 0;
+        }
+        
+        .token {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            word-break: break-all;
+            margin: 10px 0;
+        }
+        
+        .steps {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .step {
+            margin: 15px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .step::before {
+            content: counter(step-counter);
+            counter-increment: step-counter;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: #2196f3;
+            color: white;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .steps {
+            counter-reset: step-counter;
+        }
+        
+        .code-example {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid #e9ecef;
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            margin: 10px 5px;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                margin: 0;
+                border-radius: 0;
+            }
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Benvenuto nella Citizen Science Meteorologica!</h1>
+            <p>ITIS Mario Delpozzo - Weather Station Project</p>
+        </div>
+        
+        <div class="content">
+            <p>Grazie per aver richiesto l'accesso alle nostre API! Il tuo contributo è fondamentale per migliorare le previsioni meteorologiche attraverso la collaborazione scientifica.</p>
+            
+            <div class="success">
+                <strong>Il tuo Token API è stato generato con successo!</strong>
+            </div>
+            
+            <div class="token-box">
+                <h3>Il tuo Token API personale:</h3>
+                <div class="token">
+                    {{JWT_TOKEN}}
+                </div>
+                <p><small><strong>Importante:</strong> Conserva questo token in modo sicuro. Non condividerlo pubblicamente.</small></p>
+            </div>
+            
+            <h2>Come iniziare:</h2>
+            
+            <div class="steps">
+                <div class="step">
+                    <strong>Salva il token</strong><br>
+                    Copia il token qui sopra e conservalo in un file sicuro sul tuo sistema.
+                </div>
+                
+                <div class="step">
+                    <strong>Calcola l'accuratezza dei tuoi sensori</strong><br>
+                    Visita il calcolatore sul nostro sito per determinare la percentuale di accuratezza.
+                </div>
+                
+                <div class="step">
+                    <strong>Prepara i tuoi dati</strong><br>
+                    Organizza i dati meteorologici nel formato JSON richiesto.
+                </div>
+                
+                <div class="step">
+                    <strong>Invia i dati</strong><br>
+                    Utilizza l'endpoint API per contribuire con i tuoi dati meteorologici.
+                </div>
+            </div>
+            
+            <h2>Endpoint API:</h2>
+            <div class="code-example">
+POST https://api.stazione-meteo.itis-delpozzo.it/weather-data
+Content-Type: application/json
+Authorization: Bearer {{JWT_TOKEN}}
+            </div>
+            
+            <h2>Esempio di utilizzo:</h2>
+            
+            <p>Ecco un esempio completo di come inviare i dati meteorologici:</p>
+            
+            <div class="code-example">
+curl -X POST https://api.stazione-meteo.itis-delpozzo.it/weather-data \
+  -H "Authorization: Bearer {{JWT_TOKEN}}" \
+  -H "Content-Type: application/json" \
+  -d '{
+  "station_id": "{{STATION_ID}}",
+  "timestamp": "2025-09-13T14:30:00Z",
+  "location": {
+    "latitude": 44.5675,
+    "longitude": 7.4823,
+    "altitude": 425
+  },
+  "data": {
+    "temperature": {
+      "value": 23.5,
+      "accuracy": 95.0,
+      "unit": "celsius"
+    },
+    "humidity": {
+      "value": 68.2,
+      "accuracy": 90.0,
+      "unit": "percent"
+    },
+    "pressure": {
+      "value": 1013.25,
+      "accuracy": 98.5,
+      "unit": "hPa"
+    }
+  },
+  "sensor_info": {
+    "model": "Davis Vantage Pro2",
+    "firmware_version": "1.2.3"
+  }
+}'
+            </div>
+            
+            <div class="highlight">
+                <h3>Parametri fondamentali:</h3>
+                <ul>
+                    <li><strong>station_id:</strong> Identificativo univoco della tua stazione</li>
+                    <li><strong>accuracy:</strong> Percentuale di accuratezza per ogni sensore (usa il nostro calcolatore!)</li>
+                    <li><strong>timestamp:</strong> Data e ora in formato ISO 8601 UTC</li>
+                    <li><strong>location:</strong> Coordinate precise della tua stazione</li>
+                </ul>
+            </div>
+            
+            <h2>Calcolatore di Accuratezza:</h2>
+            <p>Per determinare la percentuale di accuratezza corretta per i tuoi sensori, utilizza il nostro calcolatore online. Considera:</p>
+            <ul>
+                <li>Modello del sensore</li>
+                <li>Precisione dichiarata dal produttore</li>
+                <li>Età dell'installazione</li>
+                <li>Data ultima calibrazione</li>
+                <li>Condizioni ambientali attuali</li>
+            </ul>
+            
+            <div class="warning">
+                <strong>Limite di utilizzo:</strong> Il tuo token permette fino a 100 richieste per ora. Se hai bisogno di un limite maggiore, contattaci.
+            </div>
+            
+            <h2>La tua contribuzione conta:</h2>
+            <p>Ogni dato che invii attraverso le API contribuisce a:</p>
+            <ul>
+                <li><strong>Nowcasting migliorato:</strong> Previsioni più accurate a 2-3 ore</li>
+                <li><strong>Risoluzione locale:</strong> Dati su scala micro-climatica</li>
+                <li><strong>Validazione ML:</strong> Perfezionamento degli algoritmi predittivi</li>
+                <li><strong>Rete distribuita:</strong> Copertura meteorologica capillare del territorio</li>
+            </ul>
+            
+            <div style="text-align: center; margin: 30px 0;">
+                <a href="http://localhost/" class="btn">Visita il nostro sito</a>
+                <a href="http://localhost/csp" class="btn">Calcolatore Accuratezza</a>
+            </div>
+            
+            <h2>Supporto:</h2>
+            <p>Se hai domande o problemi:</p>
+            <ul>
+                <li><strong>Email:</strong> api-support@itis-delpozzo.it</li>
+                <li><strong>Documentazione:</strong> Tutti i dettagli sono disponibili sul sito</li>
+                <li><strong>GitHub:</strong> itisAE/Stazione-meteo per issues tecniche</li>
+            </ul>
+            
+            <div class="success">
+                <p><strong>Grazie per far parte della rivoluzione meteorologica!</strong></p>
+                <p>La meteorologia del futuro è una scienza partecipata, e tu sei ora parte di questa evoluzione.</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p><strong>ITIS Mario Delpozzo</strong> - Progetto Stazione Meteorologica<br>
+            Citizen Science per il futuro delle previsioni meteo</p>
+            <p><small>Questo token è valido per 1 anno dalla data di generazione. Non condividere questo token con terzi.</small></p>
+        </div>
+    </div>
+</body>
+</html>

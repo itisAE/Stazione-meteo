@@ -8,11 +8,13 @@ import datetime
 from db.gestioneDB import *
 import math
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 from machine_learning.gestione_ml_v1 import *
 from machine_learning.prova_emoji import get_weather_emoji_and_description
-
-
+from mail.gestione_mail import *
+import jwt
+import os
+from dateutil.parser import parse
 app = Flask(__name__)
 data_deque = deque(maxlen=10)
 data_prev_dom = deque(maxlen=1)
@@ -27,7 +29,27 @@ lock_prev_ddDom = threading.Lock()
 # Evento globale per segnalare la terminazione
 shutdown_event = threading.Event()
 nomeDB = 'meteoDB'
+SECRET_KEY = os.environ.get('JWT_SECRET_KEY', 'wheater_station_secret')
 
+def generate_token(user_email, station_name=None):
+    payload = {
+        'email': user_email,
+        'station_name': station_name,
+        'permissions': ['weather_data_write'],
+        'rate_limit': 100,
+        'iat': datetime.utcnow(),
+        'exp': datetime.utcnow() + timedelta(days=365)
+    }
+    return jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+
+def verify_token(token):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+        return payload
+    except jwt.ExpiredSignatureError:
+        return None  # Token scaduto
+    except jwt.InvalidTokenError:
+        return None  # Token non valido
 
 def signal_handler(sig, frame):
     print("Chiusura in corso...")
@@ -378,7 +400,168 @@ def live_data_api():
             return jsonify({"status": "error", "message": "No data available"})
         
 
+@app.route('/csp')
+def espansione():
+    '''endpoint per la pagina Citizen Science Platform'''
+    return render_template('csp.html')
 
+@app.route('/api/invio-dati', methods=['POST'])
+def invio_dati():
+    print("chiamata api da parte di un contributore")
+    
+    # 🔐 1. Authentication and Token Validation
+    token = request.headers.get('Authorization')
+    if not token or not token.startswith('Bearer '):
+        return jsonify({'message': 'Token mancante o formato non valido'}), 401
+    
+    token = token.replace('Bearer ', '')
+    payload = verify_token(token)
+    if not payload:
+        return jsonify({'message': 'Token non valido o scaduto'}), 401
+    print("Payload del token:", payload)
+
+    # 📦 2. Content-Type and JSON Parsing
+    if not request.is_json:
+        return jsonify({'message': f"Content-Type non supportato. Usa 'application/json'."}), 415
+    
+    try:
+        data = request.get_json(silent=True)
+        if data is None:
+            return jsonify({'message': 'Corpo della richiesta JSON vuoto o non valido'}), 400
+    except Exception as e:
+        print(f"Errore nel parsing JSON: {e}")
+        return jsonify({'message': f'Errore nel parsing JSON: {str(e)}'}), 400
+
+    print("Dati ricevuti:", data)
+
+    # ✅ 3. Data Validation
+    required_fields = ['timestamp', 'location', 'data', 'sensor_info']
+    if not all(field in data for field in required_fields):
+        missing_fields = [field for field in required_fields if field not in data]
+        return jsonify({'message': f"Campo/i obbligatorio/i mancante/i: {', '.join(missing_fields)}"}), 400
+
+    data_fields = ['temperature', 'humidity', 'pressure', 'wind_speed', 'wind_direction', 'rain_rate']
+    for field in data_fields:
+        if field in data['data']:
+            if 'value' not in data['data'][field] or 'accuracy' not in data['data'][field]:
+                return jsonify({'message': f"Campo obbligatorio mancante in data.{field}: 'value' e 'accuracy' sono richiesti"}), 400
+
+    # 📊 4. Data Transformation and Unit Conversion
+    datiDaSalvare = {
+        'contributor_email': payload['email'],
+        'contributor_station_name': payload.get('station_name', 'N/A')
+    }
+    
+    try:
+        # Convert timestamp string to a datetime object
+        timestamp_dt = parse(data['timestamp'])
+        datiDaSalvare['timestamp'] = timestamp_dt
+        
+        # ⚠️ Add the required 'date_hour' field for the database
+        datiDaSalvare['date_hour'] = timestamp_dt.replace(minute=0, second=0, microsecond=0)
+    except Exception as e:
+        return jsonify({'message': f'Errore nel formato del timestamp: {str(e)}'}), 400
+
+    # Location data
+    datiDaSalvare.update({
+        'latitude': data['location'].get('latitude'),
+        'longitude': data['location'].get('longitude'),
+        'altitude': data['location'].get('altitude')
+    })
+    
+    # Meteorological data and unit conversion
+    data_received = data.get('data', {})
+    if 'temperature' in data_received:
+        temp_value = data_received['temperature'].get('value')
+        temp_unit = data_received['temperature'].get('unit')
+        if temp_unit == 'fahrenheit':
+            temp_value = (temp_value - 32) * 5.0/9.0
+        elif temp_unit == 'kelvin':
+            temp_value -= 273.15
+        datiDaSalvare['temperature'] = temp_value
+        datiDaSalvare['temperature_accuracy'] = data_received['temperature'].get('accuracy')
+    
+    if 'pressure' in data_received:
+        press_value = data_received['pressure'].get('value')
+        press_unit = data_received['pressure'].get('unit')
+        if press_unit == 'atm':
+            press_value *= 1013.25
+        elif press_unit == 'mmHg':
+            press_value *= 1.33322
+        elif press_unit == 'Pa':
+            press_value /= 100.0
+        datiDaSalvare['pressure'] = press_value
+        datiDaSalvare['pressure_accuracy'] = data_received['pressure'].get('accuracy')
+        
+    if 'wind_speed' in data_received:
+        wind_value = data_received['wind_speed'].get('value')
+        wind_unit = data_received['wind_speed'].get('unit')
+        if wind_unit == 'mph':
+            wind_value *= 1.60934
+        elif wind_unit == 'm/s':
+            wind_value *= 3.6
+        elif wind_unit == 'ft/s':
+            wind_value *= 1.09728
+        datiDaSalvare['wind_speed'] = wind_value
+        datiDaSalvare['wind_speed_accuracy'] = data_received['wind_speed'].get('accuracy')
+    
+    if 'rain_rate' in data_received:
+        rain_value = data_received['rain_rate'].get('value')
+        rain_unit = data_received['rain_rate'].get('unit')
+        if rain_unit == 'in/h':
+            rain_value *= 25.4
+        elif rain_unit == 'cm/h':
+            rain_value *= 10.0
+        datiDaSalvare['rain_rate'] = rain_value
+        datiDaSalvare['rain_rate_accuracy'] = data_received['rain_rate'].get('accuracy')
+
+    # Other fields
+    for field in ['humidity', 'wind_direction']:
+        if field in data_received:
+            datiDaSalvare[field] = data_received[field].get('value')
+            datiDaSalvare[f'{field}_accuracy'] = data_received[field].get('accuracy')
+    
+    # 💾 5. Database Operations
+    try:
+        db, client = connessione_db(nomeDB)
+        crea_collezione(db, 'dati_meteo_contributori')
+        inserisci_dati(db, datiDaSalvare) #dice che salva ma non salva
+        client.close()
+        print("Dati salvati nel database:", datiDaSalvare)
+        return jsonify({'message': 'Dati salvati con successo', 'received_data': data}), 200
+    except Exception as e:
+        print(f"Errore durante il salvataggio dei dati nel DB: {e}")
+        return jsonify({'message': f'Errore del server: {str(e)}'}), 500
+
+# Endpoint per la richiesta del token
+@app.route('/request-token', methods=['POST'])
+def request_token():
+    try:
+        data = request.get_json()
+        email = data.get('email')
+        name = data.get('name', None)
+        
+        if not email:
+            return jsonify({'message': 'Errore: l\'email è obbligatoria'}), 400
+        
+        # Qui potresti generare il token, salvarlo nel database, 
+        # e inviare un'email all'utente.
+        # Per questo esempio, ci limitiamo a stampare i dati.
+        #creo il token
+        token = generate_token(email, name)
+        print(f"Richiesta token per l'email: {email}")
+        print(f"Nome della stazione: {name}")
+
+        with open("./mail/mail.html", "r", encoding="utf-8") as file:
+            html_content = file.read()
+        html_content = html_content.replace("{{JWT_TOKEN}}", token)
+        invia_email(html_content, email)
+
+
+        return jsonify({'message': 'Token richiesto con successo! Controlla la tua email.'}), 200
+
+    except Exception as e:
+        return jsonify({'message': f'Errore del server: {e}'}), 500
 
 def calcolaStagione():
     oggi = datetime.now()
