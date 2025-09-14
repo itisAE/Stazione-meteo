@@ -162,7 +162,7 @@ def index():
     else:                # Errore nella lettura, la stazione è offline
         db, client= connessione_db(nomeDB)        
         dati_mongo_db = ottieni_ultimi_dati(db, "dati_meteo",1)
-        #print(f"Dati salvati sul mongodb= {dati_mongo_db}")
+        print(f"Dati salvati sul mongodb= {dati_mongo_db}")
         data_ora = str(dati_mongo_db[0]["date_hour"])
         giorno = data_ora[:10]
         ora = data_ora[11:16]
@@ -443,8 +443,9 @@ def invio_dati():
     data_fields = ['temperature', 'humidity', 'pressure', 'wind_speed', 'wind_direction', 'rain_rate']
     for field in data_fields:
         if field in data['data']:
-            if 'value' not in data['data'][field] or 'accuracy' not in data['data'][field]:
-                return jsonify({'message': f"Campo obbligatorio mancante in data.{field}: 'value' e 'accuracy' sono richiesti"}), 400
+            #devono essere presenti value, accuracy e unit
+            if 'value' not in data['data'][field] or 'accuracy' not in data['data'][field] or 'unit' not in data['data'][field]:
+                return jsonify({'message': f"Campo obbligatorio mancante in data.{field}: 'value', 'accuracy' e 'unit' sono richiesti"}), 400
 
     # 📊 4. Data Transformation and Unit Conversion
     datiDaSalvare = {
@@ -521,13 +522,19 @@ def invio_dati():
             datiDaSalvare[field] = data_received[field].get('value')
             datiDaSalvare[f'{field}_accuracy'] = data_received[field].get('accuracy')
     
-    # 💾 5. Database Operations
+    # 💾 5. Database Operations - VERSIONE CORRETTA
     try:
         db, client = connessione_db(nomeDB)
         crea_collezione(db, 'dati_meteo_contributori')
-        inserisci_dati(db, datiDaSalvare) #dice che salva ma non salva
+        
+        # INVECE DI: inserisci_dati(db, datiDaSalvare)
+        # FAI IL SALVATAGGIO DIRETTO:
+        collezione_contributori = db['dati_meteo_contributori']
+        risultato = collezione_contributori.insert_one(datiDaSalvare)
+        
+        print(f"Dato contributore inserito con ID: {risultato.inserted_id} nella collezione dati_meteo_contributori")
         client.close()
-        print("Dati salvati nel database:", datiDaSalvare)
+        
         return jsonify({'message': 'Dati salvati con successo', 'received_data': data}), 200
     except Exception as e:
         print(f"Errore durante il salvataggio dei dati nel DB: {e}")

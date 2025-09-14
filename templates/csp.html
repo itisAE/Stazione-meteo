@@ -444,7 +444,6 @@
                 <h3>Struttura dati JSON:</h3>
                 <div class="code-block">
 {
-  "station_id": "tua-stazione-001",
   "timestamp": "2025-09-12T14:30:00Z",
   "location": {
     "latitude": 44.5675,
@@ -492,13 +491,13 @@
 
             <h3>Parametri obbligatori:</h3>
             <div class="parameter">
-                <strong>station_id:</strong> Identificativo univoco della tua stazione (stringa)
-            </div>
-            <div class="parameter">
                 <strong>timestamp:</strong> Data e ora della rilevazione in formato ISO 8601 UTC
             </div>
             <div class="parameter">
                 <strong>location:</strong> Coordinate geografiche precise della stazione
+            </div>
+            <div class="parameter">
+                <strong>unit:</strong> Unità di misura (celsius, percent, hPa, km/h, degrees, mm)
             </div>
             <div class="parameter">
                 <strong>accuracy:</strong> Percentuale di accuratezza per ogni sensore (0-100%)

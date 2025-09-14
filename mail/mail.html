@@ -231,7 +231,6 @@ curl -X POST https://api.stazione-meteo.itis-delpozzo.it/weather-data \
   -H "Authorization: Bearer {{JWT_TOKEN}}" \
   -H "Content-Type: application/json" \
   -d '{
-  "station_id": "{{STATION_ID}}",
   "timestamp": "2025-09-13T14:30:00Z",
   "location": {
     "latitude": 44.5675,
@@ -265,9 +264,9 @@ curl -X POST https://api.stazione-meteo.itis-delpozzo.it/weather-data \
             <div class="highlight">
                 <h3>Parametri fondamentali:</h3>
                 <ul>
-                    <li><strong>station_id:</strong> Identificativo univoco della tua stazione</li>
                     <li><strong>accuracy:</strong> Percentuale di accuratezza per ogni sensore (usa il nostro calcolatore!)</li>
                     <li><strong>timestamp:</strong> Data e ora in formato ISO 8601 UTC</li>
+                    <li><strong>unit:</strong> Unità di misura (celsius, percent, hPa, km/h, degrees, mm)</li>
                     <li><strong>location:</strong> Coordinate precise della tua stazione</li>
                 </ul>
             </div>
