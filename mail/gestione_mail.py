@@ -30,6 +30,6 @@ def invia_email(html_content, mail):
         with smtplib.SMTP_SSL(server_smtp, porta_ssl, context=contesto_ssl) as smtp:
             smtp.login(mittente, password_app)
             smtp.send_message(messaggio)
-            print("Email inviata con successo!")
+            print("Email sent successfully!")
     except Exception as e:
-        print(f"Errore durante l'invio dell'email: {e}")
+        print(f"Error while sending email: {e}")

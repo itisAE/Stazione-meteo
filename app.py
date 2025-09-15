@@ -589,7 +589,7 @@ def request_token():
         invia_email(html_content, email)
 
 
-        return jsonify({'message': 'Token richiesto con successo! Controlla la tua email.'}), 200
+        return jsonify({'message': "Token successfully requested! Check your email."}), 200
 
     except Exception as e:
         return jsonify({'message': f'Errore del server: {e}'}), 500
