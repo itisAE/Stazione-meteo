@@ -609,6 +609,17 @@ def mezzanotte():
                 if calcoli_giornalieri['pressione_media']!=0:
                     stagione=calcolaStagione()
 
+
+                    #implementazione citizen science
+                    #prendo i dati dal document relativo alla community
+                    #filtro e prendo solamente i dati dentro un certo intervallo di coordinate (intorno a Cuneo per il momento)
+                    #poi faccio la media di tutti i dati raccolti insieme anche con i dati della stazione meteo dell'itis
+                    #il filtro va fatto anche per l'altitudine
+
+                    
+
+
+
                     # { 
                     # "data": data_attuale, # La data corrente
                     # "temp_minima": valore_numerico, # Temperatura minima 
