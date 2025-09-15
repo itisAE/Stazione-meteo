@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <!-- 
-Per ridurre i tempi di sviluppo del codice ci siamo affidati a Claude AI per la generazione della struttura di base del sito e del CSS (utilizzando Bootstrap).
-Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
+To reduce code development time we relied on Claude AI for generating the basic site structure and CSS (using Bootstrap).
+We then customized everything to adapt it to our needs.
 -->
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Il Progetto - Stazione Meteo ITIS Mario Delpozzo</title>
+    <title>The Project - ITIS Mario Delpozzo Weather Station</title>
     <link rel="icon" href="{{ url_for('static', filename='images/logo.png') }}" type="image/png">
 
     <!-- Bootstrap CSS -->
@@ -26,7 +26,7 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
             left: 50%;
             width: 600px;
             height: 600px;
-            /*background: url('{{ url_for('static', filename='images/logo.png') }}') no-repeat center center;*/
+            background: url('{{ url_for('static', filename='images/logo.png') }}') no-repeat center center;
             background-size: contain;
             opacity: 0.08;
             filter: blur(2px);
@@ -222,7 +222,7 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="./">
                 <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" style="height: 40px;" class="me-2">
-                <span>Stazione Meteo ITIS Mario Delpozzo</span>
+                <span>ITIS Mario Delpozzo Weather Station</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -233,19 +233,16 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
                         <a class="nav-link" href="./">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./archivio-dati">Archivio Dati</a>
+                        <a class="nav-link" href="./data-archive">Data Archive</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./dati_live">Dati Live</a>
+                        <a class="nav-link" href="./live-data">Live Data</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="./progetto">Il Progetto</a>
+                        <a class="nav-link active" href="./project">The Project</a>
                     </li>
                     <li class="nav-item">
-                            <a class="nav-link" href="./csp">Citizen science platform</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="https://www.itiscuneo.edu.it/" target="_blank">La Scuola</a>
+                        <a class="nav-link" href="https://www.itiscuneo.edu.it/" target="_blank">The School</a>
                     </li>
                 </ul>
             </div>
@@ -256,45 +253,45 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
     <section class="hero-section text-center position-relative" style="padding: 6rem 0 3rem 0; overflow: hidden;">
         <div class="hero-bg"></div>
         <div class="container position-relative" style="z-index:2;">
-            <h1 class="display-4">Stazione Meteo ITIS Mario Delpozzo</h1>
-            <p class="lead">Un progetto didattico con intelligenza artificiale per previsioni meteorologiche</p>
-            <p>Monitoraggio e previsione meteorologica in tempo reale per la città di Cuneo</p>
+            <h1 class="display-4">ITIS Mario Delpozzo Weather Station</h1>
+            <p class="lead">An educational project with artificial intelligence for weather forecasting</p>
+            <p>Real-time weather monitoring and forecasting for the city of Cuneo</p>
         </div>
     </section>
 
-    <!-- Introduzione al Progetto -->
+    <!-- Project Introduction -->
     <section class="container my-5">
         <div class="row">
             <div class="col-lg-8 mx-auto text-center">
-                <h2 class="mb-4">Il Nostro Progetto</h2>
+                <h2 class="mb-4">Our Project</h2>
                 <p class="lead">
-                    La Stazione Meteo ITIS è un sistema di monitoraggio e previsione meteorologica avanzato progettato e realizzato da quattro studenti dell'indirizzo Robotica dell'ITIS Mario Delpozzo di Cuneo.
+                    The ITIS Weather Station is an advanced weather monitoring and forecasting system designed and built by four students from the Robotics program at ITIS Mario Delpozzo in Cuneo.
                 </p>
                 <p>
-                    Il progetto combina hardware di rilevazione meteorologica con tecniche di machine learning per offrire non solo dati in tempo reale, ma anche previsioni affidabili per i successivi tre giorni. Utilizzando i dati storici forniti dall'ARPA Piemonte, il nostro sistema di intelligenza artificiale è in grado di prevedere l'andamento delle condizioni meteorologiche con un discreto livello di accuratezza.
+                    The project combines weather monitoring hardware with machine learning techniques to offer not only real-time data, but also reliable forecasts for the next three days. Using historical data provided by ARPA Piemonte, our artificial intelligence system is able to predict weather conditions with a reasonable level of accuracy.
                 </p>
             </div>
         </div>
     </section>
 
-    <!-- Obiettivi -->
+    <!-- Objectives -->
     <section class="container my-5">
         <div class="row align-items-center">
             <div class="col-md-6">
-                <h2 class="mb-4">Obiettivi del Progetto</h2>
+                <h2 class="mb-4">Project Objectives</h2>
                 <ul class="list-unstyled features-list">
-                    <li class="mb-3"><i class="fas fa-check-circle"></i> Creare una stazione meteorologica funzionante e affidabile</li>
-                    <li class="mb-3"><i class="fas fa-check-circle"></i> Raccogliere dati meteorologici in tempo reale</li>
-                    <li class="mb-3"><i class="fas fa-check-circle"></i> Sviluppare un sistema automatizzato di archiviazione dati</li>
-                    <li class="mb-3"><i class="fas fa-check-circle"></i> Implementare un'interfaccia web per la visualizzazione dei dati</li>
-                    <li class="mb-3"><i class="fas fa-check-circle"></i> Creare un archivio storico consultabile</li>
-                    <li class="mb-3"><i class="fas fa-check-circle"></i> Sviluppare un modello predittivo basato su machine learning</li>
-                    <li class="mb-3"><i class="fas fa-check-circle"></i> Fornire previsioni meteorologiche attendibili a tre giorni</li>
-                    <li class="mb-3"><i class="fas fa-check-circle"></i> Fornire un servizio utile alla comunità scolastica e cittadina</li>
+                    <li class="mb-3"><i class="fas fa-check-circle"></i> Create a functional and reliable weather station</li>
+                    <li class="mb-3"><i class="fas fa-check-circle"></i> Collect real-time weather data</li>
+                    <li class="mb-3"><i class="fas fa-check-circle"></i> Develop an automated data archiving system</li>
+                    <li class="mb-3"><i class="fas fa-check-circle"></i> Implement a web interface for data visualization</li>
+                    <li class="mb-3"><i class="fas fa-check-circle"></i> Create a searchable historical archive</li>
+                    <li class="mb-3"><i class="fas fa-check-circle"></i> Develop a predictive model based on machine learning</li>
+                    <li class="mb-3"><i class="fas fa-check-circle"></i> Provide reliable three-day weather forecasts</li>
+                    <li class="mb-3"><i class="fas fa-check-circle"></i> Provide a useful service to the school and local community</li>
                 </ul>
             </div>
             <div class="col-md-6">
-                <img src="{{ url_for('static', filename='images/stazione.gif') }}" alt="FotoStazioneMeteo">
+                <img src="{{ url_for('static', filename='images/stazione.gif') }}" alt="Weather Station Photo">
                    
             </div>
         </div>
@@ -305,12 +302,12 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
         <div class="container">
             <div class="row align-items-center mb-4">
                 <div class="col-md-8">
-                    <h2 class="mb-3">Sistema di Previsione Meteorologica con Machine Learning</h2>
+                    <h2 class="mb-3">Weather Forecasting System with Machine Learning</h2>
                     <p class="lead">
-                        L'innovazione principale del nostro progetto è l'implementazione di un sistema di intelligenza artificiale per la previsione del tempo.
+                        The main innovation of our project is the implementation of an artificial intelligence system for weather forecasting.
                     </p>
                     <p>
-                        Utilizzando tecniche di regressione lineare, il nostro modello analizza i dati meteorologici storici forniti dall'ARPA Piemonte per la zona di Cuneo e identifica pattern e correlazioni che permettono di prevedere l'andamento delle condizioni meteorologiche per i tre giorni successivi.
+                        Using linear regression techniques, our model analyzes historical weather data provided by ARPA Piemonte for the Cuneo area and identifies patterns and correlations that allow us to predict weather conditions for the next three days.
                     </p>
                 </div>
                 <div class="col-md-4 text-center">
@@ -319,34 +316,34 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
             </div>
             
             <div class="ml-pipeline">
-                <h4 class="text-center mb-4">Pipeline di Machine Learning</h4>
+                <h4 class="text-center mb-4">Machine Learning Pipeline</h4>
                 <div class="row text-center">
                     <div class="col-md-3 mb-3">
                         <div class="p-3 bg-light rounded">
                             <i class="fas fa-database mb-3 text-primary"></i>
-                            <h5>Raccolta Dati</h5>
-                            <p class="small">Acquisizione dati storici da ARPA e dati in tempo reale dai nostri sensori</p>
+                            <h5>Data Collection</h5>
+                            <p class="small">Acquiring historical data from ARPA and real-time data from our sensors</p>
                         </div>
                     </div>
                     <div class="col-md-3 mb-3">
                         <div class="p-3 bg-light rounded">
                             <i class="fas fa-broom mb-3 text-primary"></i>
-                            <h5>Preprocessamento</h5>
-                            <p class="small">Pulizia, normalizzazione e preparazione dei dati per l'addestramento</p>
+                            <h5>Preprocessing</h5>
+                            <p class="small">Cleaning, normalizing and preparing data for training</p>
                         </div>
                     </div>
                     <div class="col-md-3 mb-3">
                         <div class="p-3 bg-light rounded">
                             <i class="fas fa-cogs mb-3 text-primary"></i>
-                            <h5>Addestramento</h5>
-                            <p class="small">Regressione lineare su dati storici per identificare pattern meteorologici</p>
+                            <h5>Training</h5>
+                            <p class="small">Linear regression on historical data to identify weather patterns</p>
                         </div>
                     </div>
                     <div class="col-md-3 mb-3">
                         <div class="p-3 bg-light rounded">
                             <i class="fas fa-chart-line mb-3 text-primary"></i>
-                            <h5>Previsione</h5>
-                            <p class="small">Generazione di previsioni meteorologiche per i successivi tre giorni</p>
+                            <h5>Forecasting</h5>
+                            <p class="small">Generating weather forecasts for the next three days</p>
                         </div>
                     </div>
                 </div>
@@ -355,7 +352,7 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
     </section>
 
 <div class="container my-5">
-        <h2 class="text-center mb-5">Il Nostro Team</h2>
+        <h2 class="text-center mb-5">Our Team</h2>
         
         <div class="row">
             <div class="col-lg-3 col-md-6 mb-4">
@@ -363,7 +360,7 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
                     <img src="{{ url_for('static', filename='images/man.png') }}" alt="Eugenio Armando" class="mb-3">
                     <h5>Eugenio Armando</h5>
                     <p class="text-muted">Hardware Specialist</p>
-                    <p class="small">Responsabile dell'assemblaggio e della manutenzione dell'hardware della stazione meteo.</p>
+                    <p class="small">Responsible for assembly and maintenance of the weather station hardware.</p>
                     <!--<div class="social-icons">
                         <a href="#" class="text-primary me-2"><i class="fab fa-linkedin"></i></a>
                         <a href="#" class="text-primary me-2"><i class="fab fa-github"></i></a>
@@ -376,7 +373,7 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
                     <img src="{{ url_for('static', filename='images/man.png') }}" alt="Simone Giannasi" class="mb-3">
                     <h5>Simone Giannasi</h5>
                     <p class="text-muted">Frontend Developer</p>
-                    <p class="small">Esperto nello sviluppo dell'interfaccia web e nella visualizzazione dei dati.</p>
+                    <p class="small">Expert in web interface development and data visualization.</p>
                     <!--<div class="social-icons">
                         <a href="#" class="text-primary me-2"><i class="fab fa-linkedin"></i></a>
                         <a href="#" class="text-primary me-2"><i class="fab fa-github"></i></a>
@@ -389,7 +386,7 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
                     <img src="{{ url_for('static', filename='images/man.png') }}" alt="Nicolò Dutto" class="mb-3">
                     <h5>Nicolò Dutto</h5>
                     <p class="text-muted">Backend Developer</p>
-                    <p class="small">Responsabile del sistema di database e dell'architettura software.</p>
+                    <p class="small">Responsible for the database system and software architecture.</p>
                     <!--<div class="social-icons">
                         <a href="#" class="text-primary me-2"><i class="fab fa-linkedin"></i></a>
                         <a href="#" class="text-primary me-2"><i class="fab fa-github"></i></a>
@@ -402,7 +399,7 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
                     <img src="{{ url_for('static', filename='images/woman.png') }}" alt="Rebecca Simondi" class="mb-3">
                     <h5>Rebecca Simondi</h5>
                     <p class="text-muted">Data Scientist</p>
-                    <p class="small">Esperta nell'elaborazione dei dati e nell'ottimizzazione degli algoritmi predittivi.</p>
+                    <p class="small">Expert in data processing and optimization of predictive algorithms.</p>
                     <!--<div class="social-icons">
                         <a href="#" class="text-primary me-2"><i class="fab fa-linkedin"></i></a>
                         <a href="#" class="text-primary me-2"><i class="fab fa-github"></i></a>
@@ -416,22 +413,21 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <h5>ITIS Mario Delpozzo - Stazione Meteo</h5>
+                    <h5>ITIS Mario Delpozzo - Weather Station</h5>
                     <address>
                         <i class="fas fa-map-marker-alt me-2"></i> Corso Alcide De Gasperi, 30 - 12100 Cuneo<br>
-                        <i class="fas fa-phone me-2"></i> Tel: 0171 000000<br>
+                        <i class="fas fa-phone me-2"></i> Phone: 0171 000000<br>
                         <i class="fas fa-envelope me-2"></i> Email: stazionemeteo@itisdelpozzo.edu.it
                     </address>
                 </div>
                 <div class="col-md-6 text-md-end">
-                    <h5>Collegamenti Rapidi</h5>
+                    <h5>Quick Links</h5>
                     <ul class="list-inline">
                         <li class="list-inline-item"><a href="./" class="text-white">Home</a></li>
-                        <li class="list-inline-item"><a href="./archivio-dati" class="text-white">Archivio Dati</a></li>
-                        <li class="list-inline-item"><a href="./dati_live" class="text-white">Dati-Live</a></li>
-                        <li class="list-inline-item"><a href="./progetto" class="text-white">Il Progetto</a></li>
-                        <li class="list-inline-item"><a href="./csp" class="text-white">Citizen science platform</a></li>
-                        <li class="list-inline-item"><a href="https://www.itiscuneo.edu.it/" class="text-white" target="_blank">La Scuola</a></li>
+                        <li class="list-inline-item"><a href="./data-archive" class="text-white">Data Archive</a></li>
+                        <li class="list-inline-item"><a href="./live-data" class="text-white">Live Data</a></li>
+                        <li class="list-inline-item"><a href="./project" class="text-white">The Project</a></li>
+                        <li class="list-inline-item"><a href="https://www.itiscuneo.edu.it/" class="text-white" target="_blank">The School</a></li>
                     </ul>
                     <div class="mt-3">
                         <a href="https://www.facebook.com/ITISdelpozzo/" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
@@ -443,7 +439,7 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
             </div>
             <hr class="my-3">
             <div class="text-center">
-                <small>© 2025 ITIS Mario Delpozzo - Stazione Meteo di Cuneo. Sviluppato dagli studenti dell'indirizzo Robotica.</small>
+                <small>© 2025 ITIS Mario Delpozzo - Cuneo Weather Station. Developed by students of the Robotics program.</small>
             </div>
         </div>
     </footer>
