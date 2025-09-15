@@ -622,7 +622,18 @@ def haversine(lat1, lon1, lat2, lon2):
     a = math.sin(dlat/2)**2 + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dlon/2)**2
     c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
     return R * c
-
+def media_ponderata(dati, campo):
+                        valori = []
+                        pesi = []
+                        for d in dati:
+                            valore = d.get(campo)
+                            peso = d.get(f"{campo}_accuracy")
+                            if valore is not None and isinstance(valore, (int, float)) and peso is not None and isinstance(peso, (int, float)):
+                                valori.append(valore * peso)
+                                pesi.append(peso)
+                        if pesi and sum(pesi) != 0:
+                            return sum(valori) / sum(pesi)
+                        return None
 def mezzanotte():
     while not shutdown_event.is_set():
         try:
@@ -670,6 +681,37 @@ def mezzanotte():
 
                     #ora faccio la media di tutti i dati raccolti, ricordandomi dei pesi dei dati forniti dalla community per ogni sensore.
                     
+
+                    ora_attuale = datetime.now()
+                    limite_inferiore = ora_attuale - timedelta(hours=24)
+
+                    dati_recenti = []
+                    for dato in dati_community:
+                        timestamp = dato.get('timestamp')
+                        if timestamp and isinstance(timestamp, datetime) and timestamp >= limite_inferiore:
+                            dati_recenti.append(dato)
+
+                    
+
+                    # Esempio di calcolo per alcuni campi
+                    media_temp = media_ponderata(dati_recenti, 'temperature')
+                    media_press = media_ponderata(dati_recenti, 'pressure')
+                    media_umid = media_ponderata(dati_recenti, 'humidity')
+                    media_vento = media_ponderata(dati_recenti, 'wind_speed')
+                    media_pioggia = media_ponderata(dati_recenti, 'rain_rate')
+                    # Aggiungo i dati della stazione meteo dell'ITIS
+                    if media_temp is not None:
+                        calcoli_giornalieri['temp_media'] = (calcoli_giornalieri['temp_media'] + media_temp) / 2
+                    if media_press is not None:
+                        calcoli_giornalieri['pressione_media'] = (calcoli_giornalieri['pressione_media'] + media_press) / 2
+                    if media_umid is not None:
+                        calcoli_giornalieri['umidita_media'] = (calcoli_giornalieri['umidita_media'] + media_umid) / 2
+                    if media_vento is not None:
+                        calcoli_giornalieri['velocita_vento_media'] = (calcoli_giornalieri['velocita_vento_media'] + media_vento) / 2
+                    if media_pioggia is not None:
+                        calcoli_giornalieri['precipitazioni'] = (calcoli_giornalieri['precipitazioni'] + media_pioggia) / 2
+                    print(f"Dati community considerati per il calcolo: {len(dati_recenti)}")
+
                
                         
 
