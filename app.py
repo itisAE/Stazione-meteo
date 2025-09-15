@@ -575,7 +575,7 @@ def mezzanotte():
         try:
             now = datetime.now()
             # modificare questo orario per fare il ML
-            target_time = now.replace(hour=12, minute=25, second=0, microsecond=0)
+            target_time = now.replace(hour=16, minute=32, second=0, microsecond=0)
             if now > target_time:
                 target_time = target_time + timedelta(days=1)
             seconds_to_wait = (target_time - now).total_seconds()
