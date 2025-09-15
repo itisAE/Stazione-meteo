@@ -15,6 +15,8 @@ from mail.gestione_mail import *
 import jwt
 import os
 from dateutil.parser import parse
+import math
+
 app = Flask(__name__)
 data_deque = deque(maxlen=10)
 data_prev_dom = deque(maxlen=1)
@@ -29,6 +31,9 @@ lock_prev_ddDom = threading.Lock()
 # Evento globale per segnalare la terminazione
 shutdown_event = threading.Event()
 nomeDB = 'meteoDB'
+CUNEO_LAT = 44.3845
+CUNEO_LON = 7.5436
+RAGGIO_KM = 5  # raggio di filtraggio per i dati della community
 SECRET_KEY = os.environ.get('JWT_SECRET_KEY', 'wheater_station_secret')
 
 def generate_token(user_email, station_name=None):
@@ -521,7 +526,44 @@ def invio_dati():
         if field in data_received:
             datiDaSalvare[field] = data_received[field].get('value')
             datiDaSalvare[f'{field}_accuracy'] = data_received[field].get('accuracy')
-    
+    #implemento dei filtri anche sui dati per far si che non vengano inseriti dati errati (troppo grandi)
+    # 🔍 Filtri sui dati per evitare valori errati
+    if 'temperature' in data_received:
+        temp_value = data_received['temperature'].get('value')
+        if temp_value is not None:
+            if not (-50 <= temp_value <= 60):
+                return jsonify({'message': 'Valore di temperatura fuori dal range accettabile (-50°C a 60°C)'}), 400
+
+    if 'humidity' in data_received:
+        humidity_value = data_received['humidity'].get('value')
+        if humidity_value is not None:
+            if not (0 <= humidity_value <= 100):
+                return jsonify({'message': 'Valore di umidità fuori dal range accettabile (0% a 100%)'}), 400
+
+    if 'pressure' in data_received:
+        pressure_value = data_received['pressure'].get('value')
+        if pressure_value is not None:
+            if not (300 <= pressure_value <= 1100):
+                return jsonify({'message': 'Valore di pressione fuori dal range accettabile (300 hPa a 1100 hPa)'}), 400
+
+    if 'wind_speed' in data_received:
+        wind_speed_value = data_received['wind_speed'].get('value')
+        if wind_speed_value is not None:
+            if not (0 <= wind_speed_value <= 150):
+                return jsonify({'message': 'Valore di velocità del vento fuori dal range accettabile (0 km/h a 150 km/h)'}), 400
+
+    if 'wind_direction' in data_received:
+        wind_dir_value = data_received['wind_direction'].get('value')
+        if wind_dir_value is not None:
+            if not (0 <= wind_dir_value <= 360):
+                return jsonify({'message': 'Valore di direzione del vento fuori dal range accettabile (0° a 360°)'}), 400
+
+    if 'rain_rate' in data_received:
+        rain_value = data_received['rain_rate'].get('value')
+        if rain_value is not None:
+            if not (0 <= rain_value <= 500):
+                return jsonify({'message': 'Valore di tasso di precipitazione fuori dal range accettabile (0 mm/h a 500 mm/h)'}), 400
+
     # 💾 5. Database Operations - VERSIONE CORRETTA
     try:
         db, client = connessione_db(nomeDB)
@@ -588,6 +630,17 @@ def calcolaStagione():
         #autunno
         return 3
 
+def haversine(lat1, lon1, lat2, lon2):
+    """
+    Calcola la distanza in km tra due punti (lat, lon) usando la formula dell'haversine
+    """
+    R = 6371  # Raggio medio della Terra in km
+    dlat = math.radians(lat2 - lat1)
+    dlon = math.radians(lon2 - lon1)
+    a = math.sin(dlat/2)**2 + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dlon/2)**2
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+    return R * c
+
 def mezzanotte():
     while not shutdown_event.is_set():
         try:
@@ -616,9 +669,27 @@ def mezzanotte():
                     #poi faccio la media di tutti i dati raccolti insieme anche con i dati della stazione meteo dell'itis
                     #il filtro va fatto anche per l'altitudine
 
+
+                    dati_community = []
+                    try:
+                        db, client = connessione_db(nomeDB)
+                        collezione_contributori = db['dati_meteo_contributori']
+                        # Filtro per latitudine, longitudine e altitudine utilizzando la funzione haversine
+                        tutti_dati = collezione_contributori.find()
+                        for dato in tutti_dati:
+                            if 'latitude' in dato and 'longitude' in dato and 'altitude' in dato:
+                                distanza = haversine(CUNEO_LAT, CUNEO_LON, dato['latitude'], dato['longitude'])
+                                if distanza <= RAGGIO_KM and 400 <= dato['altitude'] <= 600:
+                                    dati_community.append(dato)
+                    except Exception as e:
+                        print(f"Errore durante l'accesso ai dati della community: {e}")
+                    finally:
+                        client.close()
+
+                    #ora faccio la media di tutti i dati raccolti, ricordandomi dei pesi dei dati forniti dalla community per ogni sensore.
                     
-
-
+               
+                        
 
                     # { 
                     # "data": data_attuale, # La data corrente

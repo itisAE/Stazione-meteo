@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <!-- 
-Per ridurre i tempi di sviluppo del codice ci siamo affidati a Claude AI per la generazione della struttura di base del sito e del CSS (utilizzando Bootstrap).
-Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
+To reduce code development time we relied on Claude AI for generating the basic site structure and CSS (using Bootstrap).
+We then customized everything to adapt it to our needs.
 -->
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{{ url_for('static', filename='images/logo.png') }}" type="image/png">
-    <title>Stazione Meteo ITIS Mario Delpozzo - Dati Live</title>
+    <title>ITIS Mario Delpozzo Weather Station - Live Data</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        /* LAYOUT FISSO CON FOOTER IN FONDO */
+        /* FIXED LAYOUT WITH FOOTER AT BOTTOM */
         html, body {
             height: 100%;
         }
@@ -34,7 +34,7 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
             flex: 1;
         }
         
-        /* STILI ESISTENTI */
+        /* EXISTING STYLES */
         .weather-icon {
             font-size: 3.5rem;
         }
@@ -54,7 +54,7 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
         .no-wrap {
             white-space: nowrap;
         }
-        /* Stili per la pagina live */
+        /* Styles for live page */
         .live-indicator {
             display: inline-block;
             width: 10px;
@@ -94,7 +94,7 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
             <div class="container">
                 <a class="navbar-brand d-flex align-items-center" href="./">
                     <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" style="height: 40px;" class="me-2">
-                    <span>Stazione Meteo ITIS Mario Delpozzo</span>
+                    <span>ITIS Mario Delpozzo Weather Station</span>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
@@ -105,16 +105,16 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
                             <a class="nav-link" href="./">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="./archivio-dati">Archivio Dati</a>
+                            <a class="nav-link" href="./data-archive">Data Archive</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href = "../dati_live">Dati Live</a>
+                            <a class="nav-link active" href = "../live-data">Live Data</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="./progetto">Il Progetto</a>
+                            <a class="nav-link" href="./project">The Project</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="https://www.itiscuneo.edu.it/" target="_blank">La Scuola</a>
+                            <a class="nav-link" href="https://www.itiscuneo.edu.it/" target="_blank">The School</a>
                         </li>
                     </ul>
                 </div>
@@ -122,25 +122,25 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
         </nav>
 
         <div class="content-wrapper">
-            <!-- Header con info stazione -->
+            <!-- Header with station info -->
             <div class="bg-light py-4">
                 <div class="container">
                     <div class="row align-items-center">
                         <div class="col-md-8">
                             <h1 class="mb-2">
                                 <span class="live-indicator"></span>
-                                Monitoraggio Live - Stazione Meteo ITIS
+                                Live Monitoring - ITIS Weather Station
                             </h1>
-                            <p class="lead mb-0">Dati meteorologici in tempo reale</p>
-                            <p>Cuneo, Piemonte - Altitudine: 534 m s.l.m.</p>
+                            <p class="lead mb-0">Real-time weather data</p>
+                            <p>Cuneo, Piedmont - Altitude: 534 m a.s.l.</p>
                         </div>
                         <div class="col-md-4 text-md-end">
                             <div class="d-flex flex-column align-items-md-end">
-                                <div class="mb-1">Aggiornato: <span id="current-date" class="fw-bold">Caricamento...</span></div>
-                                <div class="data-refresh">Prossimo aggiornamento: <span id="next-update">30</span> secondi</div>
+                                <div class="mb-1">Updated: <span id="current-date" class="fw-bold">Loading...</span></div>
+                                <div class="data-refresh">Next update: <span id="next-update">30</span> seconds</div>
                                 <div class="mt-2">
-                                    <span id="station-status" class="badge bg-success">Stazione ONLINE</span>
-                                    <a href="./" class="btn btn-sm btn-outline-primary ms-2">Torna alla Home</a>
+                                    <span id="station-status" class="badge bg-success">Station ONLINE</span>
+                                    <a href="./" class="btn btn-sm btn-outline-primary ms-2">Back to Home</a>
                                 </div>
                             </div>
                         </div>
@@ -148,19 +148,19 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
                 </div>
             </div>
 
-            <!-- Dati attuali -->
+            <!-- Current data -->
             <div class="container my-5">
                 <div class="card shadow-sm">
                     <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                        <h2 class="h5 mb-0"><i class="fas fa-satellite-dish me-2"></i>Condizioni Meteo Live</h2>
+                        <h2 class="h5 mb-0"><i class="fas fa-satellite-dish me-2"></i>Live Weather Conditions</h2>
                     </div>
                     <div class="card-body py-5">
                         <div class="row">
                             <div class="col-md-4 text-center border-end">
                                 <div class="weather-icon mb-3" id="weather-icon">⏳</div>
-                                <div class="h4 mb-3" id="weather-description">Caricamento...</div>
+                                <div class="h4 mb-3" id="weather-description">Loading...</div>
                                 <div class="temp-display mb-3" id="current-temp">--°C</div>
-                                <div>Temperatura percepita: <span id="feels-like">--°C</span></div>
+                                <div>Feels like: <span id="feels-like">--°C</span></div>
                             </div>
                             <div class="col-md-8">
                                 <div class="row row-cols-2 row-cols-lg-5 g-4 text-center">
@@ -168,8 +168,8 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
                                         <div class="card h-100 border-0">
                                             <div class="card-body py-4">
                                                 <i class="fas fa-temperature-high text-danger mb-3" style="font-size: 1.5rem;"></i>
-                                                <h5 class="card-title">Temperatura</h5>
-                                                <p class="card-text mb-1">Attuale: <span id="live-temp">--°C</span></p>
+                                                <h5 class="card-title">Temperature</h5>
+                                                <p class="card-text mb-1">Current: <span id="live-temp">--°C</span></p>
                                                 <p class="card-text mb-1">Min: <span id="min-temp">--°C</span></p>
                                                 <p class="card-text">Max: <span id="max-temp">--°C</span></p>
                                             </div>
@@ -179,10 +179,10 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
                                         <div class="card h-100 border-0">
                                             <div class="card-body py-4">
                                                 <i class="fas fa-wind text-primary mb-3" style="font-size: 1.5rem;"></i>
-                                                <h5 class="card-title">Vento</h5>
+                                                <h5 class="card-title">Wind</h5>
                                                 <p class="card-text mb-1"><span id="wind-speed">-- Km/h</span></p>
-                                                <p class="card-text mb-1">Direzione: <span id="wind-dir">--</span></p>
-                                                <p class="card-text">Raffica: <span id="wind-gust">-- Km/h</span></p>
+                                                <p class="card-text mb-1">Direction: <span id="wind-dir">--</span></p>
+                                                <p class="card-text">Gust: <span id="wind-gust">-- Km/h</span></p>
                                             </div>
                                         </div>
                                     </div>
@@ -190,9 +190,9 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
                                         <div class="card h-100 border-0">
                                             <div class="card-body py-4">
                                                 <i class="fas fa-tint text-info mb-3" style="font-size: 1.5rem;"></i>
-                                                <h5 class="card-title">Umidità</h5>
+                                                <h5 class="card-title">Humidity</h5>
                                                 <p class="card-text mb-1"><span id="humidity">--%</span></p>
-                                                <p class="card-text mb-1">Punto di rugiada:</p>
+                                                <p class="card-text mb-1">Dew point:</p>
                                                 <p class="card-text"><span id="dew-point">--°C</span></p>
                                             </div>
                                         </div>
@@ -201,9 +201,9 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
                                         <div class="card h-100 border-0">
                                             <div class="card-body py-4">
                                                 <i class="fas fa-tachometer-alt text-success mb-3" style="font-size: 1.5rem;"></i>
-                                                <h5 class="card-title">Pressione</h5>
+                                                <h5 class="card-title">Pressure</h5>
                                                 <p class="card-text mb-1"><span id="pressure">-- hPa</span></p>
-                                                <p class="card-text mb-1">Tendenza:</p>
+                                                <p class="card-text mb-1">Trend:</p>
                                                 <p class="card-text"><span id="pressure-trend">--</span></p>
                                             </div>
                                         </div>
@@ -212,10 +212,10 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
                                         <div class="card h-100 border-0">
                                             <div class="card-body py-4">
                                                 <i class="fas fa-cloud-showers-heavy text-primary mb-3" style="font-size: 1.5rem;"></i>
-                                                <h5 class="card-title no-wrap">Precipitazioni</h5>
+                                                <h5 class="card-title no-wrap">Precipitation</h5>
                                                 <p class="card-text mb-1"><span id="rain-rate">-- mm/h</span></p>
-                                                <p class="card-text mb-1">Oggi: <span id="day-rain">-- mm</span></p>
-                                                <p class="card-text">Ultimi 30gg: <span id="month-rain">-- mm</span></p>
+                                                <p class="card-text mb-1">Today: <span id="day-rain">-- mm</span></p>
+                                                <p class="card-text">Last 30 days: <span id="month-rain">-- mm</span></p>
                                             </div>
                                         </div>
                                     </div>
@@ -233,21 +233,21 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <h5>ITIS Mario Delpozzo - Stazione Meteo</h5>
+                    <h5>ITIS Mario Delpozzo - Weather Station</h5>
                     <address>
                         <i class="fas fa-map-marker-alt me-2"></i> Corso Alcide De Gasperi, 30 - 12100 Cuneo<br>
-                        <i class="fas fa-phone me-2"></i> Tel: 0171 634091<br>
+                        <i class="fas fa-phone me-2"></i> Phone: 0171 634091<br>
                         <i class="fas fa-envelope me-2"></i> Email: stazionemeteo@itisdelpozzo.edu.it
                     </address>
                 </div>
                 <div class="col-md-6 text-md-end">
-                    <h5>Collegamenti Rapidi</h5>
+                    <h5>Quick Links</h5>
                     <ul class="list-inline">
                         <li class="list-inline-item"><a href="./" class="text-white">Home</a></li>
-                        <li class="list-inline-item"><a href="./archivio-dati" class="text-white">Archivio Dati</a></li>
-                        <li class="list-inline-item"><a href="./dati_live" class="text-white">Dati-Live</a></li>
-                        <li class="list-inline-item"><a href="./progetto" class="text-white">Il Progetto</a></li>
-                        <li class="list-inline-item"><a href="https://www.itiscuneo.edu.it/" class="text-white" target="_blank">La Scuola</a></li>
+                        <li class="list-inline-item"><a href="./data-archive" class="text-white">Data Archive</a></li>
+                        <li class="list-inline-item"><a href="./live-data" class="text-white">Live Data</a></li>
+                        <li class="list-inline-item"><a href="./project" class="text-white">The Project</a></li>
+                        <li class="list-inline-item"><a href="https://www.itiscuneo.edu.it/" class="text-white" target="_blank">The School</a></li>
                     </ul>
                     <div class="mt-3">
                         <a href="https://www.facebook.com/ITISdelpozzo/" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
@@ -259,7 +259,7 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
             </div>
             <hr class="my-3">
             <div class="text-center">
-                <small>© 2025 ITIS Mario Delpozzo - Stazione Meteo di Cuneo. Sviluppato dagli studenti dell'indirizzo Robotica.</small>
+                <small>© 2025 ITIS Mario Delpozzo - Cuneo Weather Station. Developed by students of the Robotics program.</small>
             </div>
         </div>
     </footer>
@@ -270,14 +270,14 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
 
 
     <!-- 
-    Grazie a Claude AI abbiamo potuto velocizzare lo sviluppo del codice per la parte di front-end. Le abbiamo affidato la gestione dei dati live e il relativo aggiornamento 
-    automatico ogni 30 secondi grazie a fetch API e JavaScript. Uno sviluppo che altrimenti ci avrebbe richiesto molto più tempo e ci ha permesso di concentrarci maggiormente 
-    sulla parte di back-end e sul progetto in generale.
+    Thanks to Claude AI we were able to speed up code development for the front-end part. We entrusted it with managing live data and 
+    automatic refresh every 30 seconds thanks to fetch API and JavaScript. A development that would otherwise have required much more time 
+    and allowed us to focus more on the back-end part and the project in general.
     -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <script>
-        // CLAUDE GENERARED
+        // CLAUDE GENERATED
         document.addEventListener('DOMContentLoaded', function() {
     // Initial data load
     fetchWeatherData();
@@ -307,7 +307,7 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
                     updateUI(result.data, false);
                     // Show error message if station offline
                     document.getElementById('station-status').className = 'badge bg-danger';
-                    document.getElementById('station-status').textContent = 'Stazione OFFLINE';
+                    document.getElementById('station-status').textContent = 'Station OFFLINE';
                 }
                 
                 // Update last update timestamp
@@ -318,14 +318,14 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
                     second: '2-digit'
                 };
                 // Remove or update this line to match an element that exists in your HTML
-                // document.getElementById('last-update').textContent = 'Aggiornamento: ' + now.toLocaleTimeString('it-IT', options);
+                // document.getElementById('last-update').textContent = 'Update: ' + now.toLocaleTimeString('en-US', options);
 
                 // This part is correct and should remain
-                document.getElementById('current-date').textContent = now.toLocaleDateString('it-IT', {
+                document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', {
                     day: 'numeric',
                     month: 'long',
                     year: 'numeric'
-                }) + ' ' + now.toLocaleTimeString('it-IT', {
+                }) + ' ' + now.toLocaleTimeString('en-US', {
                     hour: '2-digit',
                     minute: '2-digit'
                 });
@@ -333,7 +333,7 @@ Abbiamo poi personalizzato il tutto per adattarlo alle nostre esigenze.
             .catch(error => {
                 console.error('Error fetching weather data:', error);
                 document.getElementById('station-status').className = 'badge bg-danger';
-                document.getElementById('station-status').textContent = 'Errore di connessione';
+                document.getElementById('station-status').textContent = 'Connection error';
             });
     }
     
@@ -342,10 +342,10 @@ function updateUI(data, isOnline) {
     // Update station status
     if (isOnline) {
         document.getElementById('station-status').className = 'badge bg-success';
-        document.getElementById('station-status').textContent = 'Stazione ONLINE';
+        document.getElementById('station-status').textContent = 'Station ONLINE';
     } else {
         document.getElementById('station-status').className = 'badge bg-danger';
-        document.getElementById('station-status').textContent = 'Stazione OFFLINE';
+        document.getElementById('station-status').textContent = 'Station OFFLINE';
     }
     
     // Update temperature
@@ -375,7 +375,7 @@ function updateUI(data, isOnline) {
     
     // Use the emoji and description from the server (calculated by Python)
     document.getElementById('weather-icon').textContent = data.weather_emoji || '⏳';
-    document.getElementById('weather-description').textContent = data.weather_description || 'Non disponibile';
+    document.getElementById('weather-description').textContent = data.weather_description || 'Not available';
 }
 });
 </script>
