@@ -150,14 +150,14 @@ def index():
         giorno = data_ora[:10]
         ora = data_ora[11:16]
         giorno = datetime.strptime(giorno, "%Y-%m-%d")
-        mesi_italiani = {
-            1: "gennaio", 2: "febbraio", 3: "marzo", 4: "aprile",
-            5: "maggio", 6: "giugno", 7: "luglio", 8: "agosto",
-            9: "settembre", 10: "ottobre", 11: "novembre", 12: "dicembre"
+        mesi_inglese = {
+            1: "January ", 2: "February ", 3: "March", 4: "April",
+            5: "May", 6: "June", 7: "July", 8: "August",
+            9: "September", 10: "October", 11: "November", 12: "December"
         }
-        data_formattata = f"{giorno.day} {mesi_italiani[giorno.month]} {giorno.year}"
+        data_formattata = f"{giorno.day} {mesi_inglese[giorno.month]} {giorno.year}"
         data = [(data_formattata,ora),dati_mongo_db[0]]
-        data.append(('success', 'attiva'))
+        data.append(('success', 'online'))
         data[1]["min_temp"], data[1]["max_temp"],_ = min_max_temp(db, "dati_meteo")
         data[1]["raffica"], data[1]["orario_raffica"] = calcola_raffica_vento(db, "dati_meteo")
         client.close()
@@ -172,13 +172,13 @@ def index():
         giorno = data_ora[:10]
         ora = data_ora[11:16]
         giorno = datetime.strptime(giorno, "%Y-%m-%d")
-        mesi_italiani = {
-            1: "gennaio", 2: "febbraio", 3: "marzo", 4: "aprile",
-            5: "maggio", 6: "giugno", 7: "luglio", 8: "agosto",
-            9: "settembre", 10: "ottobre", 11: "novembre", 12: "dicembre"
+        mesi_inglese = {
+            1: "January ", 2: "February ", 3: "March", 4: "April",
+            5: "May", 6: "June", 7: "July", 8: "August",
+            9: "September", 10: "October", 11: "November", 12: "December"
         }
-        data_formattata = f"{giorno.day} {mesi_italiani[giorno.month]} {giorno.year}"
-        data = [(data_formattata,ora),dati_mongo_db[0],('danger', 'non disponibile')]
+        data_formattata = f"{giorno.day} {mesi_inglese[giorno.month]} {giorno.year}"
+        data = [(data_formattata,ora),dati_mongo_db[0],('danger', 'not available')]
         data[1]["min_temp"], data[1]["max_temp"], _ = min_max_temp(db, "dati_meteo")
         data[1]["raffica"], data[1]["orario_raffica"] = calcola_raffica_vento(db, "dati_meteo")
         client.close()
@@ -246,33 +246,15 @@ def index():
     dopodomani_g = oggi + timedelta(days=2)
     tra_tre_giorni_g = oggi + timedelta(days=3)
 
-    # Mapping giorni della settimana
-    giorni_settimana = {
-        'Monday': 'Lunedì',
-        'Tuesday': 'Martedì', 
-        'Wednesday': 'Mercoledì',
-        'Thursday': 'Giovedì',
-        'Friday': 'Venerdì',
-        'Saturday': 'Sabato',
-        'Sunday': 'Domenica'
-    }
-    # Mapping mesi 
-    mesi_italiani = {
-        'January': 'gennaio', 'February': 'febbraio', 'March': 'marzo',
-        'April': 'aprile', 'May': 'maggio', 'June': 'giugno',
-        'July': 'luglio', 'August': 'agosto', 'September': 'settembre',
-        'October': 'ottobre', 'November': 'novembre', 'December': 'dicembre'
-    }
+    
 
     def format_date_italian(date_obj):
         day_eng = date_obj.strftime("%A")
         month_eng = date_obj.strftime("%B")
         day_num = date_obj.strftime("%d")
         
-        day_ita = giorni_settimana.get(day_eng, day_eng)
-        month_ita = mesi_italiani.get(month_eng, month_eng)
         
-        return f"{day_ita} {day_num} {month_ita}"
+        return f"{day_eng} {day_num} {month_eng}"
 
     # Create a dictionary with properly formatted dates
     giorni = {
@@ -646,7 +628,7 @@ def mezzanotte():
         try:
             now = datetime.now()
             # modificare questo orario per fare il ML
-            target_time = now.replace(hour=12, minute=25, second=0, microsecond=0)
+            target_time = now.replace(hour=16, minute=32, second=0, microsecond=0)
             if now > target_time:
                 target_time = target_time + timedelta(days=1)
             seconds_to_wait = (target_time - now).total_seconds()

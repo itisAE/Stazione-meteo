@@ -1,196 +1,149 @@
 def get_weather_emoji_and_description(weather_data):
     temperatura = weather_data["temperatura"]
-    precipitazione = weather_data["precipitazione"]
-    velocita_media = weather_data["velocità media"]
-    velocita_raffica = weather_data["velocità raffica"]
-    umidita = weather_data["umidità"]
-    pressione = weather_data["pressione"]
-    
-    vento_moderato = velocita_media > 20 #inizio a considerare solo una velocità media di 20 km/h
-    forte_vento = velocita_media > 30 #vento forte
-    vento_tempesta = velocita_media > 50 #vento da tempesta
-    raffica_forte = velocita_raffica > 50 #raffica di vento forte
-    raffica_tempesta = velocita_raffica > 70 #raffica tempesta
-    
-    molto_caldo = temperatura > 30 
+    precipitazione = weather_data["precipitazione"]  # mm/day
+    velocita_media = weather_data["velocità media"]  # km/h
+    velocita_raffica = weather_data["velocità raffica"]  # km/h
+    umidita = weather_data["umidità"]  # %
+    pressione = weather_data["pressione"]  # hPa
+
+    # Wind thresholds
+    vento_moderato = velocita_media > 20
+    forte_vento = velocita_media > 30
+    vento_tempesta = velocita_media > 50
+    raffica_forte = velocita_raffica > 50
+    raffica_tempesta = velocita_raffica > 70
+
+    # Temperature thresholds
+    molto_caldo = temperatura > 30
     caldo = temperatura > 25
     mite = 15 <= temperatura <= 25
     fresco = 10 <= temperatura < 15
     freddo = 0 <= temperatura < 10
     molto_freddo = temperatura < 0
-    
-    piovoso = precipitazione > 0.1 #mm
-    pioggia_moderata = precipitazione > 2
-    forte_pioggia = precipitazione > 5
-    temporale = precipitazione > 10
-    
-    alta_umidita = umidita > 80
 
+    # Precipitation thresholds (adjusted for daily data)
+    piovoso = precipitazione > 0.1
+    pioggia_moderata = precipitazione > 5
+    forte_pioggia = precipitazione > 15
+    temporale = precipitazione > 30
+
+    # Humidity and pressure
+    alta_umidita = umidita > 80
     bassa_pressione = pressione < 1000
     alta_pressione = pressione > 1025
 
-    #URAGANO E TEMPESTA
-    
+    # Storm conditions
     if (vento_tempesta or raffica_tempesta) and temporale:
-        return "⛈️🌪️", "Tempesta violenta"
-    
+        return "⛈️🌪️", "Violent storm"
     if (vento_tempesta or raffica_tempesta) and piovoso and molto_freddo:
-        return "❄️🌪️", "Bufera di neve"
-    
+        return "❄️🌪️", "Snowstorm"
     if (vento_tempesta or raffica_tempesta):
         if piovoso:
-            return "🌪️🌧️", "Pioggia e tempesta"
+            return "🌪️🌧️", "Rain and storm"
         else:
-            return "🌪️", "Vento tempestoso"
-        
-    #NEVE
+            return "🌪️", "Stormy wind"
 
+    # Snow conditions
     if piovoso and -1 <= temperatura <= 1:
         if pioggia_moderata:
-            return "🌨️🌨️", "Neve moderata"
+            return "🌨️🌨️", "Moderate snow"
         elif forte_vento or raffica_forte:
-            return "🌨️💨", "Neve e vento"
+            return "🌨️💨", "Snow and wind"
         elif piovoso:
-            return "🌨️", "Neve leggera"
-    
+            return "🌨️", "Light snow"
     if piovoso and molto_freddo:
-        return "🌨️❄️", "Neve intensa"
-    
-    #PIOGGIA
-    
-    #temporale
+        return "🌨️❄️", "Heavy snow"
+
+    # Rain conditions
     if temporale:
         if bassa_pressione:
-            return "⛈️⚡", "Forte temporale"
-        return "⛈️", "Temporale"
-    
-    #forte pioggia
+            return "⛈️⚡", "Severe thunderstorm"
+        return "⛈️", "Thunderstorm"
     if forte_pioggia:
         if forte_vento or raffica_forte:
-            return "🌧️💨", "Forte pioggia e vento"
-        return "🌧️", "Forte pioggia"
-    
-    #pioggia moderata
+            return "🌧️💨", "Heavy rain and wind"
+        return "🌧️", "Heavy rain"
     if pioggia_moderata:
-        return "🌧️", "Pioggia moderata"
-    
-    #pioggia leggera
+        return "🌧️", "Moderate rain"
     if piovoso:
         if forte_vento or raffica_forte:
-            return "🌦️💨", "Pioggerella e vento"
-        return "🌦️", "Pioggerella"
-    
-    #VENTO
-    
-    #vento forte con raffiche
+            return "🌦️💨", "Light rain and wind"
+        return "🌦️", "Light rain"
+
+    # Wind conditions
     if forte_vento and raffica_forte:
         if molto_caldo:
-            return "☀️🌪️", "Caldo e ventoso"
+            return "☀️🌪️", "Hot and windy"
         elif caldo:
-            return "🌤️🌪️", "Vento caldo"
+            return "🌤️🌪️", "Warm wind"
         elif mite:
-            return "🌥️🌪️", "Mite e ventoso"
+            return "🌥️🌪️", "Mild and windy"
         elif freddo:
-            return "☁️🌪️", "Freddo ventoso"
+            return "☁️🌪️", "Cold and windy"
         elif molto_freddo:
-            return "❄️🌪️", "Gelo ventoso"
+            return "❄️🌪️", "Freezing wind"
         else:
-            return "🌪️", "Vento forte"
-    
-    #vento forte
+            return "🌪️", "Strong wind"
     if forte_vento:
         if molto_caldo:
-            return "☀️💨", "Caldo e ventoso"
+            return "☀️💨", "Hot and breezy"
         elif caldo:
-            return "🌤️💨", "Caldo ventilato"
+            return "🌤️💨", "Warm and breezy"
         elif mite:
-            return "🌥️💨", "Mite e ventoso"
+            return "🌥️💨", "Mild and breezy"
         elif freddo:
-            return "☁️💨", "Vento freddo"
+            return "☁️💨", "Cold breeze"
         elif molto_freddo:
-            return "❄️💨", "Vento gelido"
+            return "❄️💨", "Freezing breeze"
         else:
-            return "💨", "Ventoso"
-    
-    #vento moderato o raffiche senza vento costante
+            return "💨", "Breezy"
     if vento_moderato or raffica_forte:
         if molto_caldo:
-            return "☀️🍃", "Caldo con brezza"
+            return "☀️🍃", "Hot with breeze"
         elif caldo:
-            return "🌤️🍃", "Brezza calda"
+            return "🌤️🍃", "Warm breeze"
         elif freddo:
-            return "☁️🍃", "Brezza fresca"
+            return "☁️🍃", "Cool breeze"
         elif molto_freddo:
-            return "❄️🍃", "Brezza gelida"
+            return "❄️🍃", "Freezing breeze"
         else:
-            return "🍃", "Vento leggero"
-    
-    #TEMPERATURE ESTREME
-    
-    #caldo estremo
+            return "🍃", "Light wind"
+
+    # Extreme temperatures
     if temperatura > 35:
         if alta_umidita:
-            return "🔥💦", "Afa intensa"
-        return "🔥", "Caldo estremo"
-    
-    #molto caldo
+            return "🔥💦", "Intense muggy heat"
+        return "🔥", "Extreme heat"
     if molto_caldo:
         if alta_umidita:
-            return "☀️💦", "Afoso e umido"
+            return "☀️💦", "Hot and humid"
         elif alta_pressione:
-            return "☀️☀️", "Sole caldo"
-        return "☀️", "Caldo"
-    
-    #freddo estremo
+            return "☀️☀️", "Hot sun"
+        return "☀️", "Hot"
     if temperatura < -10:
-        return "❄️❄️", "Gelo intenso"
-    
-    #molto freddo
+        return "❄️❄️", "Intense frost"
     if molto_freddo:
-        return "❄️", "Gelido"
-    
-    #ALTRE CONDIZIONI
-    
-    #alta umidità
+        return "❄️", "Freezing"
+
+    # Other conditions
     if alta_umidita:
         if temperatura > 20:
-            return "🌫️💦", "Umido e afoso"
-        return "🌫️", "Umidità alta"
-    
-    #alta pressione (generalmente bel tempo)
+            return "🌫️💦", "Humid and muggy"
+        return "🌫️", "High humidity"
     if alta_pressione:
         if caldo:
-            return "☀️", "Soleggiato"
+            return "☀️", "Sunny"
         elif mite:
-            return "🌤️", "Bel tempo"
+            return "🌤️", "Nice weather"
         else:
-            return "☀️❄️", "Sole e freddo"
-    
-    #bassa pressione (possibile instabilità)
+            return "☀️❄️", "Sunny and cold"
     if bassa_pressione:
-        return "🌥️", "Tempo variabile"
-    
+        return "🌥️", "Variable weather"
     if caldo:
-        return "☀️", "Soleggiato"
-    
+        return "☀️", "Sunny"
     if mite:
-        return "🌤️", "Tempo mite"
-    
+        return "🌤️", "Mild weather"
     if fresco:
-        return "🌥️", "Fresco"
-    
+        return "🌥️", "Cool"
     if freddo:
-        return "☁️", "Nuvoloso e fresco"
-
-if  __name__ == "__main__":
-    # Esempio di utilizzo
-    weather_data = {
-        'pressione': 1013, 
-        'temperatura': 35, 
-        'umidità': 65, 
-        'precipitazione': 0, 
-        'velocità media': 30, 
-        'velocità raffica': 20
-    }
-    emoji, description = get_weather_emoji_and_description(weather_data)
-    print(f"{emoji} - {description}")
+        return "☁️", "Cloudy and cool"
