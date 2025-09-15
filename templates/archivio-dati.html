@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{{ url_for('static', filename='images/logo.png') }}" type="image/png">
-    <title>Archivio Dati - Stazione Meteo ITIS Mario Delpozzo</title>
+    <title>Data Archive - Weather Station ITIS Mario Delpozzo</title>
     <!-- Bootstrap-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font -->
@@ -30,7 +30,7 @@
             cursor: pointer;
         }
         
-        /* Stile per eliminare lo spazio bianco in fondo */
+        /* Style to eliminate white space at the bottom */
         html, body {
             height: 100%;
         }
@@ -54,7 +54,7 @@
             <div class="container">
                 <a class="navbar-brand d-flex align-items-center" href="./">
                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" style="height: 40px;" class="me-2">
-                    <span>Stazione Meteo ITIS Mario Delpozzo</span>
+                    <span>Weather Station ITIS Mario Delpozzo</span>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
@@ -65,16 +65,16 @@
                             <a class="nav-link" href="./">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="./archivio-dati">Archivio Dati</a>
+                            <a class="nav-link active" href="./archivio-dati">Data Archive</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href = "./dati_live">Dati Live</a>
+                            <a class="nav-link" href = "./dati_live">Live Data</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="./progetto">Il Progetto</a>
+                            <a class="nav-link" href="./progetto">The Project</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="https://www.itiscuneo.edu.it/" target="_blank">La Scuola</a>
+                            <a class="nav-link" href="https://www.itiscuneo.edu.it/" target="_blank">The School</a>
                         </li>
                     </ul>
                 </div>
@@ -86,15 +86,15 @@
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-md-8">
-                        <h1 class="mb-2">Archivio Dati Meteorologici</h1>
-                        <p class="lead mb-0">Consultazione dello storico dei dati raccolti dalla nostra stazione</p>
-                        <p>Dati disponibili dal 2025 ad oggi</p>
+                        <h1 class="mb-2">Weather Data Archive</h1>
+                        <p class="lead mb-0">Browse the historical data collected by our station</p>
+                        <p>Data available from 2025 to present</p>
                     </div>
                     <div class="col-md-4 text-md-end">
                         <div class="d-flex flex-column align-items-md-end">
-                            <div class="mb-1">Aggiornato: <span id="current-date" class="fw-bold">Non disponibilemod</span></div>
+                            <div class="mb-1">Updated: <span id="current-date" class="fw-bold">Not available</span></div>
                             <div>
-                                <span class="badge bg-success">Dati verificati</span>
+                                <span class="badge bg-success">Data verified</span>
                             </div>
                         </div>
                     </div>
@@ -102,12 +102,12 @@
             </div>
         </div>
 
-        <!-- Tabella dati -->
+        <!-- Data table -->
         <div class="container my-4">
             <div class="card shadow-sm">
                 <div class="card-header bg-primary text-white">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h2 class="h5 mb-0"><i class="fas fa-table me-2"></i>Tabella dati</h2>
+                        <h2 class="h5 mb-0"><i class="fas fa-table me-2"></i>Data Table</h2>
                     </div>
                 </div>
                 <div class="card-body">
@@ -115,12 +115,12 @@
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th>Data</th>
-                                    <th>Temperatura media</th>
-                                    <th>Temperatura min</th>
-                                    <th>Temperatura max</th>
-                                    <th>Velocità vento max</th>
-                                    <th>Precipitazioni</th>
+                                    <th>Date</th>
+                                    <th>Average Temperature</th>
+                                    <th>Min Temperature</th>
+                                    <th>Max Temperature</th>
+                                    <th>Max Wind Speed</th>
+                                    <th>Precipitation</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -136,7 +136,7 @@
                                 {% endfor %}
                                 {% if not tabella_dati %}
                                 <tr>
-                                    <td colspan="6" class="text-center">Non ci sono dati disponibili al momento.</td>
+                                    <td colspan="6" class="text-center">No data available at the moment.</td>
                                 </tr>
                                 {% endif %}
                             </tbody>
@@ -152,21 +152,21 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <h5>ITIS Mario Delpozzo - Stazione Meteo</h5>
+                    <h5>ITIS Mario Delpozzo - Weather Station</h5>
                     <address>
                         <i class="fas fa-map-marker-alt me-2"></i> Corso Alcide De Gasperi, 30 - 12100 Cuneo<br>
-                        <i class="fas fa-phone me-2"></i> Tel: 0171 000000<br>
+                        <i class="fas fa-phone me-2"></i> Phone: 0171 000000<br>
                         <i class="fas fa-envelope me-2"></i> Email: stazionemeteo@itisdelpozzo.edu.it
                     </address>
                 </div>
                 <div class="col-md-6 text-md-end">
-                    <h5>Collegamenti Rapidi</h5>
+                    <h5>Quick Links</h5>
                     <ul class="list-inline">
                         <li class="list-inline-item"><a href="./" class="text-white">Home</a></li>
-                        <li class="list-inline-item"><a href="./archivio-dati" class="text-white">Archivio Dati</a></li>
-                        <li class="list-inline-item"><a href="./dati_live" class="text-white">Dati-Live</a></li>
-                        <li class="list-inline-item"><a href="./progetto" class="text-white">Il Progetto</a></li>
-                        <li class="list-inline-item"><a href="https://www.itiscuneo.edu.it/" class="text-white" target="_blank">La Scuola</a></li>
+                        <li class="list-inline-item"><a href="./archivio-dati" class="text-white">Data Archive</a></li>
+                        <li class="list-inline-item"><a href="./dati_live" class="text-white">Live Data</a></li>
+                        <li class="list-inline-item"><a href="./progetto" class="text-white">The Project</a></li>
+                        <li class="list-inline-item"><a href="https://www.itiscuneo.edu.it/" class="text-white" target="_blank">The School</a></li>
                     </ul>
                     <div class="mt-3">
                         <a href="https://www.facebook.com/ITISdelpozzo/" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
@@ -178,7 +178,7 @@
             </div>
             <hr class="my-3">
             <div class="text-center">
-                <small>© 2025 ITIS Mario Delpozzo - Stazione Meteo di Cuneo. Sviluppato dagli studenti dell'indirizzo Robotica.</small>
+                <small>© 2025 ITIS Mario Delpozzo - Weather Station of Cuneo. Developed by students of the Robotics track.</small>
             </div>
         </div>
     </footer>
@@ -186,7 +186,7 @@
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Imposta la data corrente
+        // Set current date
         document.addEventListener('DOMContentLoaded', function() {
             const options = { 
                 year: 'numeric', 
@@ -196,7 +196,7 @@
                 minute: '2-digit'
             };
             const date = new Date();
-            document.getElementById('current-date').textContent = date.toLocaleDateString('it-IT', options);
+            document.getElementById('current-date').textContent = date.toLocaleDateString('en-US', options);
         });
     </script>
 </body>
