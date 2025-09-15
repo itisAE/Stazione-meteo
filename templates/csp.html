@@ -1,160 +1,83 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <link rel="icon" href="{{ url_for('static', filename='images/logo.png') }}" type="image/png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Station API - ITIS Mario Delpozzo</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        .weather-icon {
+            font-size: 3.5rem;
+        }
+        .temp-display {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+        .custom-card {
+            transition: transform 0.3s;
+        }
+        .custom-card:hover {
+            transform: translateY(-5px);
+        }
+        .bg-school {
+            background-color: #0d6efd;
+        }
+        .no-wrap {
+            white-space: nowrap;
+        }
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
+        /* Additional styles for API page */
         .hero {
-            text-align: center;
+            background: linear-gradient(135deg, #0d6efd 0%, #6f42c1 100%);
+            color: white;
             padding: 80px 0;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            margin-bottom: 40px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
-
+        
         .hero h1 {
             font-size: 3.5em;
             font-weight: 300;
             margin-bottom: 20px;
-            color: white;
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
-
+        
         .hero .subtitle {
             font-size: 1.3em;
-            color: rgba(255, 255, 255, 0.9);
+            opacity: 0.9;
             max-width: 800px;
             margin: 0 auto 30px;
             font-style: italic;
         }
-
+        
         .hero .quote {
             font-size: 1.1em;
-            color: rgba(255, 255, 255, 0.8);
+            opacity: 0.8;
             max-width: 600px;
             margin: 0 auto;
             border-left: 3px solid rgba(255, 255, 255, 0.4);
             padding-left: 20px;
             text-align: left;
         }
-
-        .section {
-            background: white;
-            border-radius: 15px;
-            padding: 40px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .section:hover {
-            transform: translateY(-5px);
-        }
-
-        .section h2 {
-            color: #764ba2;
-            font-size: 2.2em;
-            margin-bottom: 20px;
+        
+        .section-title {
+            color: #6f42c1;
             display: flex;
             align-items: center;
+            margin-bottom: 20px;
         }
-
-        .section h2::before {
+        
+        .section-title::before {
             content: '';
             width: 4px;
             height: 40px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #0d6efd, #6f42c1);
             margin-right: 15px;
             border-radius: 2px;
         }
-
-        .token-form {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-            min-width: 250px;
-        }
-
-        .form-group label {
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #555;
-        }
-
-        .form-group input {
-            padding: 12px 15px;
-            border: 2px solid #e1e5e9;
-            border-radius: 8px;
-            font-size: 1em;
-            transition: border-color 0.3s ease;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .btn {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-        }
-
-        .api-docs {
-            background: #f8f9fa;
-            border-left: 4px solid #667eea;
-            padding: 20px;
-            border-radius: 0 10px 10px 0;
-            margin: 20px 0;
-        }
-
+        
         .code-block {
             background: #2d3748;
             color: #e2e8f0;
@@ -165,19 +88,19 @@
             font-family: 'Courier New', monospace;
             position: relative;
         }
-
+        
         .code-block::before {
             content: 'JSON';
             position: absolute;
             top: 10px;
             right: 15px;
-            background: #667eea;
+            background: #0d6efd;
             color: white;
             padding: 2px 8px;
             border-radius: 4px;
             font-size: 0.8em;
         }
-
+        
         .status-message {
             padding: 15px;
             border-radius: 8px;
@@ -185,19 +108,19 @@
             font-weight: 500;
             display: none;
         }
-
+        
         .status-success {
             background: #d4edda;
             color: #155724;
             border: 1px solid #c3e6cb;
         }
-
+        
         .status-error {
             background: #f8d7da;
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
-
+        
         .endpoint {
             background: #e3f2fd;
             padding: 15px;
@@ -205,245 +128,384 @@
             margin: 15px 0;
             border-left: 4px solid #2196f3;
         }
-
+        
         .endpoint h4 {
             color: #1565c0;
             margin-bottom: 10px;
         }
-
+        
         .parameter {
             margin: 10px 0;
             padding: 10px;
             background: #f5f5f5;
             border-radius: 5px;
         }
-
+        
         .parameter strong {
-            color: #764ba2;
+            color: #6f42c1;
         }
-
-        .weather-icon {
-            font-size: 2em;
-            margin-right: 15px;
-            color: #667eea;
+        
+        .calculator-form .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
         }
-
+        
+        .calculator-form .form-row .form-group {
+            flex: 1;
+        }
+        
+        .precision-input-group {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .precision-symbol {
+            font-weight: bold;
+            color: #6f42c1;
+        }
+        
+        .precision-unit {
+            min-width: 30px;
+            font-weight: bold;
+            color: #6f42c1;
+        }
+        
+        .precision-hint {
+            font-size: 0.875em;
+            color: #6c757d;
+            margin-top: 5px;
+            display: block;
+        }
+        
+        .accuracy-result {
+            margin-top: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 2px solid #0d6efd;
+        }
+        
+        .result-header h3 {
+            color: #0d6efd;
+            margin-bottom: 20px;
+        }
+        
+        .accuracy-value {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .accuracy-percentage {
+            font-size: 3em;
+            font-weight: bold;
+            color: #0d6efd;
+        }
+        
+        .result-breakdown {
+            margin-bottom: 20px;
+        }
+        
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .json-example h4 {
+            color: #6f42c1;
+            margin-bottom: 10px;
+        }
+        
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 2.5em;
             }
             
-            .token-form {
+            .calculator-form .form-row {
                 flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .container {
-                padding: 10px;
-            }
-            
-            .section {
-                padding: 25px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="hero">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-school">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="./">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" style="height: 40px;" class="me-2">
+                <span>Weather Station ITIS Mario Delpozzo</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="./">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./archivio-dati">Data Archive</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./dati_live">Live Data</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./progetto">The Project</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="./csp">Citizen Science Platform</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.itiscuneo.edu.it/" target="_blank">The School</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="container text-center">
             <h1>🌤️ Weather Station API</h1>
-            <div class="subtitle">Progetto ITIS Mario Delpozzo - Citizen Science Platform</div>
+            <div class="subtitle">ITIS Mario Delpozzo Project - Citizen Science Platform</div>
             <div class="quote">
-                "Dal primo barometro di Torricelli nel 1643 ai supercomputer di oggi, la meteorologia ha sempre dipeso da una cosa: i dati. Oggi, ogni cittadino può diventare parte di questa rivoluzione scientifica." - Edward Lorenz
+                "From Torricelli's first barometer in 1643 to today's supercomputers, meteorology has always depended on one thing: data. Today, every citizen can become part of this scientific revolution." - Edward Lorenz
+            </div>
+        </div>
+    </div>
+
+    <!-- Header with station info -->
+    <div class="bg-light py-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h2 class="mb-2">API Documentation & Token Request</h2>
+                    <p class="lead mb-0">Contribute to weather forecasting through citizen science</p>
+                    <p>Cuneo, Piedmont - Educational weather monitoring project</p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <div class="d-flex flex-column align-items-md-end">
+                        <div class="mb-1">Platform Status: 
+                            <span class="fw-bold text-success">Active</span>
+                        </div>
+                        <div>
+                            <span class="badge bg-success">API Online</span>
+                            <a href="/dati_live" class="btn btn-sm btn-outline-primary ms-2">Live Data</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container my-5">
+        <!-- Why APIs Section -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h2 class="section-title">🔬 Why APIs?</h2>
+                <p>The future of weather forecasting doesn't lie only in more powerful machines, but in expanding our sensor network to include the greatest resource at our disposal: <strong>you</strong>.</p>
+                
+                <p><strong>Citizen science</strong> represents collaboration between professional scientists and the public for scientific research. In meteorology, this means actively involving people in collecting atmospheric data. Our project serves as the foundation for this fundamental implementation:</p>
+                
+                <ul class="mt-3">
+                    <li><strong>Distributed sensor network:</strong> Private weather stations provide valuable local-scale data, increasing the spatial resolution of measurements</li>
+                    <li><strong>Improved nowcasting:</strong> Real-time observations for very short-term forecasts (2-3 hours)</li>
+                    <li><strong>Model validation:</strong> Data collected by citizens calibrates and improves the accuracy of our Machine Learning algorithms</li>
+                </ul>
+                
+                <p>Every small data contribution can make a difference in overcoming the main obstacle in weather forecasting: the scarcity of quality data.</p>
             </div>
         </div>
 
-        <div class="section">
-            <h2>🔬 Perché le API?</h2>
-            <p>Il futuro delle previsioni meteorologiche non risiede solo in macchine più potenti, ma nell'espansione della nostra rete di sensori per includere la più grande risorsa a nostra disposizione: <strong>voi</strong>.</p>
-            
-            <p>La <strong>citizen science</strong> rappresenta la collaborazione tra scienziati professionisti e il pubblico per la ricerca scientifica. In meteorologia, questo significa coinvolgere attivamente le persone nella raccolta di dati atmosferici. Il nostro progetto si pone come base per questa implementazione fondamentale:</p>
-            
-            <ul style="margin: 20px 0; padding-left: 30px; line-height: 1.8;">
-                <li><strong>Rete di sensori diffusa:</strong> Le stazioni meteorologiche private forniscono dati preziosi su scala locale, aumentando la risoluzione spaziale delle misurazioni</li>
-                <li><strong>Nowcasting migliorato:</strong> Osservazioni in tempo reale per previsioni a brevissimo termine (2-3 ore)</li>
-                <li><strong>Validazione dei modelli:</strong> I dati raccolti dai cittadini calibrano e migliorano l'accuratezza dei nostri algoritmi di Machine Learning</li>
-            </ul>
-            
-            <p>Ogni piccolo contributo di dati può fare la differenza nel superare il principale ostacolo delle previsioni meteorologiche: la scarsità di dati di qualità.</p>
-        </div>
-
-        <div class="section">
-            <h2>🔑 Richiedi il tuo Token API</h2>
-            <p>Inserisci la tua email per ricevere un token personale da utilizzare nelle chiamate API:</p>
-            
-            <div class="token-form">
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" placeholder="la-tua-email@esempio.it" required>
-                </div>
-                <div class="form-group">
-                    <label for="name">Nome Stazione (opzionale):</label>
-                    <input type="text" id="name" placeholder="Stazione Meteo Casa">
-                </div>
-                <button class="btn" onclick="requestToken()">Richiedi Token</button>
+        <!-- Token Request Section -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white">
+                <h2 class="h5 mb-0">🔑 Request Your API Token</h2>
             </div>
-            
-            <div id="status-message" class="status-message"></div>
-        </div>
-
-        <div class="section">
-            <h2>🎯 Calcolatore Accuratezza Sensori</h2>
-            <p>Utilizza questo strumento per calcolare la percentuale di accuratezza dei tuoi sensori da inserire nelle chiamate API:</p>
-            
-            <div class="accuracy-calculator">
-                <div class="calculator-form">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="sensor-type">Tipo di Sensore:</label>
-                            <select id="sensor-type" onchange="updatePrecisionRange()">
-                                <option value="">Seleziona sensore...</option>
-                                <option value="temperature">Temperatura</option>
-                                <option value="humidity">Umidità</option>
-                                <option value="pressure">Pressione Atmosferica</option>
-                                <option value="wind_speed">Velocità Vento</option>
-                                <option value="wind_direction">Direzione Vento</option>
-                                <option value="precipitation">Precipitazioni</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="sensor-model">Modello Sensore:</label>
-                            <select id="sensor-model" onchange="updatePrecisionRange()">
-                                <option value="">Seleziona modello...</option>
-                                <option value="davis_vantage_pro2">Davis Vantage Pro2</option>
-                                <option value="davis_vantage_vue">Davis Vantage Vue</option>
-                                <option value="oregon_scientific">Oregon Scientific</option>
-                                <option value="lacrosse">La Crosse Technology</option>
-                                <option value="ambient_weather">Ambient Weather</option>
-                                <option value="generic_professional">Stazione Professionale Generica</option>
-                                <option value="generic_consumer">Stazione Consumer Generica</option>
-                                <option value="diy_sensor">Sensore Artigianale/DIY</option>
-                            </select>
-                        </div>
+            <div class="card-body">
+                <p>Enter your email to receive a personal token to use in API calls:</p>
+                
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label for="email" class="form-label">Email:</label>
+                        <input type="email" class="form-control" id="email" placeholder="your-email@example.com" required>
                     </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="sensor-precision">Precisione Dichiarata:</label>
-                            <div class="precision-input-group">
-                                <span class="precision-symbol">±</span>
-                                <input type="number" id="sensor-precision" step="0.1" placeholder="0.0">
-                                <span id="precision-unit" class="precision-unit">-</span>
-                            </div>
-                            <small id="precision-hint" class="precision-hint">Inserisci la precisione dal manuale del sensore</small>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="calibration-age">Ultima Calibrazione:</label>
-                            <select id="calibration-age">
-                                <option value="0">Calibrato oggi</option>
-                                <option value="30">Calibrato 1 mese fa</option>
-                                <option value="90">Calibrato 3 mesi fa</option>
-                                <option value="180">Calibrato 6 mesi fa</option>
-                                <option value="365">Calibrato 1 anno fa</option>
-                                <option value="730">Calibrato 2 anni fa</option>
-                                <option value="1095">Mai calibrato/Più di 3 anni</option>
-                            </select>
-                        </div>
+                    <div class="col-md-6">
+                        <label for="name" class="form-label">Station Name (optional):</label>
+                        <input type="text" class="form-control" id="name" placeholder="Home Weather Station">
                     </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="installation-age">Età Installazione:</label>
-                            <select id="installation-age">
-                                <option value="0">Appena installato</option>
-                                <option value="180">6 mesi</option>
-                                <option value="365">1 anno</option>
-                                <option value="730">2 anni</option>
-                                <option value="1095">3 anni</option>
-                                <option value="1825">5 anni</option>
-                                <option value="2555">Più di 7 anni</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="environmental-conditions">Condizioni Ambientali:</label>
-                            <select id="environmental-conditions">
-                                <option value="optimal">Condizioni Ottimali</option>
-                                <option value="normal">Condizioni Normali</option>
-                                <option value="challenging">Condizioni Difficili (vento forte, pioggia)</option>
-                                <option value="extreme">Condizioni Estreme (gelo, caldo intenso)</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <button class="btn" onclick="calculateAccuracy()" style="margin-top: 20px;">Calcola Accuratezza</button>
                 </div>
                 
-                <div id="accuracy-result" class="accuracy-result" style="display: none;">
-                    <div class="result-header">
-                        <h3>📊 Risultato Calcolo</h3>
+                <button class="btn btn-primary" onclick="requestToken()">Request Token</button>
+                
+                <div id="status-message" class="status-message"></div>
+            </div>
+        </div>
+
+        <!-- Sensor Accuracy Calculator -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white">
+                <h2 class="h5 mb-0">🎯 Sensor Accuracy Calculator</h2>
+            </div>
+            <div class="card-body">
+                <p>Use this tool to calculate the accuracy percentage of your sensors to include in API calls:</p>
+                
+                <div class="accuracy-calculator">
+                    <div class="calculator-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="sensor-type" class="form-label">Sensor Type:</label>
+                                <select class="form-select" id="sensor-type" onchange="updatePrecisionRange()">
+                                    <option value="">Select sensor...</option>
+                                    <option value="temperature">Temperature</option>
+                                    <option value="humidity">Humidity</option>
+                                    <option value="pressure">Atmospheric Pressure</option>
+                                    <option value="wind_speed">Wind Speed</option>
+                                    <option value="wind_direction">Wind Direction</option>
+                                    <option value="precipitation">Precipitation</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="sensor-model" class="form-label">Sensor Model:</label>
+                                <select class="form-select" id="sensor-model" onchange="updatePrecisionRange()">
+                                    <option value="">Select model...</option>
+                                    <option value="davis_vantage_pro2">Davis Vantage Pro2</option>
+                                    <option value="davis_vantage_vue">Davis Vantage Vue</option>
+                                    <option value="oregon_scientific">Oregon Scientific</option>
+                                    <option value="lacrosse">La Crosse Technology</option>
+                                    <option value="ambient_weather">Ambient Weather</option>
+                                    <option value="generic_professional">Generic Professional Station</option>
+                                    <option value="generic_consumer">Generic Consumer Station</option>
+                                    <option value="diy_sensor">DIY/Handmade Sensor</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="sensor-precision" class="form-label">Declared Precision:</label>
+                                <div class="precision-input-group">
+                                    <span class="precision-symbol">±</span>
+                                    <input type="number" class="form-control" id="sensor-precision" step="0.1" placeholder="0.0">
+                                    <span id="precision-unit" class="precision-unit">-</span>
+                                </div>
+                                <small id="precision-hint" class="precision-hint">Enter the precision from the sensor manual</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="calibration-age" class="form-label">Last Calibration:</label>
+                                <select class="form-select" id="calibration-age">
+                                    <option value="0">Calibrated today</option>
+                                    <option value="30">Calibrated 1 month ago</option>
+                                    <option value="90">Calibrated 3 months ago</option>
+                                    <option value="180">Calibrated 6 months ago</option>
+                                    <option value="365">Calibrated 1 year ago</option>
+                                    <option value="730">Calibrated 2 years ago</option>
+                                    <option value="1095">Never calibrated/More than 3 years</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="installation-age" class="form-label">Installation Age:</label>
+                                <select class="form-select" id="installation-age">
+                                    <option value="0">Just installed</option>
+                                    <option value="180">6 months</option>
+                                    <option value="365">1 year</option>
+                                    <option value="730">2 years</option>
+                                    <option value="1095">3 years</option>
+                                    <option value="1825">5 years</option>
+                                    <option value="2555">More than 7 years</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="environmental-conditions" class="form-label">Environmental Conditions:</label>
+                                <select class="form-select" id="environmental-conditions">
+                                    <option value="optimal">Optimal Conditions</option>
+                                    <option value="normal">Normal Conditions</option>
+                                    <option value="challenging">Challenging Conditions (strong wind, rain)</option>
+                                    <option value="extreme">Extreme Conditions (frost, intense heat)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-primary mt-3" onclick="calculateAccuracy()">Calculate Accuracy</button>
                     </div>
-                    <div class="result-content">
-                        <div class="accuracy-value">
-                            <span class="accuracy-percentage" id="final-accuracy">-</span>%
+                    
+                    <div id="accuracy-result" class="accuracy-result" style="display: none;">
+                        <div class="result-header">
+                            <h3>📊 Calculation Result</h3>
                         </div>
-                        <div class="result-breakdown">
-                            <h4>Dettaglio del calcolo:</h4>
-                            <div class="breakdown-item">
-                                <span>Accuratezza base modello:</span>
-                                <span id="base-accuracy">-</span>%
+                        <div class="result-content">
+                            <div class="accuracy-value">
+                                <span class="accuracy-percentage" id="final-accuracy">-</span>%
                             </div>
-                            <div class="breakdown-item">
-                                <span>Penalità calibrazione:</span>
-                                <span id="calibration-penalty">-</span>%
+                            <div class="result-breakdown">
+                                <h4>Calculation breakdown:</h4>
+                                <div class="breakdown-item">
+                                    <span>Base model accuracy:</span>
+                                    <span id="base-accuracy">-</span>%
+                                </div>
+                                <div class="breakdown-item">
+                                    <span>Calibration penalty:</span>
+                                    <span id="calibration-penalty">-</span>%
+                                </div>
+                                <div class="breakdown-item">
+                                    <span>Installation age penalty:</span>
+                                    <span id="age-penalty">-</span>%
+                                </div>
+                                <div class="breakdown-item">
+                                    <span>Environmental factor:</span>
+                                    <span id="environmental-factor">-</span>%
+                                </div>
                             </div>
-                            <div class="breakdown-item">
-                                <span>Penalità età installazione:</span>
-                                <span id="age-penalty">-</span>%
-                            </div>
-                            <div class="breakdown-item">
-                                <span>Fattore ambientale:</span>
-                                <span id="environmental-factor">-</span>%
-                            </div>
-                        </div>
-                        <div class="json-example">
-                            <h4>Inserisci questo valore nel JSON:</h4>
-                            <div class="code-block" style="margin: 10px 0;">
+                            <div class="json-example">
+                                <h4>Insert this value in the JSON:</h4>
+                                <div class="code-block" style="margin: 10px 0;">
 "<span id="sensor-field-name">sensor</span>": {
-  "value": IL_TUO_VALORE,
+  "value": YOUR_VALUE,
   "accuracy": <span id="json-accuracy">0.0</span>,
   "unit": "<span id="sensor-unit">unit</span>"
 }</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="section">
-            <h2>📡 Come utilizzare le API</h2>
-            <p>Le nostre API permettono di inviare dati meteorologici al sistema per migliorare le previsioni basate su Machine Learning.</p>
-            
-            <div class="endpoint">
-                <h4>POST /api/weather-data</h4>
-                <p><strong>Endpoint:</strong> <code>https://api.stazione-meteo.itis-delpozzo.it/weather-data</code></p>
-                <p><strong>Content-Type:</strong> application/json</p>
+        <!-- API Usage Section -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white">
+                <h2 class="h5 mb-0">📡 How to Use the APIs</h2>
             </div>
+            <div class="card-body">
+                <p>Our APIs allow you to send meteorological data to the system to improve Machine Learning-based forecasts.</p>
+                
+                <div class="endpoint">
+                    <h4>POST /api/weather-data</h4>
+                    <p><strong>Endpoint:</strong> <code>https://api.stazione-meteo.itis-delpozzo.it/weather-data</code></p>
+                    <p><strong>Content-Type:</strong> application/json</p>
+                </div>
 
-            <div class="api-docs">
-                <h3>Headers richiesti:</h3>
-                <div class="code-block">
+                <div class="alert alert-info">
+                    <h5>Required Headers:</h5>
+                    <div class="code-block">
 {
-  "Authorization": "Bearer IL_TUO_TOKEN",
+  "Authorization": "Bearer YOUR_TOKEN",
   "Content-Type": "application/json"
 }</div>
-            </div>
+                </div>
 
-            <div class="api-docs">
-                <h3>Struttura dati JSON:</h3>
-                <div class="code-block">
+                <div class="alert alert-info">
+                    <h5>JSON Data Structure:</h5>
+                    <div class="code-block">
 {
   "timestamp": "2025-09-12T14:30:00Z",
   "location": {
@@ -488,153 +550,153 @@
     "firmware_version": "1.2.3"
   }
 }</div>
-            </div>
+                </div>
 
-            <h3>Parametri obbligatori:</h3>
-            <div class="parameter">
-                <strong>timestamp:</strong> Data e ora della rilevazione in formato ISO 8601 UTC
-            </div>
-            <div class="parameter">
-                <strong>location:</strong> Coordinate geografiche precise della stazione
-            </div>
-            <div class="parameter">
-                <strong>unit:</strong> Unità di misura (celsius, percent, hPa, km/h, degrees, mm)
-            </div>
-            <div class="parameter">
-                <strong>accuracy:</strong> Percentuale di accuratezza per ogni sensore (0-100%)
-                <br><em>Questo parametro è fondamentale per valutare l'affidabilità dei dati nel nostro algoritmo ML</em>
-            </div>
+                <h5>Required Parameters:</h5>
+                <div class="parameter">
+                    <strong>timestamp:</strong> Date and time of reading in ISO 8601 UTC format
+                </div>
+                <div class="parameter">
+                    <strong>location:</strong> Precise geographic coordinates of the station
+                </div>
+                <div class="parameter">
+                    <strong>unit:</strong> Unit of measurement (celsius, percent, hPa, km/h, degrees, mm)
+                </div>
+                <div class="parameter">
+                    <strong>accuracy:</strong> Accuracy percentage for each sensor (0-100%)
+                    <br><em>This parameter is crucial for evaluating data reliability in our ML algorithm</em>
+                </div>
 
-            <h3>Esempio di chiamata con curl:</h3>
-            <div class="code-block">
+                <h5>Example curl call:</h5>
+                <div class="code-block">
 curl -X POST https://api.stazione-meteo.itis-delpozzo.it/weather-data \
-  -H "Authorization: Bearer IL_TUO_TOKEN" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
   -d @weather-data.json</div>
 
-            <h3>Risposte API:</h3>
-            <div class="parameter">
-                <strong>200 OK:</strong> Dati ricevuti e processati correttamente
-            </div>
-            <div class="parameter">
-                <strong>401 Unauthorized:</strong> Token mancante o non valido
-            </div>
-            <div class="parameter">
-                <strong>400 Bad Request:</strong> Formato dati non valido
-            </div>
-            <div class="parameter">
-                <strong>429 Too Many Requests:</strong> Limite di rate limiting raggiunto
+                <h5>API Responses:</h5>
+                <div class="parameter">
+                    <strong>200 OK:</strong> Data received and processed successfully
+                </div>
+                <div class="parameter">
+                    <strong>401 Unauthorized:</strong> Missing or invalid token
+                </div>
+                <div class="parameter">
+                    <strong>400 Bad Request:</strong> Invalid data format
+                </div>
+                <div class="parameter">
+                    <strong>429 Too Many Requests:</strong> Rate limiting threshold reached
+                </div>
             </div>
         </div>
 
-        <div class="section">
-            <h2>🌍 Contribuisci al Futuro della Meteorologia</h2>
-            <p>Ogni dato che invii attraverso queste API contribuisce a:</p>
-            <ul style="margin: 20px 0; padding-left: 30px; line-height: 1.8;">
-                <li>Migliorare la precisione delle previsioni locali</li>
-                <li>Fornire dati per il nowcasting (previsioni a 2-3 ore)</li>
-                <li>Validare e perfezionare i nostri modelli di Machine Learning</li>
-                <li>Creare una rete meteorologica distribuita sul territorio</li>
-            </ul>
-            <p><em>La meteorologia del futuro sarà una scienza partecipata, dove ogni persona può essere parte della soluzione.</em></p>
+        <!-- Contribution Section -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white">
+                <h2 class="h5 mb-0">🌍 Contribute to the Future of Meteorology</h2>
+            </div>
+            <div class="card-body">
+                <p>Every data point you send through these APIs contributes to:</p>
+                <ul>
+                    <li>Improving the accuracy of local forecasts</li>
+                    <li>Providing data for nowcasting (2-3 hour forecasts)</li>
+                    <li>Validating and perfecting our Machine Learning models</li>
+                    <li>Creating a distributed weather network across the territory</li>
+                </ul>
+                <p><em>The meteorology of the future will be a participatory science, where every person can be part of the solution.</em></p>
+            </div>
         </div>
     </div>
 
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>ITIS Mario Delpozzo - Weather Station</h5>
+                    <address>
+                        <i class="fas fa-map-marker-alt me-2"></i> Corso Alcide De Gasperi, 30 - 12100 Cuneo<br>
+                        <i class="fas fa-phone me-2"></i> Phone: 0171 634091<br>
+                        <i class="fas fa-envelope me-2"></i> Email: stazionemeteo@itisdelpozzo.edu.it
+                    </address>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <h5>Quick Links</h5>
+                    <ul class="list-inline">
+                        <li class="list-inline-item"><a href="./" class="text-white">Home</a></li>
+                        <li class="list-inline-item"><a href="./archivio-dati" class="text-white">Data Archive</a></li>
+                        <li class="list-inline-item"><a href="./dati_live" class="text-white">Live Data</a></li>
+                        <li class="list-inline-item"><a href="./progetto" class="text-white">The Project</a></li>
+                        <li class="list-inline-item"><a href="./csp" class="text-white">Citizen Science Platform</a></li>
+                        <li class="list-inline-item"><a href="https://www.itiscuneo.edu.it/" class="text-white" target="_blank">The School</a></li>
+                    </ul>
+                    <div class="mt-3">
+                        <a href="https://www.facebook.com/ITISdelpozzo/" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/@itisdelpozzocuneo3140" class="text-white"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-3">
+            <div class="text-center">
+                <small>© 2025 ITIS Mario Delpozzo - Weather Station of Cuneo. Developed by students of the Robotics track.</small>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    
     <script>
-        // La funzione originale nel tuo HTML
-// La funzione originale nel tuo HTML
-function requestToken() {
-    const email = document.getElementById('email').value;
-    const name = document.getElementById('name').value;
-    const statusMessage = document.getElementById('status-message');
-    const button = document.querySelector('.btn'); // Seleziona il pulsante
+        // Token request function
+        function requestToken() {
+            const email = document.getElementById('email').value;
+            const name = document.getElementById('name').value;
+            const statusMessage = document.getElementById('status-message');
+            const button = document.querySelector('.btn-primary');
 
-    // Dati da inviare in formato JSON
-    const data = {
-        email: email,
-        name: name
-    };
+            const data = {
+                email: email,
+                name: name
+            };
 
-    // Opzioni per la richiesta fetch
-    const options = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data) // Converte l'oggetto JavaScript in una stringa JSON
-    };
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            };
 
-    // Aggiunge una classe per l'animazione e disabilita il pulsante
-    button.disabled = true;
-    button.classList.add('loading');
-    statusMessage.textContent = 'Richiesta in corso...';
-    statusMessage.className = 'status-message loading';
+            button.disabled = true;
+            statusMessage.textContent = 'Request in progress...';
+            statusMessage.className = 'status-message alert alert-info';
+            statusMessage.style.display = 'block';
 
-    // Invia la richiesta all'endpoint Flask
-    fetch('/request-token', options)
-        .then(response => {
-            // Rimuove la classe di animazione e riabilita il pulsante
-            button.disabled = false;
-            button.classList.remove('loading');
-
-            if (!response.ok) {
-                // Gestisce gli errori HTTP
-                return response.json().then(err => {
-                    throw new Error(err.message || 'Errore del server');
-                });
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Se la richiesta ha successo, mostra il messaggio dal server
-            statusMessage.textContent = data.message;
-            statusMessage.className = 'status-message success';
-        })
-        .catch(error => {
-            // Gestisce errori di rete o altri problemi
-            button.disabled = false;
-            button.classList.remove('loading');
-            statusMessage.textContent = `Errore: ${error.message}`;
-            statusMessage.className = 'status-message error';
-            console.error('Si è verificato un errore:', error);
-        });
-}
-        
-        function showStatus(message, type) {
-            const statusDiv = document.getElementById('status-message');
-            statusDiv.textContent = message;
-            statusDiv.className = `status-message status-${type}`;
-            statusDiv.style.display = 'block';
-            
-            if (type === 'success') {
-                setTimeout(() => {
-                    statusDiv.style.display = 'none';
-                }, 5000);
-            }
-        }
-        
-        // Aggiunge un po' di interattività
-        document.addEventListener('DOMContentLoaded', function() {
-            const sections = document.querySelectorAll('.section');
-            
-            const observer = new IntersectionObserver(entries => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
+            fetch('/request-token', options)
+                .then(response => {
+                    button.disabled = false;
+                    if (!response.ok) {
+                        return response.json().then(err => {
+                            throw new Error(err.message || 'Server error');
+                        });
                     }
+                    return response.json();
+                })
+                .then(data => {
+                    statusMessage.textContent = data.message;
+                    statusMessage.className = 'status-message alert alert-success';
+                })
+                .catch(error => {
+                    button.disabled = false;
+                    statusMessage.textContent = `Error: ${error.message}`;
+                    statusMessage.className = 'status-message alert alert-danger';
+                    console.error('An error occurred:', error);
                 });
-            });
-            
-            sections.forEach(section => {
-                section.style.opacity = '0';
-                section.style.transform = 'translateY(30px)';
-                section.style.transition = 'all 0.6s ease';
-                observer.observe(section);
-            });
-        });
+        }
 
-        // Database sensori e precisioni
+        // Sensor database
         const sensorDatabase = {
             temperature: {
                 unit: '°C',
@@ -736,15 +798,15 @@ function requestToken() {
                 if (sensorModel && sensorDatabase[sensorType].models[sensorModel]) {
                     const modelData = sensorDatabase[sensorType].models[sensorModel];
                     precisionInput.value = modelData.precision;
-                    hintSpan.textContent = `Precisione suggerita per questo modello: ±${modelData.precision} ${unit}`;
+                    hintSpan.textContent = `Suggested precision for this model: ±${modelData.precision} ${unit}`;
                 } else {
                     precisionInput.value = '';
-                    hintSpan.textContent = 'Inserisci la precisione dal manuale del sensore';
+                    hintSpan.textContent = 'Enter the precision from the sensor manual';
                 }
             } else {
                 unitSpan.textContent = '-';
                 precisionInput.value = '';
-                hintSpan.textContent = 'Seleziona prima il tipo di sensore';
+                hintSpan.textContent = 'Select the sensor type first';
             }
         }
 
@@ -757,21 +819,21 @@ function requestToken() {
             const environmentalConditions = document.getElementById('environmental-conditions').value;
             
             if (!sensorType || !sensorModel || !precision) {
-                alert('Compila tutti i campi obbligatori');
+                alert('Fill in all required fields');
                 return;
             }
             
-            // 1. Accuratezza base del modello
+            // 1. Base model accuracy
             let baseAccuracy = sensorDatabase[sensorType].models[sensorModel].baseAccuracy;
             
-            // 2. Penalità per calibrazione
+            // 2. Calibration penalty
             let calibrationPenalty = 0;
             if (calibrationAge > 365) calibrationPenalty = 15;
             else if (calibrationAge > 180) calibrationPenalty = 8;
             else if (calibrationAge > 90) calibrationPenalty = 4;
             else if (calibrationAge > 30) calibrationPenalty = 2;
             
-            // 3. Penalità per età installazione
+            // 3. Installation age penalty
             let agePenalty = 0;
             if (installationAge > 1825) agePenalty = 20;
             else if (installationAge > 1095) agePenalty = 12;
@@ -779,7 +841,7 @@ function requestToken() {
             else if (installationAge > 365) agePenalty = 4;
             else if (installationAge > 180) agePenalty = 2;
             
-            // 4. Fattore ambientale
+            // 4. Environmental factor
             let environmentalFactor = 0;
             switch (environmentalConditions) {
                 case 'optimal': environmentalFactor = 2; break;
@@ -788,16 +850,16 @@ function requestToken() {
                 case 'extreme': environmentalFactor = -12; break;
             }
             
-            // 5. Fattore precisione personalizzata
+            // 5. Custom precision factor
             const standardPrecision = sensorDatabase[sensorType].models[sensorModel].precision;
             let precisionFactor = 0;
             if (precision < standardPrecision) {
-                precisionFactor = 3; // Sensore più preciso del normale
+                precisionFactor = 3; // More precise sensor than normal
             } else if (precision > standardPrecision * 1.5) {
-                precisionFactor = -8; // Sensore meno preciso
+                precisionFactor = -8; // Less precise sensor
             }
             
-            // Calcolo finale
+            // Final calculation
             const finalAccuracy = Math.max(
                 Math.min(
                     baseAccuracy - calibrationPenalty - agePenalty + environmentalFactor + precisionFactor, 
@@ -806,7 +868,7 @@ function requestToken() {
                 50
             );
             
-            // Mostra risultati
+            // Show results
             document.getElementById('final-accuracy').textContent = finalAccuracy.toFixed(1);
             document.getElementById('base-accuracy').textContent = baseAccuracy;
             document.getElementById('calibration-penalty').textContent = `-${calibrationPenalty}`;
@@ -818,6 +880,27 @@ function requestToken() {
             
             document.getElementById('accuracy-result').style.display = 'block';
         }
+
+        // Page load animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            });
+            
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'all 0.6s ease';
+                observer.observe(card);
+            });
+        });
     </script>
 </body>
 </html>
