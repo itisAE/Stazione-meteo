@@ -3,7 +3,7 @@ import threading
 import signal
 import sys
 from collections import deque
-from comunicazione.richiesta_dati import dati
+from comunication.richiesta_dati import dati
 import datetime
 from db.gestioneDB import *
 import math
