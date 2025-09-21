@@ -185,7 +185,7 @@ def index():
                 9: "September", 10: "October", 11: "November", 12: "December"
             }
             data_formattata = f"{giorno.day} {mesi_inglese[giorno.month]} {giorno.year}"
-            data = [(data_formattata,ora), dati_mongo_db[0], ('warning', 'offline')]
+            data = [(data_formattata,ora), dati_mongo_db[0], ('danger', 'offline')]
             data[1]["min_temp"], data[1]["max_temp"], _ = min_max_temp(db, "dati_meteo")
             data[1]["raffica"], data[1]["orario_raffica"] = calcola_raffica_vento(db, "dati_meteo")
         else:
