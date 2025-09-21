@@ -10,7 +10,7 @@ def invia_email(html_content, mail):
     # Dettagli del mittente e del destinatario
     mittente = "weatherstation1013@gmail.com"
     # Incolla qui la password per le app che hai generato
-    password_app = "ifyz donh eliw xdhdorrezz" 
+    password_app = "ifyz donh eliw xdhd" 
     destinatario = mail
 
     # Creazione del messaggio
