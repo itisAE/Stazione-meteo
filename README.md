@@ -201,7 +201,8 @@ Teniamo al fatto che il nostro progetto sia open source! Vogliamo dare l'opportu
 
 ### Dettagli della Richiesta API
 
-Per contribuire con i propri dati, è necessario effettuare una richiesta **`POST`** all'endpoint: `https://api.stazione-meteo.itis-delpozzo.it/weather-data`.
+Per contribuire con i propri dati, è necessario richiedere un token effettuando una richiesta utilizzando il proprio indirizzo email nella sezione del sito dedicata alla citizen science.  
+In seguito effettuare una richiesta **`POST`** all'endpoint: `https://api.stazione-meteo.itis-delpozzo.it/weather-data`.
 La richiesta deve includere due header principali:
 
   * **`Content-Type`**: `application/json`
