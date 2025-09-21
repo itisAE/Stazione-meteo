@@ -292,7 +292,7 @@ python app.py  # Start Flask server on http://localhost
 ## 🖼️ Interface Screenshots
 
 ### Real-Time Dashboard
-<img width="2559" height="1153" alt="dashboard" src="https://github.com/user-attachments/assets/04e1ee1f-158b-4a4f-a351-5c8ff3d2661f" />
+<img width="1687" height="867" alt="Screenshot 2025-09-21 152444" src="https://github.com/user-attachments/assets/38c3de14-eaa9-4a09-9bc4-365602dd0cc0" />
 *The dashboard shows current weather conditions with temperature, humidity, wind, pressure, and precipitation*
 
 ### Machine Learning Prediction System
