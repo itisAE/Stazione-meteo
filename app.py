@@ -8,7 +8,7 @@ import datetime
 from db.gestioneDB import *
 import math
 import time
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from machine_learning.gestione_ml_v1 import *
 from machine_learning.prova_emoji import get_weather_emoji_and_description
 from mail.gestione_mail import *
@@ -37,13 +37,14 @@ RAGGIO_KM = 5  # raggio di filtraggio per i dati della community
 SECRET_KEY = os.environ.get('JWT_SECRET_KEY', 'wheater_station_secret')
 
 def generate_token(user_email, station_name=None):
+    now = datetime.now(timezone.utc)  
     payload = {
         'email': user_email,
         'station_name': station_name,
         'permissions': ['weather_data_write'],
         'rate_limit': 100,
-        'iat': datetime.utcnow(),
-        'exp': datetime.utcnow() + timedelta(days=365)
+        'iat': now,  # issued at
+        'exp': now + timedelta(days=365), 
     }
     return jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
