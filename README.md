@@ -1,45 +1,44 @@
-# 🌦️ Stazione Meteo - ITIS Mario Delpozzo
-*Progetto didattico-pratico di meteorologia computazionale*
+# 🌦️ Weather Station - ITIS Mario Delpozzo
+*Educational-practical project in computational meteorology*
 
 ![principale](https://github.com/user-attachments/assets/7273fb1b-cc41-4594-9256-5e98cf8153ca)
 
-
-**Localizzazione:** Cuneo, Piemonte - Altitudine: 534 m s.l.m.
-
----
-
-## 📌 Panoramica del Progetto
-
-Sistema integrato per:
-- ✅ **Raccolta dati meteorologici** in tempo reale
-- ✅ **Analisi storica** con visualizzazioni avanzate
-- ✅ **Previsioni a 3 giorni** tramite modelli ML
-- ✅ **Automazione completa** dei processi
-
-L'innovazione principale del progetto è l'implementazione di un sistema di intelligenza artificiale per la previsione del tempo. Utilizzando tecniche di regressione lineare, il nostro modello analizza i dati meteorologici storici forniti dall'ARPA Piemonte per la zona di Cuneo e identifica pattern e correlazioni che permettono di prevedere l'andamento delle condizioni meteorologiche per i tre giorni successivi.
-
-Abbiamo utilizzato le conoscenze che abbiamo appreso durante gli anni scolastici per creare un prodotto originale e funzionale.
-Inoltre abbiamo dovuto apprendere come utilizzare la stazione meteo Davis Vantage Pro2 (incontrando difficoltà per quando riguarda la decodifica del pacchetto LOOP), e abbiamo utilizzato un database non relazionale per espandere le nostre conoscenze in ambito informatico.
+**Location:** Cuneo, Piedmont - Altitude: 534 m a.s.l.
 
 ---
 
-## 🛠️ Architettura del Sistema
+## 📌 Project Overview
+
+Integrated system for:
+- ✅ **Real-time weather data collection**
+- ✅ **Historical analysis** with advanced visualizations
+- ✅ **3-day forecasts** using ML models
+- ✅ **Complete automation** of processes
+
+The main innovation of the project is the implementation of an artificial intelligence system for weather forecasting. Using linear regression techniques, our model analyzes historical weather data provided by ARPA Piemonte for the Cuneo area and identifies patterns and correlations that allow predicting weather conditions for the next three days.
+
+We used the knowledge we learned during our school years to create an original and functional product.
+Additionally, we had to learn how to use the Davis Vantage Pro2 weather station (encountering difficulties in decoding the LOOP packet), and we used a non-relational database to expand our knowledge in the IT field.
+
+---
+
+## 🛠️ System Architecture
 
 ```mermaid
 graph TD
-    A[Davis Vantage Pro2] -->|Seriale| B(Raspberry Pi 4)
+    A[Davis Vantage Pro2] -->|Serial| B(Raspberry Pi 4)
     B --> C{Flask Server}
     C --> D[(MongoDB)]
-    C --> E[Interfaccia Web]
-    D --> F[Modelli ML]
+    C --> E[Web Interface]
+    D --> F[ML Models]
     F --> C
 ```
 
 ---
 
-## 💻 Tecnologie Principali
+## 💻 Main Technologies
 
-| Componente       | Tecnologia                                  |
+| Component       | Technology                                  |
 |------------------|--------------------------------------------|
 | **Frontend**     | ![HTML5](https://img.shields.io/badge/HTML5-Frontend-red?logo=html5)  ![Chart.js](https://img.shields.io/badge/Charts-Chart.js-orange?logo=chartdotjs)  ![Bootstrap](https://img.shields.io/badge/Frontend-Bootstrap-purple?logo=bootstrap)  |
 | **Backend**      | ![Flask](https://img.shields.io/badge/Flask-Backend-black?logo=flask)  ![PyMongo](https://img.shields.io/badge/Database-PyMongo-green?logo=mongodb)  |
@@ -47,27 +46,27 @@ graph TD
 | **Database**     | ![MongoDB](https://img.shields.io/badge/Database-MongoDB-green?logo=mongodb) |
 | **Hardware**     | Davis Vantage Pro2 + Raspberry Pi 4        |
 
-Abbiamo utilizzato le conoscenze che abbiamo appreso durante gli anni scolastici per creare un prodotto originale e funzionale.
-Inoltre abbiamo dovuto apprendere come utilizzare la stazione meteo Davis Vantage Pro2 (incontrando difficoltà per quando riguarda la decodifica del pacchetto LOOP), e abbiamo utilizzato un database non relazionale per espandere le nostre conoscenze in ambito informatico.
+We used the knowledge we learned during our school years to create an original and functional product.
+Additionally, we had to learn how to use the Davis Vantage Pro2 weather station (encountering difficulties in decoding the LOOP packet), and we used a non-relational database to expand our knowledge in the IT field.
 
-# La stazione Davis Vantage PRO2
-La Davis Vantage Pro2 è una stazione meteorologica di livello professionale che costituisce il cuore hardware del progetto. È nota per la sua affidabilità e precisione, fornendo dati in tempo reale che vengono poi utilizzati per l'analisi e le previsioni. La stazione non si limita a un singolo sensore, ma è un sistema integrato che rileva diverse variabili ambientali.
+# The Davis Vantage PRO2 Station
+The Davis Vantage Pro2 is a professional-grade weather station that constitutes the hardware core of the project. It is known for its reliability and precision, providing real-time data that is then used for analysis and forecasts. The station is not limited to a single sensor, but is an integrated system that detects various environmental variables.
 
-La stazione Davis Vantage Pro2 fornisce i seguenti dati:
-- Temperatura: Misurazioni precise della temperatura ambientale.
-- Umidità: Rilevamento del grado di umidità nell'aria.
-- Pressione: Misura della pressione atmosferica (ricavata dalla Console).
-- Vento: Dati sulla velocità e sulla direzione del vento.
-- Precipitazioni: Rilevamento della quantità di pioggia.
+The Davis Vantage Pro2 station provides the following data:
+- Temperature: Precise measurements of ambient temperature.
+- Humidity: Detection of the degree of humidity in the air.
+- Pressure: Measurement of atmospheric pressure (derived from the Console).
+- Wind: Data on wind speed and direction.
+- Precipitation: Detection of rainfall amounts.
 
 ---
 
-## 📂 Struttura del Codice
+## 📂 Code Structure
 
 ```
 app.py
 README.md
-assets/                   # dataset e notebook di analisi/previsione
+assets/                   # datasets and analysis/forecast notebooks
 │   ├── all_data.csv
 │   ├── datasetPulito.csv
 │   ├── datasetPulito_dd.csv
@@ -75,18 +74,18 @@ assets/                   # dataset e notebook di analisi/previsione
 │   ├── PrevisioniDomani.ipynb
 │   ├── PrevisioniDopodomani.ipynb
 │   └── PrevisioniDopodopodomani.ipynb
-comunicazione/            # permette l'interazione tra il server e la stazione meteo
+comunicazione/            # enables interaction between server and weather station
 │   ├── conversione.py
 │   ├── decode_LOOP.py
 │   ├── richiesta_dati.py
 │   └── __pycache__/
-db/                       # permette l'interazione tra il server e il database
+db/                       # enables interaction between server and database
 │   ├── gestioneDB.py
 │   └── __pycache__/
 docs/
 │   ├── StazioneMeteoManuale_VantageSerialProtocolDocs_v261.pdf
 │   └── user manual.pdf
-machine_learning/         # permette di creare le previsioni meteorologiche
+machine_learning/         # enables weather forecast creation
 │   ├── gestione_ml_v1.py
 │   ├── prova_emoji.py
 │   ├── Modelli/
@@ -109,56 +108,61 @@ machine_learning/         # permette di creare le previsioni meteorologiche
 │   │   ├── VentoRaffDopDom.pkl
 │   │   └── VentoRaffDopDopDom.pkl
 │   └── __pycache__/
-static/                   # contiene le immagini presenti all'interno della web application
+static/                   # contains images present within the web application
 │   └── images/
 │       ├── logo_itis.png
 │       └── stazione.gif
-templates/                # contiene le pagine della web application
-│   ├── archivio-dati.html
+templates/                # contains web application pages
+│   ├── archivio_dati.html
 │   ├── dati_live.html
 │   ├── index.html
+│   ├── csp.html
 │   └── progetto.html
 ```
 
 ---
 
-## 🔍 Funzionalità Dettagliate
+## 🔍 Detailed Features
 
-### 1. Interfaccia Web (Flask)
-L’interfaccia web, realizzata con Flask e template HTML, permette di monitorare e consultare i dati meteorologici in modo semplice e intuitivo. Le principali pagine sono:
+### 1. Web Interface (Flask)
+The web interface, built with Flask and HTML templates, allows monitoring and consulting weather data in a simple and intuitive way. The main pages are:
 
-- **Dashboard in tempo reale** (`index.html`):
-  - Visualizza i dati meteo attuali (temperatura, umidità, vento, pressione, precipitazioni, punto di rugiada, temperatura percepita).
-  - Mostra indicatori di stato della stazione (online/offline).
-  - Presenta le previsioni meteo per domani, dopodomani e tra tre giorni, generate dai modelli di machine learning.
-  - Utilizza grafici interattivi (Chart.js) per la visualizzazione delle serie temporali.
-  - Evidenzia i valori estremi giornalieri (min/max temperatura, raffica di vento).
+- **Real-time Dashboard** (`index.html`):
+  - Displays current weather data (temperature, humidity, wind, pressure, precipitation, dew point, perceived temperature).
+  - Shows station status indicators (online/offline).
+  - Presents weather forecasts for tomorrow, day after tomorrow, and in three days, generated by machine learning models.
+  - Uses interactive charts (Chart.js) for time series visualization.
+  - Highlights daily extreme values (min/max temperature, wind gust).
 
-- **Archivio dati** (`archivio-dati.html`):
-  - Tabella consultabile con tutti i dati storici raccolti.
-  - Possibilità di scaricare i dataset in formato CSV o Excel.
-  - Filtri temporali per selezionare intervalli di date di interesse.
+- **Data Archive** (`archivio_dati.html`):
+  - Consultable table with all collected historical data.
+  - Ability to download datasets in CSV or Excel format.
+  - Temporal filters to select date ranges of interest.
 
-- **Pagina progetto** (`progetto.html`):
-  - Descrizione dettagliata del progetto, degli obiettivi e delle tecnologie utilizzate.
-  - Spiegazione della pipeline di machine learning e delle automazioni implementate.
+- **Project Page** (`progetto.html`):
+  - Detailed description of the project, objectives, and technologies used.
+  - Explanation of the machine learning pipeline and implemented automations.
 
-- **Dati live** (`dati_live.html`):
-  - Visualizzazione aggiornata in tempo reale dei dati provenienti dalla stazione.
-  - Aggiornamento automatico tramite chiamate API.
+- **Live Data** (`dati_live.html`):
+  - Real-time updated visualization of data from the station.
+  - Automatic updates through API calls.
 
-**Funzionalità aggiuntive:**
-- Navigazione semplice tra le varie sezioni tramite barra di navigazione.
-- Visualizzazione di alert e messaggi di stato per eventuali errori o disconnessioni della stazione.
-- Interfaccia responsive, ottimizzata anche per dispositivi mobili.
+- **Citizen Science Platform** (`csp.html`):
+  - API documentation with instructions, examples, and a guided token request system.
+  - Interactive tools such as the Sensor Accuracy Calculator to standardize and validate user-contributed data.
 
-### 2. Interazione tramite seriale
-Una delle parti più complicate dell'intero progetto è stata l'interazione con la stazione meteorologica Davis Vantage Pro2. Il nostro codice puòi ricevere dati dalla stazione meteo Davis Vantage Pro2 attraverso la seriale. Mediante il WeatherLink USB Data Logger della Davis è possibile far comunicare la stazione meteo con il computer attraverso la seriale usb. Viste le grandi difficoltà incontrate nella decodifica dei pacchetti LOOP inviati dalla stazione abbiamo realizzato il modulo software con l'uso dell'intelligenza artificiale generativa (Claude) a partire dalla specifica tecnica del protocollo di comunicazione. Il pacchetto LOOP contiene tutti i dati provenienti dalla stazione meteo e in tal modo abbiamo ottenuto un traduttore del pacchetto LOOP reperibile qui: `./comunicazione/decode_LOOP.py`
+**Additional Features:**
+- Simple navigation between various sections via navigation bar.
+- Display of alerts and status messages for any errors or station disconnections.
+- Responsive interface, optimized for mobile devices as well.
+
+### 2. Serial Interaction
+One of the most complicated parts of the entire project was the interaction with the Davis Vantage Pro2 weather station. Our code can receive data from the Davis Vantage Pro2 weather station through serial communication. Through the Davis WeatherLink USB Data Logger, it's possible to make the weather station communicate with the computer through USB serial. Given the great difficulties encountered in decoding the LOOP packets sent by the station, we created the software module using generative artificial intelligence (Claude) starting from the technical specification of the communication protocol. The LOOP packet contains all data from the weather station, and thus we obtained a LOOP packet translator available here: `./comunicazione/decode_LOOP.py`
 
 ### 3. Machine Learning
-E' possibile consultare l'addestramento dei modelli di machine learning nella cartella `assets/` e nei notebook presenti (`PrevisioniDomani.ipynb`, `PrevisioniDopodomani.ipynb`, `PrevisioniDopodopodomani.ipynb`).
-- **Modelli implementati:**
-  - I file elencati sono file dump delle istanze dei modelli di machine learning post-addestramento. Questi modelli sono stati creati utilizzando la libreria joblib di Python per implementare una pipeline di regressione lineare.
+You can view the training of machine learning models in the `assets/` folder and in the present notebooks (`PrevisioniDomani.ipynb`, `PrevisioniDopodomani.ipynb`, `PrevisioniDopodopodomani.ipynb`).
+- **Implemented models:**
+  - The listed files are dump files of post-training machine learning model instances. These models were created using Python's joblib library to implement a linear regression pipeline.
 
     - PrecDom.pkl
     - PrecDopDom.pkl
@@ -179,47 +183,47 @@ E' possibile consultare l'addestramento dei modelli di machine learning nella ca
     - VentoRaffDopDom.pkl
     - VentoRaffDopDopDom.pkl
 
-- **Output previsioni:**  
-  - "pressione": valore previsto della pressione atmosferica  
-  - "temperatura": temperatura prevista  
-  - "umidità": umidità prevista  
-  - "precipitazione": precipitazione prevista  
-  - "velocità media": velocità media del vento prevista  
-  - "velocità raffica": velocità della raffica di vento prevista
+- **Forecast output:**  
+  - "pressure": predicted atmospheric pressure value  
+  - "temperature": predicted temperature  
+  - "humidity": predicted humidity  
+  - "precipitation": predicted precipitation  
+  - "average speed": predicted average wind speed  
+  - "gust speed": predicted wind gust speed
 
-#### Pipeline di Machine Learning
-La nostra pipeline di ML include quattro fasi principali:
-1. **Raccolta Dati**: Acquisizione dati storici da ARPA (https://www.arpa.piemonte.it/) e dati in tempo reale dai nostri sensori
-2. **Preprocessamento**: Pulizia, normalizzazione e preparazione dei dati per l'addestramento
-3. **Addestramento**: Regressione lineare su dati storici per identificare pattern meteorologici
-4. **Previsione**: Generazione di previsioni meteorologiche per i successivi tre giorni
+#### Machine Learning Pipeline
+Our ML pipeline includes four main phases:
+1. **Data Collection**: Acquisition of historical data from ARPA (https://www.arpa.piemonte.it/) and real-time data from our sensors
+2. **Preprocessing**: Cleaning, normalization, and data preparation for training
+3. **Training**: Linear regression on historical data to identify weather patterns
+4. **Prediction**: Generation of weather forecasts for the next three days
 
-### 4. Automazioni
-- **Raccolta dati in tempo reale**: ogni minuto la stazione viene interrogata e i dati vengono salvati in memoria temporanea.
-- **Salvataggio periodico**: ogni 30 minuti i dati raccolti vengono salvati in modo permanente nel database.
-- **Script di mezzanotte**: ogni giorno a un orario programmato, il sistema:
-  - Calcola le statistiche giornaliere (medie, minimi, massimi, precipitazioni, ecc.)
-  - Esegue i modelli di machine learning per generare le previsioni meteo per i tre giorni successivi
-  - Aggiorna le previsioni mostrate nell’interfaccia web
-  - Tiene conto della stagione corrente per migliorare l’accuratezza delle previsioni
+### 4. Automations
+- **Real-time data collection**: every minute the station is queried and data is saved in temporary memory.
+- **Periodic saving**: every 30 minutes collected data is permanently saved in the database.
+- **Midnight script**: every day at a scheduled time, the system:
+  - Calculates daily statistics (averages, minimums, maximums, precipitation, etc.)
+  - Runs machine learning models to generate weather forecasts for the next three days
+  - Updates forecasts shown in the web interface
+  - Takes into account the current season to improve forecast accuracy
 
 ---
 
-## 🌍 Open source & Citizen Science
-Teniamo al fatto che il nostro progetto sia open source! Vogliamo dare l'opportunità alle persone di caricare i propri dati all'interno del database contattando un'API REST in modo tale che i dati siano in un formato specifico. Parliamo quindi di citizen science, in pratica pensiamo che sia importante estendere il più possibile la copertura e la telemetria delle informazioni meteorologiche, per questo motivo invitiamo le persone a realizzare/partecipare alla rete weather station! Il nostro progetto è infatti adattabile a diversi tipi di stazioni meteo, semplicemente cambiano il modulo software di comunicazione con la stazione.
+## 🌍 Open Source & Citizen Science
+We care about our project being open source! We want to give people the opportunity to upload their own data to the database by contacting a REST API so that the data is in a specific format. We're therefore talking about citizen science; in practice, we think it's important to extend as much as possible the coverage and telemetry of weather information. For this reason, we invite people to create/participate in the weather station network! Our project is indeed adaptable to different types of weather stations; simply the software communication module with the station changes.
 
-**Nota sulla richiesta API:** nella richiesta, oltre ai dati che vanno inviati secondo un certo formato, è necessario inviare anche il grado di accuratezza di tutti i sensori, in modo tale che la stazione possa prendere i tuoi dati in considerazione per la creazione di previsioni meteorologiche.
+**Note on API request:** in the request, besides the data that must be sent in a certain format, it's necessary to also send the accuracy level of all sensors, so that the station can take your data into consideration for creating weather forecasts.
 
-### Dettagli della Richiesta API
+### API Request Details
 
-Per contribuire con i propri dati, è necessario richiedere un token effettuando una richiesta utilizzando il proprio indirizzo email nella sezione del sito dedicata alla citizen science.  
-In seguito effettuare una richiesta **`POST`** all'endpoint: `https://api.stazione-meteo.itis-delpozzo.it/weather-data`.
-La richiesta deve includere due header principali:
+To contribute with your own data, you need to request a token by making a request using your email address in the citizen science section of the site.  
+Then make a **`POST`** request to the endpoint: `https://api.stazione-meteo.itis-delpozzo.it/weather-data`.
+The request must include two main headers:
 
   * **`Content-Type`**: `application/json`
-  * **`Authorization`**: `Bearer {{JWT_TOKEN}}` (un token API personale che deve essere tenuto al sicuro).
+  * **`Authorization`**: `Bearer {{JWT_TOKEN}}` (a personal API token that must be kept secure).
 
-Il corpo della richiesta deve essere un oggetto JSON con la seguente struttura:
+The request body must be a JSON object with the following structure:
 
 ```json
 {
@@ -253,56 +257,57 @@ Il corpo della richiesta deve essere un oggetto JSON con la seguente struttura:
 }
 ```
 
-È importante notare che l'API ha un limite di 100 richieste per ora.
+It's important to note that the API has a limit of 100 requests per hour.
 
-**Implementazioni future:** Implementazioni future: crediamo sia importante seguire il cambiamento, anche alla luce del cambiamento climatico, quindi proporremo una versione del programma in grado di auto ri-addestrarsi autonomamente ogni 6mesi/1anno in modo tale da dare previsioni meteorologiche accurate!
+**Future implementations:** We believe it's important to follow change, especially in light of climate change, so we will propose a version of the program capable of automatically re-training itself every 6 months/1 year to provide accurate weather forecasts!
 
 ---
 
-## ⚙️ Installazione & Configurazione
+## ⚙️ Installation & Configuration
 
-1. **Prerequisiti**  
-   Utilizzeremo un Raspberry PI4 come server del nostro progetto, su cui sarà installato il sistema operativo Raspberry Pi OS con una versione di python già installata (v 3.11.x per esempio)
+1. **Prerequisites**  
+   We will use a Raspberry PI4 as the server for our project, on which the Raspberry Pi OS operating system will be installed with a pre-installed version of Python (v 3.11.x for example)
 
-2. **Installazione delle librerie**
+2. **Library Installation**
 ```bash
 pip install flask pymongo scikit-learn pandas
 sudo apt-get install mongodb-server
 ```
 
-3. **Avvio**  
-  bisognerà prima di tutto capire su quale porta USB del computer è collegata la stazione meteo e poi modificare il codice di porta in `./comunicazione/richiesta_dati.py` 
+3. **Startup**  
+  You'll first need to understand which USB port of the computer the weather station is connected to and then modify the port code in `./comunicazione/richiesta_dati.py` 
 ```bash
-python app.py  # Avvia server Flask su http://localhost
+python app.py  # Start Flask server on http://localhost
 ```
 
-4. **Accesso all'interfaccia**  
-   - Dashboard: `http://localhost/progetto`  
-   - Archivio: `http://localhost/archivio-dati`  
+4. **Interface Access**  
+   - Dashboard: `http://localhost/project`  
+   - Archive: `http://localhost/data_archive`  
    - Index: `http://localhost`  
-   - Dati in tempo reale: `http://localhost/dati_live`  
+   - Real-time data: `http://localhost/live_data`  
+   - Citizen science platform: `http://localhost/csp`  
 
 ---
 
-## 🖼️ Screenshot dell'Interfaccia
+## 🖼️ Interface Screenshots
 
-### Dashboard in Tempo Reale
+### Real-Time Dashboard
 <img width="2559" height="1153" alt="dashboard" src="https://github.com/user-attachments/assets/04e1ee1f-158b-4a4f-a351-5c8ff3d2661f" />
-*La dashboard mostra condizioni meteo attuali con temperatura, umidità, vento, pressione e precipitazioni*
+*The dashboard shows current weather conditions with temperature, humidity, wind, pressure, and precipitation*
 
-### Sistema di Previsione con Machine Learning
+### Machine Learning Prediction System
 ![Sistema ML](/api/placeholder/800x400?text=Sistema+di+Previsione+ML)
-*Visualizzazione della pipeline di machine learning per le previsioni meteorologiche*
+*Visualization of the machine learning pipeline for weather forecasting*
 
 ---
 
-## 👨‍🏫 Team di Sviluppo
-*Studenti ITIS Mario Delpozzo*:
+## 👨‍🏫 Development Team
+*ITIS Mario Delpozzo Students*:
 - Eugenio Armando - https://github.com/itisAE
 - Simone Giannasi - https://github.com/simoneGiannasi
 - Nicolò Dutto - https://github.com/niconico11
 - Rebecca Simondi - https://github.com/sbeb4
 
-*Supervisione*:
+*Supervision*:
 - Simone Conradi - https://github.com/profConradi
 - Roberta Molinari
