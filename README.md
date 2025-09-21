@@ -50,6 +50,16 @@ graph TD
 Abbiamo utilizzato le conoscenze che abbiamo appreso durante gli anni scolastici per creare un prodotto originale e funzionale.
 Inoltre abbiamo dovuto apprendere come utilizzare la stazione meteo Davis Vantage Pro2 (incontrando difficoltà per quando riguarda la decodifica del pacchetto LOOP), e abbiamo utilizzato un database non relazionale per espandere le nostre conoscenze in ambito informatico.
 
+# La stazione Davis Vantage PRO2
+La Davis Vantage Pro2 è una stazione meteorologica di livello professionale che costituisce il cuore hardware del progetto. È nota per la sua affidabilità e precisione, fornendo dati in tempo reale che vengono poi utilizzati per l'analisi e le previsioni. La stazione non si limita a un singolo sensore, ma è un sistema integrato che rileva diverse variabili ambientali.
+
+La stazione Davis Vantage Pro2 fornisce i seguenti dati:
+- Temperatura: Misurazioni precise della temperatura ambientale.
+- Umidità: Rilevamento del grado di umidità nell'aria.
+- Pressione: Misura della pressione atmosferica (ricavata dalla Console).
+- Vento: Dati sulla velocità e sulla direzione del vento.
+- Precipitazioni: Rilevamento della quantità di pioggia.
+
 ---
 
 ## 📂 Struttura del Codice
@@ -148,7 +158,8 @@ Una delle parti più complicate dell'intero progetto è stata l'interazione con 
 ### 3. Machine Learning
 E' possibile consultare l'addestramento dei modelli di machine learning nella cartella `assets/` e nei notebook presenti (`PrevisioniDomani.ipynb`, `PrevisioniDopodomani.ipynb`, `PrevisioniDopodopodomani.ipynb`).
 - **Modelli implementati:**
-  - Regressione lineare (pipeline) per l'implementazione di diversi modelli per la creazione delle previsioni meteorologiche:
+  - I file elencati sono file dump delle istanze dei modelli di machine learning post-addestramento. Questi modelli sono stati creati utilizzando la libreria joblib di Python per implementare una pipeline di regressione lineare.
+
     - PrecDom.pkl
     - PrecDopDom.pkl
     - PrecDopDopDom.pkl
@@ -201,7 +212,8 @@ Teniamo al fatto che il nostro progetto sia open source! Vogliamo dare l'opportu
 
 ### Dettagli della Richiesta API
 
-Per contribuire con i propri dati, è necessario effettuare una richiesta **`POST`** all'endpoint: `https://api.stazione-meteo.itis-delpozzo.it/weather-data`.
+Per contribuire con i propri dati, è necessario richiedere un token effettuando una richiesta utilizzando il proprio indirizzo email nella sezione del sito dedicata alla citizen science.  
+In seguito effettuare una richiesta **`POST`** all'endpoint: `https://api.stazione-meteo.itis-delpozzo.it/weather-data`.
 La richiesta deve includere due header principali:
 
   * **`Content-Type`**: `application/json`
