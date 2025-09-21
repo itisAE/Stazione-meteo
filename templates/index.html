@@ -461,8 +461,14 @@ We then customized everything to fit our needs.
             <div class="card-body">
                 <p class="card-text text-center">The charts show the trend of weather conditions over time</p>
                 <div class="bg-light p-3 rounded text-center mb-3">
-                    <!-- Placeholder for a chart -->
-                    <img src="/api/placeholder/800/300" alt="Temperature chart" class="img-fluid rounded">
+                    <div id="charts-container">
+                        <div class="d-flex justify-content-center align-items-center" style="height: 300px;">
+                            <div class="text-muted">
+                                <i class="fas fa-chart-line fa-3x mb-3"></i>
+                                <p>Loading charts...</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="text-center">
                     <div class="btn-group">

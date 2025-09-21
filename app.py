@@ -66,7 +66,7 @@ def signal_handler(sig, frame):
 def raccogli_dati():
     try:
         while not shutdown_event.is_set():
-            print("Raccogliendo dati...")
+            #print("Raccogliendo dati...")
             informazioni = dati()
             
             ora_corrente = datetime.now()
