@@ -163,7 +163,7 @@ def index():
             data[1]["raffica"], data[1]["orario_raffica"] = calcola_raffica_vento(db, "dati_meteo")
         else:
             # No data available from MongoDB
-            data = [("No data", "No data"), None, ('danger', 'no data available')]
+            data = [("No data", ""), None, ('danger', 'offline')]
         
         client.close()
     
@@ -189,7 +189,7 @@ def index():
             data[1]["raffica"], data[1]["orario_raffica"] = calcola_raffica_vento(db, "dati_meteo")
         else:
             # No data available at all
-            data = [("No data", "No data"), None, ('danger', 'no data available')]
+            data = [("No data", ""), None, ('danger', 'offline')]
         
         client.close()
         
