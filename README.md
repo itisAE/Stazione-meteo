@@ -74,7 +74,7 @@ assets/                   # datasets and analysis/forecast notebooks
 │   ├── PrevisioniDomani.ipynb
 │   ├── PrevisioniDopodomani.ipynb
 │   └── PrevisioniDopodopodomani.ipynb
-comunicazione/            # enables interaction between server and weather station
+comunication/            # enables interaction between server and weather station
 │   ├── conversione.py
 │   ├── decode_LOOP.py
 │   ├── richiesta_dati.py
@@ -157,7 +157,7 @@ The web interface, built with Flask and HTML templates, allows monitoring and co
 - Responsive interface, optimized for mobile devices as well.
 
 ### 2. Serial Interaction
-One of the most complicated parts of the entire project was the interaction with the Davis Vantage Pro2 weather station. Our code can receive data from the Davis Vantage Pro2 weather station through serial communication. Through the Davis WeatherLink USB Data Logger, it's possible to make the weather station communicate with the computer through USB serial. Given the great difficulties encountered in decoding the LOOP packets sent by the station, we created the software module using generative artificial intelligence (Claude) starting from the technical specification of the communication protocol. The LOOP packet contains all data from the weather station, and thus we obtained a LOOP packet translator available here: `./comunicazione/decode_LOOP.py`
+One of the most complicated parts of the entire project was the interaction with the Davis Vantage Pro2 weather station. Our code can receive data from the Davis Vantage Pro2 weather station through serial communication. Through the Davis WeatherLink USB Data Logger, it's possible to make the weather station communicate with the computer through USB serial. Given the great difficulties encountered in decoding the LOOP packets sent by the station, we created the software module using generative artificial intelligence (Claude) starting from the technical specification of the communication protocol. The LOOP packet contains all data from the weather station, and thus we obtained a LOOP packet translator available here: `./comunication/decode_LOOP.py`
 
 ### 3. Machine Learning
 You can view the training of machine learning models in the `assets/` folder and in the present notebooks (`PrevisioniDomani.ipynb`, `PrevisioniDopodomani.ipynb`, `PrevisioniDopodopodomani.ipynb`).
@@ -275,7 +275,7 @@ sudo apt-get install mongodb-server
 ```
 
 3. **Startup**  
-  You'll first need to understand which USB port of the computer the weather station is connected to and then modify the port code in `./comunicazione/richiesta_dati.py` 
+  You'll first need to understand which USB port of the computer the weather station is connected to and then modify the port code in `./comunication/richiesta_dati.py` 
 ```bash
 python app.py  # Start Flask server on http://localhost
 ```
