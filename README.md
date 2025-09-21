@@ -21,13 +21,6 @@ L'innovazione principale del progetto è l'implementazione di un sistema di inte
 Abbiamo utilizzato le conoscenze che abbiamo appreso durante gli anni scolastici per creare un prodotto originale e funzionale.
 Inoltre abbiamo dovuto apprendere come utilizzare la stazione meteo Davis Vantage Pro2 (incontrando difficoltà per quando riguarda la decodifica del pacchetto LOOP), e abbiamo utilizzato un database non relazionale per espandere le nostre conoscenze in ambito informatico.
 
-**Apprendimenti (brevi note):**
-- Html5 -> imparato con Bootstrap a Informatica
-- Python -> imparato in TPSIT
-- PyMongo -> autodidatti
-- Scikit-learn -> Microrobotica
-- Davis Vantage Pro2 -> autodidatti
-
 ---
 
 ## 🛠️ Architettura del Sistema
@@ -48,22 +41,15 @@ graph TD
 
 | Componente       | Tecnologia                                  |
 |------------------|--------------------------------------------|
-| **Frontend**     | HTML5, Chart.js, Bootstrap                 |
-| **Backend**      | Python (Flask), PyMongo                    |
-| **Machine Learning** | Scikit-learn (Regressione Lineare) |
-| **Database**     | MongoDB (NoSQL)                            |
+| **Frontend**     | ![HTML5](https://img.shields.io/badge/HTML5-Frontend-red?logo=html5)  
+![Chart.js](https://img.shields.io/badge/Charts-Chart.js-orange?logo=chartdotjs)  ![Bootstrap](https://img.shields.io/badge/Frontend-Bootstrap-purple?logo=bootstrap) HTML5, Chart.js, Bootstrap                 |
+| **Backend**      | ![Flask](https://img.shields.io/badge/Flask-Backend-black?logo=flask)  ![PyMongo](https://img.shields.io/badge/Database-PyMongo-green?logo=mongodb)  Python (Flask), PyMongo                    |
+| **Machine Learning** | ![Scikit-learn](https://img.shields.io/badge/ML-ScikitLearn-yellow?logo=scikitlearn) Scikit-learn (Regressione Lineare) |
+| **Database**     | ![MongoDB](https://img.shields.io/badge/Database-MongoDB-green?logo=mongodb)MongoDB (NoSQL)                            |
 | **Hardware**     | Davis Vantage Pro2 + Raspberry Pi 4        |
 
 Abbiamo utilizzato le conoscenze che abbiamo appreso durante gli anni scolastici per creare un prodotto originale e funzionale.
 Inoltre abbiamo dovuto apprendere come utilizzare la stazione meteo Davis Vantage Pro2 (incontrando difficoltà per quando riguarda la decodifica del pacchetto LOOP), e abbiamo utilizzato un database non relazionale per espandere le nostre conoscenze in ambito informatico.
-
-![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python) -> imparato in molteplici materie scolastiche  
-![Flask](https://img.shields.io/badge/Flask-Backend-black?logo=flask) -> imparato a TPSIT  
-![MongoDB](https://img.shields.io/badge/Database-MongoDB-green?logo=mongodb) -> autodidatti  
-![Bootstrap](https://img.shields.io/badge/Frontend-Bootstrap-purple?logo=bootstrap) -> imparato a informatica  
-![Chart.js](https://img.shields.io/badge/Charts-Chart.js-orange?logo=chartdotjs) -> autodidatti  
-![Scikit-learn](https://img.shields.io/badge/ML-ScikitLearn-yellow?logo=scikitlearn) -> imparato a microrobotica  
-davisvantagepro2 -> autodidatti
 
 ---
 
@@ -158,10 +144,7 @@ L’interfaccia web, realizzata con Flask e template HTML, permette di monitorar
 - Interfaccia responsive, ottimizzata anche per dispositivi mobili.
 
 ### 2. Interazione tramite seriale
-Una delle parti più complesse dell'intero progetto è stata l'interazione con la stazione meteorologica DAVIS VANTAGE PRO2.
-Il nostro codice possiede la capacità di interagire con la stazione meteo davis vantage pro2 attraverso la seriale.
-Mediante un particolare kit è possibile far comunicare la stazione meteo con il computer attraverso la seriale usb. Abbiamo realizzato attraverso l'uso dell'intelligenza artificiale, un traduttore del pacchetto LOOP il quale contiene i dati provenienti dalla stazione meteo, così facendo, abbiamo potuto interagire direttamente attraverso python con la stazione meteo.
-Il file .py che effettua la traduzione lo su può reperire qui: `./comunicazione/decode_LOOP.py`
+Una delle parti più complicate dell'intero progetto è stata l'interazione con la stazione meteorologica Davis Vantage Pro2. Il nostro codice puòi ricevere dati dalla stazione meteo Davis Vantage Pro2 attraverso la seriale. Mediante il WeatherLink USB Data Logger della Davis è possibile far comunicare la stazione meteo con il computer attraverso la seriale usb. Viste le grandi difficoltà incontrate nella decodifica dei pacchetti LOOP inviati dalla stazione abbiamo realizzato il modulo software con l'uso dell'intelligenza artificiale generativa (Claude) a partire dalla specifica tecnica del protocollo di comunicazione. Il pacchetto LOOP contiene tutti i dati provenienti dalla stazione meteo e in tal modo abbiamo ottenuto un traduttore del pacchetto LOOP reperibile qui: `./comunicazione/decode_LOOP.py`
 
 ### 3. Machine Learning
 E' possibile consultare l'addestramento dei modelli di machine learning nella cartella `assets/` e nei notebook presenti (`PrevisioniDomani.ipynb`, `PrevisioniDopodomani.ipynb`, `PrevisioniDopodopodomani.ipynb`).
@@ -213,13 +196,55 @@ La nostra pipeline di ML include quattro fasi principali:
 ---
 
 ## 🌍 Open source & Citizen Science
-Open source!, vogliamo dare l'opportunita alle persone di caricare i propri dati all'interno del database contattando un api in modo tale che i dati siano in un formato specifico.
-Parliamo quindi di citizen science, in pratica pensiamo che sia importante estendere il più possibile la copertura e la telemetria delle informazioni, per questo motivo invitiamo le persone a realizzare/partecipare alla rete wheater station!
+Teniamo al fatto che il nostro progetto sia open source! Vogliamo dare l'opportunità alle persone di caricare i propri dati all'interno del database contattando un'API REST in modo tale che i dati siano in un formato specifico. Parliamo quindi di citizen science, in pratica pensiamo che sia importante estendere il più possibile la copertura e la telemetria delle informazioni meteorologiche, per questo motivo invitiamo le persone a realizzare/partecipare alla rete weather station! Il nostro progetto è infatti adattabile a diversi tipi di stazioni meteo, semplicemente cambiano il modulo software di comunicazione con la stazione.
 
-**Nota sulla richiesta API:** nella richiesta api, oltre ai dati che vanno inviati secondo un certo formato, è necessario inviare anche il grado di accuratezza di tutti i sensori, in modo tale che la stazione possa prendere i tuoi dati in considerazione per la creazione di previsioni meteorologiche.
+**Nota sulla richiesta API:** nella richiesta, oltre ai dati che vanno inviati secondo un certo formato, è necessario inviare anche il grado di accuratezza di tutti i sensori, in modo tale che la stazione possa prendere i tuoi dati in considerazione per la creazione di previsioni meteorologiche.
 
-**Implementazioni future:** crediamo sia importante seguire il cambiamento, quindi proporremo una versione del programma in grado di auto riaddestrarsi ogni 6mesi/1anno in modo tale da dare previsioni meteorologiche accurate!
-Creare una rete all'interno del nostro istituto con una serie di sensori riguardanti la qualità dell'aria e della temperatura in modo da vivere le proprie giornate scolastiche in salute, areando i locali in modo corretto e monitorato, come anche la gestione del riscaldamento durante l'inverno in modo più preciso.
+### Dettagli della Richiesta API
+
+Per contribuire con i propri dati, è necessario effettuare una richiesta **`POST`** all'endpoint: `https://api.stazione-meteo.itis-delpozzo.it/weather-data`.
+La richiesta deve includere due header principali:
+
+  * **`Content-Type`**: `application/json`
+  * **`Authorization`**: `Bearer {{JWT_TOKEN}}` (un token API personale che deve essere tenuto al sicuro).
+
+Il corpo della richiesta deve essere un oggetto JSON con la seguente struttura:
+
+```json
+{
+  "timestamp": "2025-09-13T14:30:00Z",
+  "location": {
+    "latitude": 44.5675,
+    "longitude": 7.4823,
+    "altitude": 425
+  },
+  "data": {
+    "temperature": {
+      "value": 23.5,
+      "accuracy": 95.0,
+      "unit": "celsius"
+    },
+    "humidity": {
+      "value": 68.2,
+      "accuracy": 90.0,
+      "unit": "percent"
+    },
+    "pressure": {
+      "value": 1013.25,
+      "accuracy": 98.5,
+      "unit": "hPa"
+    }
+  },
+  "sensor_info": {
+    "model": "Davis Vantage Pro2",
+    "firmware_version": "1.2.3"
+  }
+}
+```
+
+È importante notare che l'API ha un limite di 100 richieste per ora.
+
+**Implementazioni future:** Implementazioni future: crediamo sia importante seguire il cambiamento, anche alla luce del cambiamento climatico, quindi proporremo una versione del programma in grado di auto ri-addestrarsi autonomamente ogni 6mesi/1anno in modo tale da dare previsioni meteorologiche accurate!
 
 ---
 
