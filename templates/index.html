@@ -95,7 +95,7 @@ We then customized everything to fit our needs.
                         </div>
                         <div>
                             <span class="badge bg-{{data[2][0]}}">Station {{data[2][1]}}</span>
-                            <a href="/dati_live" class="btn btn-sm btn-outline-primary ms-2">Live Data</a>
+                            <a href="/live_data" class="btn btn-sm btn-outline-primary ms-2">Live Data</a>
                         </div>
                     </div>
                 </div>
@@ -117,6 +117,7 @@ We then customized everything to fit our needs.
             </h2>
         </div>
         <div class="card-body">
+            {% if data[1] is not none %}
             <div class="row">
                 <div class="col-md-4 text-center border-end">
                     {% set weather_data = {
@@ -202,6 +203,19 @@ We then customized everything to fit our needs.
                     </div>
                 </div>
             </div>
+            {% else %}
+            <!-- Nessun dato disponibile -->
+            <div class="row">
+                <div class="col-12 text-center">
+                    <div class="alert alert-warning" role="alert">
+                        <i class="fas fa-exclamation-triangle fa-3x mb-3"></i>
+                        <h4>No meteorological data available</h4>
+                        <p>The weather station is currently not connected or there is no historical data available in the database.</p>
+                        <p>Please check back later for updates.</p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>
@@ -501,7 +515,7 @@ We then customized everything to fit our needs.
                             </ul>
                             <p>The collected data is used for studies on the microclimate of the Cuneo area and is available to the scientific community.</p>
                             <div class="mt-auto">
-                                <a href="./progetto" class="btn btn-outline-primary">Learn more about the project</a>
+                                <a href="./project" class="btn btn-outline-primary">Learn more about the project</a>
                             </div>
                         </div>
                     </div>

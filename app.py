@@ -141,74 +141,97 @@ def index():
             dati = list(data_deque)
         
 
-    if dati[-1][1] != 0:  # Se legge i dati: stazione online
+    if dati and dati[-1][1] != 0:  # Se legge i dati: stazione online
         # La lettura è OK
-        db, client= connessione_db(nomeDB)        # Errore nella lettura, la stazione è offline
+        db, client= connessione_db(nomeDB)        
         dati_mongo_db = ottieni_ultimi_dati(db, "dati_meteo",1)
-        #print(f"Dati salvati sul mongodb= {dati_mongo_db}")
-        data_ora = str(dati_mongo_db[0]["date_hour"])
-        giorno = data_ora[:10]
-        ora = data_ora[11:16]
-        giorno = datetime.strptime(giorno, "%Y-%m-%d")
-        mesi_inglese = {
-            1: "January ", 2: "February ", 3: "March", 4: "April",
-            5: "May", 6: "June", 7: "July", 8: "August",
-            9: "September", 10: "October", 11: "November", 12: "December"
-        }
-        data_formattata = f"{giorno.day} {mesi_inglese[giorno.month]} {giorno.year}"
-        data = [(data_formattata,ora),dati_mongo_db[0]]
-        data.append(('success', 'online'))
-        data[1]["min_temp"], data[1]["max_temp"],_ = min_max_temp(db, "dati_meteo")
-        data[1]["raffica"], data[1]["orario_raffica"] = calcola_raffica_vento(db, "dati_meteo")
-        client.close()
-
         
+        if dati_mongo_db and len(dati_mongo_db) > 0:  # Check if data exists
+            data_ora = str(dati_mongo_db[0]["date_hour"])
+            giorno = data_ora[:10]
+            ora = data_ora[11:16]
+            giorno = datetime.strptime(giorno, "%Y-%m-%d")
+            mesi_inglese = {
+                1: "January ", 2: "February ", 3: "March", 4: "April",
+                5: "May", 6: "June", 7: "July", 8: "August",
+                9: "September", 10: "October", 11: "November", 12: "December"
+            }
+            data_formattata = f"{giorno.day} {mesi_inglese[giorno.month]} {giorno.year}"
+            data = [(data_formattata,ora),dati_mongo_db[0]]
+            data.append(('success', 'online'))
+            data[1]["min_temp"], data[1]["max_temp"],_ = min_max_temp(db, "dati_meteo")
+            data[1]["raffica"], data[1]["orario_raffica"] = calcola_raffica_vento(db, "dati_meteo")
+        else:
+            # No data available from MongoDB
+            data = [("No data", "No data"), None, ('danger', 'no data available')]
+        
+        client.close()
     
     else:                # Errore nella lettura, la stazione è offline
         db, client= connessione_db(nomeDB)        
         dati_mongo_db = ottieni_ultimi_dati(db, "dati_meteo",1)
-        print(f"Dati salvati sul mongodb= {dati_mongo_db}")
-        data_ora = str(dati_mongo_db[0]["date_hour"])
-        giorno = data_ora[:10]
-        ora = data_ora[11:16]
-        giorno = datetime.strptime(giorno, "%Y-%m-%d")
-        mesi_inglese = {
-            1: "January ", 2: "February ", 3: "March", 4: "April",
-            5: "May", 6: "June", 7: "July", 8: "August",
-            9: "September", 10: "October", 11: "November", 12: "December"
-        }
-        data_formattata = f"{giorno.day} {mesi_inglese[giorno.month]} {giorno.year}"
-        data = [(data_formattata,ora),dati_mongo_db[0],('danger', 'not available')]
-        data[1]["min_temp"], data[1]["max_temp"], _ = min_max_temp(db, "dati_meteo")
-        data[1]["raffica"], data[1]["orario_raffica"] = calcola_raffica_vento(db, "dati_meteo")
+        #print(f"Dati salvati sul mongodb= {dati_mongo_db}")
+        
+        if dati_mongo_db and len(dati_mongo_db) > 0:  # Check if data exists
+            # Use the last available data from MongoDB
+            data_ora = str(dati_mongo_db[0]["date_hour"])
+            giorno = data_ora[:10]
+            ora = data_ora[11:16]
+            giorno = datetime.strptime(giorno, "%Y-%m-%d")
+            mesi_inglese = {
+                1: "January ", 2: "February ", 3: "March", 4: "April",
+                5: "May", 6: "June", 7: "July", 8: "August",
+                9: "September", 10: "October", 11: "November", 12: "December"
+            }
+            data_formattata = f"{giorno.day} {mesi_inglese[giorno.month]} {giorno.year}"
+            data = [(data_formattata,ora), dati_mongo_db[0], ('warning', 'offline')]
+            data[1]["min_temp"], data[1]["max_temp"], _ = min_max_temp(db, "dati_meteo")
+            data[1]["raffica"], data[1]["orario_raffica"] = calcola_raffica_vento(db, "dati_meteo")
+        else:
+            # No data available at all
+            data = [("No data", "No data"), None, ('danger', 'no data available')]
+        
         client.close()
         
-    # Calcola la temperatura percepita usando la formula del Wind Chill
-    outside_temp = data[1]["outside_temp"]
-    wind_speed = data[1]["wind_speed"]
-    umidita = data[1]["outside_humidity"]
-    temp_perc = (
-        13.12 +
-        0.6215 * outside_temp -
-        11.37 * wind_speed ** 0.16 +
-        0.3965 * outside_temp * wind_speed ** 0.16
-    )
-    data[1]["temp_perc"] = round(temp_perc, 2)
+    # Calcola la temperatura percepita e il punto di rugiada solo se ci sono dati validi
+    if data[1] is not None:
+        outside_temp = data[1]["outside_temp"]
+        wind_speed = data[1]["wind_speed"]
+        umidita = data[1]["outside_humidity"]
+        
+        # Calculate perceived temperature only if we have valid data
+        if outside_temp != 0 and wind_speed != 0:
+            temp_perc = (
+                13.12 +
+                0.6215 * outside_temp -
+                11.37 * wind_speed ** 0.16 +
+                0.3965 * outside_temp * wind_speed ** 0.16
+            )
+            data[1]["temp_perc"] = round(temp_perc, 2)
+        else:
+            data[1]["temp_perc"] = 0
 
-    #Calcola il punto di rugiada dato la temperatura (°C) e l'umidità relativa (%)
-    #usando la formula di Magnus-Tetens.
-    
-    a = 17.27
-    b = 237.7  # °C
-    
-    alpha = ((a * outside_temp) / (b + outside_temp)) + math.log(umidita / 100.0)
-    punto_di_rugiada = (b * alpha) / (a - alpha)
-    data[1]["punto_di_rugiada"] = round(punto_di_rugiada,1)
+        #Calcola il punto di rugiada dato la temperatura (°C) e l'umidità relativa (%)
+        #usando la formula di Magnus-Tetens.
+        
+        # Only calculate dew point if humidity is valid (greater than 0 and less than or equal to 100)
+        if umidita > 0 and umidita <= 100:
+            a = 17.27
+            b = 237.7  # °C
+            
+            try:
+                alpha = ((a * outside_temp) / (b + outside_temp)) + math.log(umidita / 100.0)
+                punto_di_rugiada = (b * alpha) / (a - alpha)
+                data[1]["punto_di_rugiada"] = round(punto_di_rugiada, 1)
+            except (ValueError, ZeroDivisionError):
+                # Handle math errors (domain error, division by zero)
+                data[1]["punto_di_rugiada"] = 0
+        else:
+            data[1]["punto_di_rugiada"] = 0
 
     with lock_prev_dom:
         if len(data_prev_dom) > 0:
             dom = data_prev_dom[0]
-            #print(f"Domani: {dom}")
             for i in dom.keys():
                 try:
                     dom[i] = round(dom[i][0], 2)
@@ -238,21 +261,16 @@ def index():
                     tregiorni[i] = round(tregiorni[i], 2)
         else:
             tregiorni = {}
-    #print(f"Domani: {dom}, Dopodomani: {dopodomani}, Tra tre giorni: {tregiorni}")
 
     oggi = datetime.now()
     domani_g = oggi + timedelta(days=1)
     dopodomani_g = oggi + timedelta(days=2)
     tra_tre_giorni_g = oggi + timedelta(days=3)
 
-    
-
     def format_date(date_obj):
         day_eng = date_obj.strftime("%A")
         month_eng = date_obj.strftime("%B")
         day_num = date_obj.strftime("%d")
-        
-        
         return f"{day_eng} {day_num} {month_eng}"
 
     giorni = {
@@ -311,27 +329,41 @@ def live_data_api():
                 wind_speed = result["wind_speed"]
                 umidita = result["outside_humidity"]
                 
-                # Perceived temperature
-                temp_perc = (
-                    13.12 +
-                    0.6215 * outside_temp -
-                    11.37 * wind_speed ** 0.16 +
-                    0.3965 * outside_temp * wind_speed ** 0.16
-                )
-                result["temp_perc"] = round(temp_perc, 2)
+                # Perceived temperature (with error handling for math domain)
+                try:
+                    temp_perc = (
+                        13.12 +
+                        0.6215 * outside_temp -
+                        11.37 * wind_speed ** 0.16 +
+                        0.3965 * outside_temp * wind_speed ** 0.16
+                    )
+                    result["temp_perc"] = round(temp_perc, 2)
+                except (ValueError, ZeroDivisionError):
+                    result["temp_perc"] = 0
                 
-                # Punto di rugiada
-                a = 17.27
-                b = 237.7  # °C
-                alpha = ((a * outside_temp) / (b + outside_temp)) + math.log(umidita / 100.0)
-                punto_di_rugiada = (b * alpha) / (a - alpha)
-                result["punto_di_rugiada"] = round(punto_di_rugiada, 1)
+                # Punto di rugiada (with error handling for math domain)
+                try:
+                    if umidita > 0 and umidita <= 100:
+                        a = 17.27
+                        b = 237.7  # °C
+                        alpha = ((a * outside_temp) / (b + outside_temp)) + math.log(umidita / 100.0)
+                        punto_di_rugiada = (b * alpha) / (a - alpha)
+                        result["punto_di_rugiada"] = round(punto_di_rugiada, 1)
+                    else:
+                        result["punto_di_rugiada"] = 0
+                except (ValueError, ZeroDivisionError):
+                    result["punto_di_rugiada"] = 0
                 
-                # Get data from database
+
                 try:
                     db, client = connessione_db(nomeDB)
-                    result["min_temp"], result["max_temp"], _ = min_max_temp(db, "dati_meteo")
-                    result["raffica"], result["orario_raffica"] = calcola_raffica_vento(db, "dati_meteo")
+                    dati_list = ottieni_ultimi_dati(db, "dati_meteo", 1)
+                    if not dati_list:  # Controlla se la lista è vuota
+                        result["min_temp"], result["max_temp"] = (0, 0)
+                        result["raffica"], result["orario_raffica"] = (0, "00:00")
+                    else:
+                        result["min_temp"], result["max_temp"], _ = min_max_temp(db, "dati_meteo")
+                        result["raffica"], result["orario_raffica"] = calcola_raffica_vento(db, "dati_meteo")
                     client.close()
                 except Exception as e:
                     print(f"Error accessing database: {e}")
@@ -357,9 +389,48 @@ def live_data_api():
                 # Station offline, use database data
                 try:
                     db, client = connessione_db(nomeDB)
-                    dati_mongo_db = ottieni_ultimi_dati(db, "dati_meteo",1)[0]
+                    dati_list = ottieni_ultimi_dati(db, "dati_meteo", 1)
+                    
+                    if not dati_list:  # Controlla se la lista è vuota
+                        client.close()
+                        return jsonify({"status": "error", "message": "No data available in database"})
+                    
+                    dati_mongo_db = dati_list[0]  # Ora è sicuro accedere a [0]
                     dati_mongo_db["min_temp"], dati_mongo_db["max_temp"], _ = min_max_temp(db, "dati_meteo")
                     dati_mongo_db["raffica"], dati_mongo_db["orario_raffica"] = calcola_raffica_vento(db, "dati_meteo")
+                    
+                    # Calculate additional metrics for offline data
+                    outside_temp = dati_mongo_db["outside_temp"]
+                    wind_speed = dati_mongo_db["wind_speed"]
+                    umidita = dati_mongo_db["outside_humidity"]
+                    
+                    # Perceived temperature (with error handling)
+                    try:
+                        if outside_temp != 0 and wind_speed != 0:
+                            temp_perc = (
+                                13.12 +
+                                0.6215 * outside_temp -
+                                11.37 * wind_speed ** 0.16 +
+                                0.3965 * outside_temp * wind_speed ** 0.16
+                            )
+                            dati_mongo_db["temp_perc"] = round(temp_perc, 2)
+                        else:
+                            dati_mongo_db["temp_perc"] = 0
+                    except (ValueError, ZeroDivisionError):
+                        dati_mongo_db["temp_perc"] = 0
+                    
+                    # Punto di rugiada (with error handling)
+                    try:
+                        if umidita > 0 and umidita <= 100:
+                            a = 17.27
+                            b = 237.7  # °C
+                            alpha = ((a * outside_temp) / (b + outside_temp)) + math.log(umidita / 100.0)
+                            punto_di_rugiada = (b * alpha) / (a - alpha)
+                            dati_mongo_db["punto_di_rugiada"] = round(punto_di_rugiada, 1)
+                        else:
+                            dati_mongo_db["punto_di_rugiada"] = 0
+                    except (ValueError, ZeroDivisionError):
+                        dati_mongo_db["punto_di_rugiada"] = 0
                     
                     # Calculate weather emoji and description for offline data
                     weather_data = {
@@ -383,7 +454,6 @@ def live_data_api():
                     return jsonify({"status": "error", "message": "Cannot retrieve data"})
         else:
             return jsonify({"status": "error", "message": "No data available"})
-        
 
 @app.route('/csp')
 def espansione():
@@ -392,45 +462,45 @@ def espansione():
 
 @app.route('/api/invio-dati', methods=['POST'])
 def invio_dati():
-    print("chiamata api da parte di un contributore")
+    print("API call from a contributor")
     
     # 1. Authentication and Token Validation
     token = request.headers.get('Authorization')
     if not token or not token.startswith('Bearer '):
-        return jsonify({'message': 'Token mancante o formato non valido'}), 401
+        return jsonify({'message': 'Missing or invalid token format'}), 401
     
     token = token.replace('Bearer ', '')
     payload = verify_token(token)
     if not payload:
-        return jsonify({'message': 'Token non valido o scaduto'}), 401
-    print("Payload del token:", payload)
+        return jsonify({'message': 'Invalid or expired token'}), 401
+    print("Token payload:", payload)
 
     # 2. Content-Type and JSON Parsing
     if not request.is_json:
-        return jsonify({'message': f"Content-Type non supportato. Usa 'application/json'."}), 415
+        return jsonify({'message': f"Unsupported Content-Type. Use 'application/json'."}), 415
     
     try:
         data = request.get_json(silent=True)
         if data is None:
-            return jsonify({'message': 'Corpo della richiesta JSON vuoto o non valido'}), 400
+            return jsonify({'message': 'Empty or invalid JSON request body'}), 400
     except Exception as e:
-        print(f"Errore nel parsing JSON: {e}")
-        return jsonify({'message': f'Errore nel parsing JSON: {str(e)}'}), 400
+        print(f"JSON parsing error: {e}")
+        return jsonify({'message': f'JSON parsing error: {str(e)}'}), 400
 
-    print("Dati ricevuti:", data)
+    print("Received data:", data)
 
     # 3. Data Validation
     required_fields = ['timestamp', 'location', 'data', 'sensor_info']
     if not all(field in data for field in required_fields):
         missing_fields = [field for field in required_fields if field not in data]
-        return jsonify({'message': f"Campo/i obbligatorio/i mancante/i: {', '.join(missing_fields)}"}), 400
+        return jsonify({'message': f"Missing required field(s): {', '.join(missing_fields)}"}), 400
 
     data_fields = ['temperature', 'humidity', 'pressure', 'wind_speed', 'wind_direction', 'rain_rate']
     for field in data_fields:
         if field in data['data']:
-            #devono essere presenti value, accuracy e unit
+            # value, accuracy and unit must be present
             if 'value' not in data['data'][field] or 'accuracy' not in data['data'][field] or 'unit' not in data['data'][field]:
-                return jsonify({'message': f"Campo obbligatorio mancante in data.{field}: 'value', 'accuracy' e 'unit' sono richiesti"}), 400
+                return jsonify({'message': f"Missing required field in data.{field}: 'value', 'accuracy' and 'unit' are required"}), 400
 
     # 4. Data Transformation and Unit Conversion
     datiDaSalvare = {
@@ -445,7 +515,7 @@ def invio_dati():
         
         datiDaSalvare['date_hour'] = timestamp_dt.replace(minute=0, second=0, microsecond=0)
     except Exception as e:
-        return jsonify({'message': f'Errore nel formato del timestamp: {str(e)}'}), 400
+        return jsonify({'message': f'Timestamp format error: {str(e)}'}), 400
 
     # Location data
     datiDaSalvare.update({
@@ -505,61 +575,61 @@ def invio_dati():
         if field in data_received:
             datiDaSalvare[field] = data_received[field].get('value')
             datiDaSalvare[f'{field}_accuracy'] = data_received[field].get('accuracy')
-    #implemento dei filtri anche sui dati per far si che non vengano inseriti dati errati (troppo grandi)
-    # Filtri sui dati per evitare valori errati
+
+    # Data filters to prevent incorrect values (too large)
+    # Data filters to avoid incorrect values
     if 'temperature' in data_received:
         temp_value = data_received['temperature'].get('value')
         if temp_value is not None:
             if not (-50 <= temp_value <= 60):
-                return jsonify({'message': 'Valore di temperatura fuori dal range accettabile (-50°C a 60°C)'}), 400
+                return jsonify({'message': 'Temperature value out of acceptable range (-50°C to 60°C)'}), 400
 
     if 'humidity' in data_received:
         humidity_value = data_received['humidity'].get('value')
         if humidity_value is not None:
             if not (0 <= humidity_value <= 100):
-                return jsonify({'message': 'Valore di umidità fuori dal range accettabile (0% a 100%)'}), 400
+                return jsonify({'message': 'Humidity value out of acceptable range (0% to 100%)'}), 400
 
     if 'pressure' in data_received:
         pressure_value = data_received['pressure'].get('value')
         if pressure_value is not None:
             if not (300 <= pressure_value <= 1100):
-                return jsonify({'message': 'Valore di pressione fuori dal range accettabile (300 hPa a 1100 hPa)'}), 400
+                return jsonify({'message': 'Pressure value out of acceptable range (300 hPa to 1100 hPa)'}), 400
 
     if 'wind_speed' in data_received:
         wind_speed_value = data_received['wind_speed'].get('value')
         if wind_speed_value is not None:
             if not (0 <= wind_speed_value <= 150):
-                return jsonify({'message': 'Valore di velocità del vento fuori dal range accettabile (0 km/h a 150 km/h)'}), 400
+                return jsonify({'message': 'Wind speed value out of acceptable range (0 km/h to 150 km/h)'}), 400
 
     if 'wind_direction' in data_received:
         wind_dir_value = data_received['wind_direction'].get('value')
         if wind_dir_value is not None:
             if not (0 <= wind_dir_value <= 360):
-                return jsonify({'message': 'Valore di direzione del vento fuori dal range accettabile (0° a 360°)'}), 400
+                return jsonify({'message': 'Wind direction value out of acceptable range (0° to 360°)'}), 400
 
     if 'rain_rate' in data_received:
         rain_value = data_received['rain_rate'].get('value')
         if rain_value is not None:
             if not (0 <= rain_value <= 500):
-                return jsonify({'message': 'Valore di tasso di precipitazione fuori dal range accettabile (0 mm/h a 500 mm/h)'}), 400
+                return jsonify({'message': 'Rain rate value out of acceptable range (0 mm/h to 500 mm/h)'}), 400
 
     # 5. Database Operations 
     try:
         db, client = connessione_db(nomeDB)
         crea_collezione(db, 'dati_meteo_contributori')
         
-        
         collezione_contributori = db['dati_meteo_contributori']
         risultato = collezione_contributori.insert_one(datiDaSalvare)
         
-        print(f"Dato contributore inserito con ID: {risultato.inserted_id} nella collezione dati_meteo_contributori")
+        print(f"Contributor data inserted with ID: {risultato.inserted_id} in collection dati_meteo_contributori")
         client.close()
         
-        return jsonify({'message': 'Dati salvati con successo', 'received_data': data}), 200
+        return jsonify({'message': 'Data saved successfully', 'received_data': data}), 200
     except Exception as e:
-        print(f"Errore durante il salvataggio dei dati nel DB: {e}")
-        return jsonify({'message': f'Errore del server: {str(e)}'}), 500
-
+        print(f"Error saving data to database: {e}")
+        return jsonify({'message': f'Server error: {str(e)}'}), 500
+    
 # Endpoint per la richiesta del token
 @app.route('/request-token', methods=['POST'])
 def request_token():
