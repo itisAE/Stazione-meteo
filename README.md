@@ -41,7 +41,7 @@ graph TD
 | Component       | Technology                                  |
 |------------------|--------------------------------------------|
 | **Frontend**     | ![HTML5](https://img.shields.io/badge/HTML5-Frontend-red?logo=html5)  ![Chart.js](https://img.shields.io/badge/Charts-Chart.js-orange?logo=chartdotjs)  ![Bootstrap](https://img.shields.io/badge/Frontend-Bootstrap-purple?logo=bootstrap)  |
-| **Backend**      | ![Flask](https://img.shields.io/badge/Flask-Backend-black?logo=flask)  ![PyMongo](https://img.shields.io/badge/Database-PyMongo-green?logo=mongodb)  |
+| **Backend**      | ![Flask](https://img.shields.io/badge/Flask-Backend-black?logo=flask)  ![PyMongo](https://img.shields.io/badge/Database-PyMongo-green?logo=mongodb)  ![PyJWT](https://img.shields.io/badge/PyJWT-Token-blue?logo=jsonwebtokens)  |
 | **Machine Learning** | ![Scikit-learn](https://img.shields.io/badge/ML-ScikitLearn-yellow?logo=scikitlearn) |
 | **Database**     | ![MongoDB](https://img.shields.io/badge/Database-MongoDB-green?logo=mongodb) |
 | **Hardware**     | Davis Vantage Pro2 + Raspberry Pi 4        |
@@ -270,7 +270,7 @@ It's important to note that the API has a limit of 100 requests per hour.
 
 2. **Library Installation**
 ```bash
-pip install flask pymongo scikit-learn pandas
+pip install flask pymongo scikit-learn pandas PyJWT
 sudo apt-get install mongodb-server
 ```
 
@@ -292,11 +292,11 @@ python app.py  # Start Flask server on http://localhost
 ## 🖼️ Interface Screenshots
 
 ### Real-Time Dashboard
-<img width="2559" height="1153" alt="dashboard" src="https://github.com/user-attachments/assets/04e1ee1f-158b-4a4f-a351-5c8ff3d2661f" />
+<img width="1687" height="867" alt="Screenshot 2025-09-21 152444" src="https://github.com/user-attachments/assets/38c3de14-eaa9-4a09-9bc4-365602dd0cc0" />
 *The dashboard shows current weather conditions with temperature, humidity, wind, pressure, and precipitation*
 
 ### Machine Learning Prediction System
-![Sistema ML](/api/placeholder/800x400?text=Sistema+di+Previsione+ML)
+<img width="1675" height="917" alt="Screenshot 2025-09-21 152253" src="https://github.com/user-attachments/assets/74647ec2-04e2-477b-a623-f432c66a9f0c" />
 *Visualization of the machine learning pipeline for weather forecasting*
 
 ---
