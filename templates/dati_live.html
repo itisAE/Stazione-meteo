@@ -321,17 +321,16 @@ We then customized everything to adapt it to our needs.
                     minute: '2-digit',
                     second: '2-digit'
                 };
-                // Remove or update this line to match an element that exists in your HTML
-                // document.getElementById('last-update').textContent = 'Update: ' + now.toLocaleTimeString('en-US', options);
 
                 // This part is correct and should remain
-                document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', {
+                document.getElementById('current-date').textContent = now.toLocaleDateString('en-GB', {
                     day: 'numeric',
                     month: 'long',
                     year: 'numeric'
-                }) + ' ' + now.toLocaleTimeString('en-US', {
+                }) + ' ' + now.toLocaleTimeString('en-GB', {
                     hour: '2-digit',
-                    minute: '2-digit'
+                    minute: '2-digit',
+                    hour12: false
                 });
             })
             .catch(error => {
