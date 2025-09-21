@@ -8,9 +8,9 @@ def invia_email(html_content, mail):
     
     """Invia un'email utilizzando SMTP con una password per le app."""
     # Dettagli del mittente e del destinatario
-    mittente = "doanduma2025@gmail.com"
+    mittente = "weatherstation1013@gmail.com"
     # Incolla qui la password per le app che hai generato
-    password_app = "abts qpqk mvym gijj" 
+    password_app = "ifyz donh eliw xdhdorrezz" 
     destinatario = mail
 
     # Creazione del messaggio
