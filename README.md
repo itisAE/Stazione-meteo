@@ -41,11 +41,10 @@ graph TD
 
 | Componente       | Tecnologia                                  |
 |------------------|--------------------------------------------|
-| **Frontend**     | ![HTML5](https://img.shields.io/badge/HTML5-Frontend-red?logo=html5)  
-![Chart.js](https://img.shields.io/badge/Charts-Chart.js-orange?logo=chartdotjs)  ![Bootstrap](https://img.shields.io/badge/Frontend-Bootstrap-purple?logo=bootstrap) HTML5, Chart.js, Bootstrap                 |
-| **Backend**      | ![Flask](https://img.shields.io/badge/Flask-Backend-black?logo=flask)  ![PyMongo](https://img.shields.io/badge/Database-PyMongo-green?logo=mongodb)  Python (Flask), PyMongo                    |
-| **Machine Learning** | ![Scikit-learn](https://img.shields.io/badge/ML-ScikitLearn-yellow?logo=scikitlearn) Scikit-learn (Regressione Lineare) |
-| **Database**     | ![MongoDB](https://img.shields.io/badge/Database-MongoDB-green?logo=mongodb)MongoDB (NoSQL)                            |
+| **Frontend**     | ![HTML5](https://img.shields.io/badge/HTML5-Frontend-red?logo=html5)  ![Chart.js](https://img.shields.io/badge/Charts-Chart.js-orange?logo=chartdotjs)  ![Bootstrap](https://img.shields.io/badge/Frontend-Bootstrap-purple?logo=bootstrap)  |
+| **Backend**      | ![Flask](https://img.shields.io/badge/Flask-Backend-black?logo=flask)  ![PyMongo](https://img.shields.io/badge/Database-PyMongo-green?logo=mongodb)  |
+| **Machine Learning** | ![Scikit-learn](https://img.shields.io/badge/ML-ScikitLearn-yellow?logo=scikitlearn) |
+| **Database**     | ![MongoDB](https://img.shields.io/badge/Database-MongoDB-green?logo=mongodb) |
 | **Hardware**     | Davis Vantage Pro2 + Raspberry Pi 4        |
 
 Abbiamo utilizzato le conoscenze che abbiamo appreso durante gli anni scolastici per creare un prodotto originale e funzionale.
