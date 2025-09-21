@@ -41,47 +41,55 @@ def crea_collezione(db,nomeCollezione):
     if nomeCollezione not in db.list_collection_names():
         db.create_collection(nomeCollezione, timeseries={"timeField": 'date_hour'}) #sono collezioni ottimizzate, caso particolare con mongo db
 
-def ottieni_ultimi_dati(db, nomeCollezione, num):
-    '''ottieni un numero di dati pari al num'''
-    ultimo_dato = db[nomeCollezione].find().sort("date_hour", -1).limit(num)
-    return list(ultimo_dato)
+def ottieni_ultimi_dati(db, collection_name, limit):
+    try:
+        risultati = list(db[collection_name].find().sort("date_hour", -1).limit(limit))
+        return risultati if risultati else []  # Ritorna lista vuota se non ci sono risultati
+    except Exception as e:
+        print(f"Errore in ottieni_ultimi_dati: {e}")
+        return []
+
 
 def inserisci_dati(db, dati):
     db.dati_meteo.insert_one(dati)
 
 def min_max_temp(db, collection):
-    oggi = datetime.now().date()
-    inizio_giorno = datetime.combine(oggi, time.min)  # Inizio della giornata (00:00:00)
-    fine_giorno = datetime.combine(oggi, time.max)    # Fine della giornata (23:59:59)
+    try:
+        oggi = datetime.now().date()
+        inizio_giorno = datetime.combine(oggi, time.min)  # Inizio della giornata (00:00:00)
+        fine_giorno = datetime.combine(oggi, time.max)    # Fine della giornata (23:59:59)
 
-    # Query per filtrare i dati di temperatura esterna per oggi
-    query = {
-        'date_hour': {
-            '$gte': inizio_giorno,
-            '$lte': fine_giorno
+        # Query per filtrare i dati di temperatura esterna per oggi
+        query = {
+            'date_hour': {
+                '$gte': inizio_giorno,
+                '$lte': fine_giorno
+            }
         }
-    }
 
-    # Esegui la query e ottieni i risultati
-    risultati = list(db[collection].find(query, {'outside_temp': 1, 'date_hour': 1, '_id': 0}))
+        # Esegui la query e ottieni i risultati
+        risultati = list(db[collection].find(query, {'outside_temp': 1, 'date_hour': 1, '_id': 0}))
 
-    # Verifica se ci sono risultati
-    if risultati:
-        # Estrai tutte le temperature
-        temperature = [doc['outside_temp'] for doc in risultati]
-        
-        # Calcola il minimo e il massimo
-        temp_minima = min(temperature)
-        temp_massima = max(temperature)
-        # Calcola la media
-        temp_media = sum(temperature) / len(temperature)
-    else:
-        temp_minima = 0
-        temp_massima = 0
-        temp_media = 0
+        # Verifica se ci sono risultati
+        if risultati:
+            # Estrai tutte le temperature
+            temperature = [doc['outside_temp'] for doc in risultati]
+            
+            # Calcola il minimo e il massimo
+            temp_minima = min(temperature)
+            temp_massima = max(temperature)
+            # Calcola la media
+            temp_media = sum(temperature) / len(temperature)
+        else:
+            temp_minima = 0
+            temp_massima = 0
+            temp_media = 0
 
-    return temp_minima, temp_massima, temp_media
-
+        return temp_minima, temp_massima, temp_media
+    except Exception as e:
+        print(f"Errore in min_max_temp: {e}")
+        return (0, 0, "error")
+    
 def calcola_raffica_vento(db, collezione):
     # Ottieni la data di oggi
     oggi = datetime.now().date()

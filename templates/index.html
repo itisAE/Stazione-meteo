@@ -117,6 +117,7 @@ We then customized everything to fit our needs.
             </h2>
         </div>
         <div class="card-body">
+            {% if data[1] is not none %}
             <div class="row">
                 <div class="col-md-4 text-center border-end">
                     {% set weather_data = {
@@ -202,6 +203,19 @@ We then customized everything to fit our needs.
                     </div>
                 </div>
             </div>
+            {% else %}
+            <!-- Nessun dato disponibile -->
+            <div class="row">
+                <div class="col-12 text-center">
+                    <div class="alert alert-warning" role="alert">
+                        <i class="fas fa-exclamation-triangle fa-3x mb-3"></i>
+                        <h4>Nessun dato meteorologico disponibile</h4>
+                        <p>La stazione meteorologica non è attualmente collegata o non ci sono dati storici disponibili nel database.</p>
+                        <p>Controlla più tardi per gli aggiornamenti.</p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>
