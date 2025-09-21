@@ -248,7 +248,7 @@ def index():
 
     
 
-    def format_date_italian(date_obj):
+    def format_date(date_obj):
         day_eng = date_obj.strftime("%A")
         month_eng = date_obj.strftime("%B")
         day_num = date_obj.strftime("%d")
@@ -256,11 +256,10 @@ def index():
         
         return f"{day_eng} {day_num} {month_eng}"
 
-    # Create a dictionary with properly formatted dates
     giorni = {
-        "domani_g": format_date_italian(domani_g),
-        "dopodomani_g": format_date_italian(dopodomani_g),
-        "tra_tre_giorni_g": format_date_italian(tra_tre_giorni_g)
+        "domani_g": format_date(domani_g),
+        "dopodomani_g": format_date(dopodomani_g),
+        "tra_tre_giorni_g": format_date(tra_tre_giorni_g)
     }
 
     return render_template('index.html', data=data, domani = dom, dopodomani = dopodomani, tregiorni = tregiorni, get_weather_emoji_and_description=get_weather_emoji_and_description, giorni = giorni)
@@ -322,7 +321,7 @@ def live_data_api():
                 )
                 result["temp_perc"] = round(temp_perc, 2)
                 
-                # Dew point
+                # Punto di rugiada
                 a = 17.27
                 b = 237.7  # °C
                 alpha = ((a * outside_temp) / (b + outside_temp)) + math.log(umidita / 100.0)
@@ -396,7 +395,7 @@ def espansione():
 def invio_dati():
     print("chiamata api da parte di un contributore")
     
-    # 🔐 1. Authentication and Token Validation
+    # 1. Authentication and Token Validation
     token = request.headers.get('Authorization')
     if not token or not token.startswith('Bearer '):
         return jsonify({'message': 'Token mancante o formato non valido'}), 401
@@ -407,7 +406,7 @@ def invio_dati():
         return jsonify({'message': 'Token non valido o scaduto'}), 401
     print("Payload del token:", payload)
 
-    # 📦 2. Content-Type and JSON Parsing
+    # 2. Content-Type and JSON Parsing
     if not request.is_json:
         return jsonify({'message': f"Content-Type non supportato. Usa 'application/json'."}), 415
     
@@ -421,7 +420,7 @@ def invio_dati():
 
     print("Dati ricevuti:", data)
 
-    # ✅ 3. Data Validation
+    # 3. Data Validation
     required_fields = ['timestamp', 'location', 'data', 'sensor_info']
     if not all(field in data for field in required_fields):
         missing_fields = [field for field in required_fields if field not in data]
@@ -434,7 +433,7 @@ def invio_dati():
             if 'value' not in data['data'][field] or 'accuracy' not in data['data'][field] or 'unit' not in data['data'][field]:
                 return jsonify({'message': f"Campo obbligatorio mancante in data.{field}: 'value', 'accuracy' e 'unit' sono richiesti"}), 400
 
-    # 📊 4. Data Transformation and Unit Conversion
+    # 4. Data Transformation and Unit Conversion
     datiDaSalvare = {
         'contributor_email': payload['email'],
         'contributor_station_name': payload.get('station_name', 'N/A')
@@ -445,7 +444,6 @@ def invio_dati():
         timestamp_dt = parse(data['timestamp'])
         datiDaSalvare['timestamp'] = timestamp_dt
         
-        # ⚠️ Add the required 'date_hour' field for the database
         datiDaSalvare['date_hour'] = timestamp_dt.replace(minute=0, second=0, microsecond=0)
     except Exception as e:
         return jsonify({'message': f'Errore nel formato del timestamp: {str(e)}'}), 400
@@ -509,7 +507,7 @@ def invio_dati():
             datiDaSalvare[field] = data_received[field].get('value')
             datiDaSalvare[f'{field}_accuracy'] = data_received[field].get('accuracy')
     #implemento dei filtri anche sui dati per far si che non vengano inseriti dati errati (troppo grandi)
-    # 🔍 Filtri sui dati per evitare valori errati
+    # Filtri sui dati per evitare valori errati
     if 'temperature' in data_received:
         temp_value = data_received['temperature'].get('value')
         if temp_value is not None:
@@ -546,13 +544,12 @@ def invio_dati():
             if not (0 <= rain_value <= 500):
                 return jsonify({'message': 'Valore di tasso di precipitazione fuori dal range accettabile (0 mm/h a 500 mm/h)'}), 400
 
-    # 💾 5. Database Operations - VERSIONE CORRETTA
+    # 5. Database Operations 
     try:
         db, client = connessione_db(nomeDB)
         crea_collezione(db, 'dati_meteo_contributori')
         
-        # INVECE DI: inserisci_dati(db, datiDaSalvare)
-        # FAI IL SALVATAGGIO DIRETTO:
+        
         collezione_contributori = db['dati_meteo_contributori']
         risultato = collezione_contributori.insert_one(datiDaSalvare)
         
@@ -575,9 +572,6 @@ def request_token():
         if not email:
             return jsonify({'message': 'Errore: l\'email è obbligatoria'}), 400
         
-        # Qui potresti generare il token, salvarlo nel database, 
-        # e inviare un'email all'utente.
-        # Per questo esempio, ci limitiamo a stampare i dati.
         #creo il token
         token = generate_token(email, name)
         print(f"Richiesta token per l'email: {email}")
@@ -639,7 +633,8 @@ def mezzanotte():
         try:
             now = datetime.now()
             # modificare questo orario per fare il ML
-            target_time = now.replace(hour=16, minute=32, second=0, microsecond=0)
+            # in realtà quando cambia l'orario se venisse fatto a mezzanotte verrebbe fatto due volte, è solo un giorno all'anno è vero, ma per precisione meglio farlo alle 02:01
+            target_time = now.replace(hour=2, minute=1, second=0, microsecond=0)
             if now > target_time:
                 target_time = target_time + timedelta(days=1)
             seconds_to_wait = (target_time - now).total_seconds()
@@ -661,7 +656,6 @@ def mezzanotte():
                     #filtro e prendo solamente i dati dentro un certo intervallo di coordinate (intorno a Cuneo per il momento)
                     #poi faccio la media di tutti i dati raccolti insieme anche con i dati della stazione meteo dell'itis
                     #il filtro va fatto anche per l'altitudine
-
 
                     dati_community = []
                     try:
@@ -780,10 +774,7 @@ def mezzanotte():
 
                     except Exception as e:
                         print(f"Errore durante machine learning")
-                        
-
-                    #a questo punto, i dati sono già stati salvati sul db
-                    #adesso machine learning!
+                  
 
                 else:
                     print('dati non calcolati')
@@ -822,7 +813,7 @@ if __name__ == "__main__":
 
     # Avvia l'applicazione Flask
     try:
-        app.run(debug=True, host="0.0.0.0", port=80)  # togliere poi il debug
+        app.run(host="0.0.0.0", port=80)
     except KeyboardInterrupt:
         print("Arresto del server richiesto...")
     finally:

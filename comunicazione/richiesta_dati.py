@@ -2,7 +2,7 @@ import serial
 import time
 from .decode_LOOP import decode_loop_packet
 from .conversione import convert_data
-serialPort='COM7' #porta seriale per la comunicazione con la console davis vantage pro2
+serialPort='COM3' #porta seriale per la comunicazione con la console davis vantage pro2
 
 def configure_serial_port(port, baudrate=19200, timeout=2):
     '''
