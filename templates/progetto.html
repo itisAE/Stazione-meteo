@@ -26,7 +26,7 @@ We then customized everything to adapt it to our needs.
             left: 50%;
             width: 600px;
             height: 600px;
-            background: url('{{ url_for('static', filename='images/logo.png') }}') no-repeat center center;
+            background: url('{{ url_for("static", filename="images/logo.png") }}') no-repeat center center;
             background-size: contain;
             opacity: 0.08;
             filter: blur(2px);
@@ -233,13 +233,13 @@ We then customized everything to adapt it to our needs.
                         <a class="nav-link" href="./">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./archivio-dati">Data Archive</a>
+                        <a class="nav-link" href="./data_archive">Data Archive</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./dati_live">Live Data</a>
+                        <a class="nav-link" href="./live_data">Live Data</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="./progetto">The Project</a>
+                        <a class="nav-link active" href="./project">The Project</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="./csp">Citizen science platform</a>
@@ -362,12 +362,8 @@ We then customized everything to adapt it to our needs.
                 <div class="team-member">
                     <img src="{{ url_for('static', filename='images/man.png') }}" alt="Eugenio Armando" class="mb-3">
                     <h5>Eugenio Armando</h5>
-                    <p class="text-muted">Hardware Specialist</p>
-                    <p class="small">Responsible for assembly and maintenance of the weather station hardware.</p>
-                    <!--<div class="social-icons">
-                        <a href="#" class="text-primary me-2"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="text-primary me-2"><i class="fab fa-github"></i></a>
-                    </div>-->
+                    <p class="text-muted">Hardware & Backend Specialist, Video maker</p>
+                    <p class="small">Responsible for hardware assembly and maintenance of the weather station, backend development, and the citizen science platform implementation.</p>
                 </div>
             </div>
             
@@ -375,12 +371,8 @@ We then customized everything to adapt it to our needs.
                 <div class="team-member">
                     <img src="{{ url_for('static', filename='images/man.png') }}" alt="Simone Giannasi" class="mb-3">
                     <h5>Simone Giannasi</h5>
-                    <p class="text-muted">Frontend Developer</p>
-                    <p class="small">Expert in web interface development and data visualization.</p>
-                    <!--<div class="social-icons">
-                        <a href="#" class="text-primary me-2"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="text-primary me-2"><i class="fab fa-github"></i></a>
-                    </div>-->
+                    <p class="text-muted">Team Leader & Frontend Developer, Public speaker</p>
+                    <p class="small">Team leader specializing in web interface development, data visualization, and machine learning integration for weather forecasting.</p>
                 </div>
             </div>
             
@@ -388,12 +380,8 @@ We then customized everything to adapt it to our needs.
                 <div class="team-member">
                     <img src="{{ url_for('static', filename='images/man.png') }}" alt="Nicolò Dutto" class="mb-3">
                     <h5>Nicolò Dutto</h5>
-                    <p class="text-muted">Backend Developer</p>
-                    <p class="small">Responsible for the database system and software architecture.</p>
-                    <!--<div class="social-icons">
-                        <a href="#" class="text-primary me-2"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="text-primary me-2"><i class="fab fa-github"></i></a>
-                    </div>-->
+                    <p class="text-muted">Backend Developer & Data Integration</p>
+                    <p class="small">Responsible for database management, ARPA Piemonte data integration, and backend system architecture development.</p>
                 </div>
             </div>
             
@@ -401,12 +389,8 @@ We then customized everything to adapt it to our needs.
                 <div class="team-member">
                     <img src="{{ url_for('static', filename='images/woman.png') }}" alt="Rebecca Simondi" class="mb-3">
                     <h5>Rebecca Simondi</h5>
-                    <p class="text-muted">Data Scientist</p>
-                    <p class="small">Expert in data processing and optimization of predictive algorithms.</p>
-                    <!--<div class="social-icons">
-                        <a href="#" class="text-primary me-2"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="text-primary me-2"><i class="fab fa-github"></i></a>
-                    </div>-->
+                    <p class="text-muted">Data Integration & Machine Learning</p>
+                    <p class="small">Responsible for data processing, machine learning model development, and weather prediction algorithms.</p>
                 </div>
             </div>
         </div>
@@ -427,9 +411,9 @@ We then customized everything to adapt it to our needs.
                     <h5>Quick Links</h5>
                     <ul class="list-inline">
                         <li class="list-inline-item"><a href="./" class="text-white">Home</a></li>
-                        <li class="list-inline-item"><a href="./archivio-dati" class="text-white">Data Archive</a></li>
-                        <li class="list-inline-item"><a href="./dati_live" class="text-white">Live Data</a></li>
-                        <li class="list-inline-item"><a href="./progetto" class="text-white">The Project</a></li>
+                        <li class="list-inline-item"><a href="./data_archive" class="text-white">Data Archive</a></li>
+                        <li class="list-inline-item"><a href="./live_data" class="text-white">Live Data</a></li>
+                        <li class="list-inline-item"><a href="./project" class="text-white">The Project</a></li>
                         <li class="list-inline-item"><a href="./csp" class="text-white">Citizen science platform</a></li>
                         <li class="list-inline-item"><a href="https://www.itiscuneo.edu.it/" class="text-white" target="_blank">The School</a></li>
                     </ul>
