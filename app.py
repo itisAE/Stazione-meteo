@@ -264,7 +264,7 @@ def index():
 
     return render_template('index.html', data=data, domani = dom, dopodomani = dopodomani, tregiorni = tregiorni, get_weather_emoji_and_description=get_weather_emoji_and_description, giorni = giorni)
 
-@app.route('/archivio-dati')
+@app.route('/data_archive')
 def archivio_dati():
     try:
         db, client = connessione_db(nomeDB)
@@ -276,7 +276,7 @@ def archivio_dati():
         tabella_dati = []  # Inizializza la tabella_dati come vuota in caso di errore
     return render_template('archivio-dati.html', tabella_dati=tabella_dati)
     
-@app.route('/progetto')
+@app.route('/project')
 def progetto():
     return render_template('progetto.html')
 
@@ -291,7 +291,7 @@ def grafici_api():
         print(f"Error accessing database: {e}")
         return jsonify([])  # Return empty list if error occurs
                     
-@app.route('/dati_live')
+@app.route('/live_data')
 def dati_live():
     return render_template('dati_live.html')
 
